@@ -1,0 +1,106 @@
+<!--[if IE 9]>
+	<style>
+		.error-text {
+			color: #333 !important;
+		}
+	</style>
+<![endif]-->
+
+	<!-- row -->
+	<div class="row">
+	
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="text-center error-box">
+						<h1 class="error-text tada animated"><i class="fa fa-times-circle text-danger error-icon-shadow"></i> 系统发生异常 </h1>
+						<h2 class="font-xl"><strong>注意! 系统发生异常</strong></h2>
+						<br />
+						<p class="lead semi-bold">
+							<strong>很不好意思,发生技术错误!请您后退重新访问,如果还有问题请与系统管理员联系!</strong><br><br>
+							<small>
+							</small>
+						</p>
+						<ul class="error-search text-left font-md">
+				            <li><a href="javascript:bochum.backPage();"><small>返 回</small></a></li>
+				        </ul>
+					</div>
+	
+				</div>
+	
+			</div>
+	
+		</div>
+		
+	</div>
+	<!-- end row -->
+
+	<script type="text/javascript">
+	/* DO NOT REMOVE : GLOBAL FUNCTIONS!
+	 *
+	 * pageSetUp(); WILL CALL THE FOLLOWING FUNCTIONS
+	 *
+	 * // activate tooltips
+	 * $("[rel=tooltip]").tooltip();
+	 *
+	 * // activate popovers
+	 * $("[rel=popover]").popover();
+	 *
+	 * // activate popovers with hover states
+	 * $("[rel=popover-hover]").popover({ trigger: "hover" });
+	 *
+	 * // activate inline charts
+	 * runAllCharts();
+	 *
+	 * // setup widgets
+	 * setup_widgets_desktop();
+	 *
+	 * // run form elements
+	 * runAllForms();
+	 *
+	 ********************************
+	 *
+	 * pageSetUp() is needed whenever you load a page.
+	 * It initializes and checks for all basic elements of the page
+	 * and makes rendering easier.
+	 *
+	 */
+
+	pageSetUp();
+	
+	/*
+	 * ALL PAGE RELATED SCRIPTS CAN GO BELOW HERE
+	 * eg alert("my home function");
+	 * 
+	 * var pagefunction = function() {
+	 *   ...
+	 * }
+	 * loadScript("js/plugin/_PLUGIN_NAME_.js", pagefunction);
+	 * 
+	 * TO LOAD A SCRIPT:
+	 * var pagefunction = function (){ 
+	 *  loadScript(".../plugin.js", run_after_loaded);	
+	 * }
+	 * 
+	 * OR
+	 * 
+	 * loadScript(".../plugin.js", run_after_loaded);
+	 */
+
+	// PAGE RELATED SCRIPTS
+	
+	
+	// pagefunction
+	
+	var pagefunction = function() {
+		$("#search-error").focus();
+	};
+	
+	// end pagefunction
+	
+	// run pagefunction on load
+	
+	pagefunction();
+	
+	</script>
