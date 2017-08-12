@@ -21,8 +21,7 @@
     <div class="col-md-10">
       <div class="row">
         <div class="col-md-2"></div>
-        <div class="col-md-10" id="main" style="height:600px;">
-        </div>
+        <div class="col-md-10" id="main" style="height:800px;"></div>
       </div>
       <div class="row">
                   时序图
@@ -40,8 +39,9 @@
   </div>
 
 
-<script src="/echarts/ddos.js"></script> 
+
 <script type="text/javascript">
+  <jsp:include page="/echarts/ddos.jsp" />
   var myChart = echarts.init(document.getElementById('main'));
   myChart.setOption(option);  
 </script>  
