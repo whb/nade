@@ -6,18 +6,26 @@
 
 	<display-name>Network Attack and Defense Exercise</display-name>
 	<servlet>
+		<servlet-name>Console</servlet-name>
+		<servlet-class>com.bochum.nade.servlet.ConsoleServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>MainPageAPI</servlet-name>
-		<servlet-class>com.bochum.neteye.api.MainPageServlet</servlet-class>
+		<servlet-class>com.bochum.nade.api.MainPageServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>DetailAPI</servlet-name>
-		<servlet-class>com.bochum.neteye.api.DetailServlet</servlet-class>
+		<servlet-class>com.bochum.nade.api.DetailServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>SumAPI</servlet-name>
-		<servlet-class>com.bochum.neteye.api.SumServlet</servlet-class>
+		<servlet-class>com.bochum.nade.api.SumServlet</servlet-class>
 	</servlet>
 
+	<servlet-mapping>
+		<servlet-name>Console</servlet-name>
+		<url-pattern>/console</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>MainPageAPI</servlet-name>
 		<url-pattern>/api/mainpage</url-pattern>
