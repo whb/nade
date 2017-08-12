@@ -1,41 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	version="2.5">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 
-	<display-name>Network Attack and Defense Exercise</display-name>
-	<servlet>
-		<servlet-name>Console</servlet-name>
-		<servlet-class>com.bochum.nade.servlet.ConsoleServlet</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>MainPageAPI</servlet-name>
-		<servlet-class>com.bochum.nade.api.MainPageServlet</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>DetailAPI</servlet-name>
-		<servlet-class>com.bochum.nade.api.DetailServlet</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>SumAPI</servlet-name>
-		<servlet-class>com.bochum.nade.api.SumServlet</servlet-class>
-	</servlet>
+  <display-name>Network Attack and Defense Exercise</display-name>
+  <servlet>
+    <servlet-name>Console</servlet-name>
+    <servlet-class>com.bochum.nade.servlet.ConsoleServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Dashboard</servlet-name>
+    <servlet-class>com.bochum.nade.servlet.DashboardServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>MainPageAPI</servlet-name>
+    <servlet-class>com.bochum.nade.api.MainPageServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>DetailAPI</servlet-name>
+    <servlet-class>com.bochum.nade.api.DetailServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>SumAPI</servlet-name>
+    <servlet-class>com.bochum.nade.api.SumServlet</servlet-class>
+  </servlet>
 
-	<servlet-mapping>
-		<servlet-name>Console</servlet-name>
-		<url-pattern>/console</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>MainPageAPI</servlet-name>
-		<url-pattern>/api/mainpage</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>DetailAPI</servlet-name>
-		<url-pattern>/api/detail</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>SumAPI</servlet-name>
-		<url-pattern>/api/sum</url-pattern>
-	</servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Console</servlet-name>
+    <url-pattern>/console</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Dashboard</servlet-name>
+    <url-pattern>/dashboard</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MainPageAPI</servlet-name>
+    <url-pattern>/api/mainpage</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DetailAPI</servlet-name>
+    <url-pattern>/api/detail</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SumAPI</servlet-name>
+    <url-pattern>/api/sum</url-pattern>
+  </servlet-mapping>
 </web-app>
