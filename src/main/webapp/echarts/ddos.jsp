@@ -98,8 +98,8 @@ var series = [ {
     coordinateSystem: 'geo',
     zlevel: 2,
     rippleEffect: {
-        period: 4,
-        scale: 2.5,
+        period: 8,
+        scale: 6,
         brushType: 'stroke'
     },
     label: {
