@@ -55,7 +55,7 @@ function redrawChart() {
 	ddosChart.setOption(option);
 }
 
-setInterval(redrawChart, 2000);
+setInterval(redrawChart, 1000);
 </script>  
 </body>
 </html>

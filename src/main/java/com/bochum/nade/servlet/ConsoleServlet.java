@@ -1,6 +1,8 @@
 package com.bochum.nade.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,6 +19,19 @@ public class ConsoleServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/console.jsp");
 		requestDispatcher.forward(request, response);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String activeAttackArea = request.getParameter("activeAttackArea");
+		request.getServletContext().setAttribute("activeAttackArea", activeAttackArea);
+
+		List<String> attackAreasAvailable = (List<String>) request.getServletContext().getAttribute("attackAreasAvailable");
+		if (attackAreasAvailable == null)
+			attackAreasAvailable = new ArrayList<String>();
+		attackAreasAvailable.add(activeAttackArea);
+		
+		request.getServletContext().setAttribute("attackAreasAvailable", attackAreasAvailable);
 	}
 
 	public void destroy() {

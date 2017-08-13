@@ -10,6 +10,7 @@
   <!--[if lte IE 8]><meta http-equiv="refresh" content="0;url=/ie" /><![endif]-->
   
   <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <script src="/js/jquery-3.2.1.min.js"></script> 
 </head>
 
 <body>
@@ -33,10 +34,10 @@
       <div class="row">
         <div class="col-md-8">
           <div class="row">
-            <button type="button" class="btn btn-primary">天津攻击</button>
-            <button type="button" class="btn btn-primary">河北攻击</button>
-            <button type="button" class="btn btn-primary">山西攻击</button>
-            <button type="button" class="btn btn-primary">山东攻击</button>
+            <button name="天津" type="button" class="attack btn btn-primary">天津攻击</button>
+            <button name="河北" type="button" class="attack btn btn-primary">河北攻击</button>
+            <button name="山西" type="button" class="attack btn btn-primary">山西攻击</button>
+            <button name="山东" type="button" class="attack btn btn-primary">山东攻击</button>
           </div>
           <div class="row">
             <button type="button" class="btn btn-info">天津协同</button>
@@ -52,6 +53,12 @@
   
   </div>
 
-  <script src="/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(".attack").click(function() {
+  $.post( "console", { activeAttackArea: $(this).attr("name") } );
+});
+
+
+</script>
 </body>
 </html>
