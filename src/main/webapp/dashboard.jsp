@@ -48,7 +48,7 @@ ddosChart.setOption(option);
 var ddosApi = "api/ddos.json";
 function getDdosJson() {
 	$.getJSON(ddosApi, function( attackAreasAvailable ) {
-		if(attackAreas.length >= attackAreasAvailable.length) return;
+		if(attackAreas.length == attackAreasAvailable.length) return;
 		attackAreas = attackAreasAvailable;
 		redrawChart();
 	});

@@ -23,6 +23,13 @@ public class ConsoleServlet extends HttpServlet {
 
 	@SuppressWarnings("unchecked")
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String reset = request.getParameter("reset");
+		if ("true".equals(reset)) {
+			request.getServletContext().setAttribute("activeAttackArea", null);
+			request.getServletContext().setAttribute("attackAreasAvailable", null);
+			return;
+		}
+
 		String activeAttackArea = request.getParameter("activeAttackArea");
 		request.getServletContext().setAttribute("activeAttackArea", activeAttackArea);
 
@@ -30,7 +37,7 @@ public class ConsoleServlet extends HttpServlet {
 		if (attackAreasAvailable == null)
 			attackAreasAvailable = new HashSet<String>();
 		attackAreasAvailable.add(activeAttackArea);
-		
+
 		request.getServletContext().setAttribute("attackAreasAvailable", attackAreasAvailable);
 	}
 

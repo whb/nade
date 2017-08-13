@@ -17,6 +17,13 @@
   <h1>网络攻防演练控制台</h1>
   <div class="container">
   <div class="row">
+    <div class="col-md-2 col-md-offset-5">
+      <button id="reset-button" type="button" class="btn btn-default btn-lg">
+        <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> 重新开始
+      </button>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-2">
       <ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
         <li role="presentation" class="active"><a href="#">DDoS攻击</a></li>
@@ -63,6 +70,10 @@
 <script type="text/javascript">
 $(".attack").click(function() {
   $.post( "console", { activeAttackArea: $(this).attr("name") } );
+});
+
+$("#reset-button").click(function() {
+  $.post( "console", { reset: "true" } );
 });
 
 
