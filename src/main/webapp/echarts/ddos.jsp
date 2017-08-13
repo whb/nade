@@ -1,28 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 
 var geoCoordMap = {
-    '山东': [117.1582, 36.8701],
     '天津': [117.4219, 39.4189],
     '河北': [114.4995,38.1006],
     '山西': [112.3352,37.9413],
+    '山东': [117.1582, 36.8701],
     '北京': [116.4551, 40.2539]
 };
 
-var data = [{
-    name: '山东',
-    value: 50
-}, {
-    name: '天津',
-    value: 86
-}, {
-    name: '河北',
-    value: 86
-}, {
-    name: '山西',
-    value: 86
-}];
-
 var attackAreas = [];
+var attackAreaBases = ['天津', '河北', '山西', '山东'];
 var sourceArea = '北京';
 
 function buildAttackLines() {
@@ -49,10 +36,10 @@ function buildAreaScatter() {
       }
   });
     
-  for (var i = 0; i < attackAreas.length; i++) {
+  for (var i = 0; i < attackAreaBases.length; i++) {
     areaScatters.push({
-        name: attackAreas[i],
-        value: geoCoordMap[attackAreas[i]]
+        name: attackAreaBases[i],
+        value: geoCoordMap[attackAreaBases[i]]
     });
   }
   return areaScatters;
@@ -130,8 +117,8 @@ option = {
     },
     geo: {
         map: 'china',
-        zoom: 3,
-        center: [116.4551, 40.2539],
+        zoom: 1,
+        //center: [107.1826,34.3433],
         label: {
             emphasis: {
                 show: false

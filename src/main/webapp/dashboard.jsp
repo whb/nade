@@ -15,13 +15,13 @@
   <script src="/js/jquery-3.2.1.min.js"></script> 
 </head>
 
-<body class="container">
+<body class="container-fluid">
   <h1>网络攻防演练-DDOS攻击</h1>
   <div class="row">
     <div class="col-md-10">
       <div class="row">
         <div class="col-md-2"></div>
-        <div class="col-md-10" id="main" style="height:800px;"></div>
+        <div class="col-md-10" id="main" style="height:1000px;"></div>
       </div>
       <div class="row">
                   时序图

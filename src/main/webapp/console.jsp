@@ -28,8 +28,15 @@
     </div>
     <div class="col-md-10">
       <div class="row">
-        <div class="col-md-10"><img src="/images/workflow.png" /></div>
-        <div class="col-md-2">当前演练：DDOS攻击 <br>参演区域：山东、山西、天津、北京</div>
+        <div class="col-md-9"><img src="/images/workflow.png" /></div>
+        <div class="col-md-3">
+          <table class="table table-bordered">
+          <tbody>
+          <tr><th>当前演练</th><td>DDOS攻击</td></tr>
+          <tr><th>参演区域</th><td>山东、山西、河北、天津、北京</td></tr>
+          </tbody>
+          </table>
+        </div>
       </div>
       <div class="row">
         <div class="col-md-8">
