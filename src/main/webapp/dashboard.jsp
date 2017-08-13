@@ -41,18 +41,22 @@
 
 
 <script type="text/javascript">
+var attackAreasAvailable = ['山东', '天津', '河北', '山西'];
 <jsp:include page="/echarts/ddos.jsp" />
 var ddosChart = echarts.init(document.getElementById('main'));
 ddosChart.setOption(option);
 
+var redrawCount = 0;
 function redrawChart() {
-	if(option.geo.zoom < 7) {
-		option.geo.zoom += 1;
-		ddosChart.setOption(option);
-	}
+	if(redrawCount >= 4)  return;
+	attackAreas.push(attackAreasAvailable[redrawCount]);
+	option.series[0].data = buildAttackLines();
+	option.series[1].data = buildAreaScatter();
+	ddosChart.setOption(option);
+	redrawCount++;
 }
 
-setInterval(redrawChart, 3000);
+setInterval(redrawChart, 2000);
 </script>  
 </body>
 </html>
