@@ -46,7 +46,7 @@ var ddosChart = echarts.init(document.getElementById('main'));
 ddosChart.setOption(option);
 
 var ddosApi = "api/ddos.json";
-                 function redrawChart() {
+function redrawChart() {
 	$.getJSON(ddosApi, function( attackAreasAvailable ) {
 		attackAreas = attackAreasAvailable;
 	});
