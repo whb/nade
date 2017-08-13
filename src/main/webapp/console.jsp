@@ -9,8 +9,8 @@
   <link rel="shortcut icon" href="/static/images/favicon.ico">
   <!--[if lte IE 8]><meta http-equiv="refresh" content="0;url=/ie" /><![endif]-->
   
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <script src="/js/jquery-3.2.1.min.js"></script> 
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <script src="/static/js/jquery-3.2.1.min.js"></script> 
 </head>
 
 <body>
@@ -35,7 +35,7 @@
     </div>
     <div class="col-md-10">
       <div class="row">
-        <div class="col-md-9"><img src="/images/workflow.png" /></div>
+        <div class="col-md-9"><img src="/static/images/workflow.png" /></div>
         <div class="col-md-3">
           <table class="table table-bordered">
           <tbody>
