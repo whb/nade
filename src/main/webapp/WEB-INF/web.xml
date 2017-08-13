@@ -11,17 +11,10 @@
     <servlet-name>Dashboard</servlet-name>
     <servlet-class>com.bochum.nade.servlet.DashboardServlet</servlet-class>
   </servlet>
+
   <servlet>
-    <servlet-name>MainPageAPI</servlet-name>
-    <servlet-class>com.bochum.nade.api.MainPageServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>DetailAPI</servlet-name>
-    <servlet-class>com.bochum.nade.api.DetailServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>SumAPI</servlet-name>
-    <servlet-class>com.bochum.nade.api.SumServlet</servlet-class>
+    <servlet-name>DdosAPI</servlet-name>
+    <servlet-class>com.bochum.nade.api.DdosServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -32,16 +25,9 @@
     <servlet-name>Dashboard</servlet-name>
     <url-pattern>/dashboard</url-pattern>
   </servlet-mapping>
+
   <servlet-mapping>
-    <servlet-name>MainPageAPI</servlet-name>
-    <url-pattern>/api/mainpage</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>DetailAPI</servlet-name>
-    <url-pattern>/api/detail</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>SumAPI</servlet-name>
-    <url-pattern>/api/sum</url-pattern>
+    <servlet-name>DdosAPI</servlet-name>
+    <url-pattern>/api/ddos.json</url-pattern>
   </servlet-mapping>
 </web-app>
