@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <script src="/js/echarts.min.js"></script>
   <script src="/js/map/china.js"></script> 
-  
+  <script src="/js/jquery-3.2.1.min.js"></script> 
 </head>
 
 <body class="container">
@@ -41,9 +41,18 @@
 
 
 <script type="text/javascript">
-  <jsp:include page="/echarts/ddos.jsp" />
-  var myChart = echarts.init(document.getElementById('main'));
-  myChart.setOption(option);  
+<jsp:include page="/echarts/ddos.jsp" />
+var ddosChart = echarts.init(document.getElementById('main'));
+ddosChart.setOption(option);
+
+function redrawChart() {
+	if(option.geo.zoom < 7) {
+		option.geo.zoom += 1;
+		ddosChart.setOption(option);
+	}
+}
+
+setInterval(redrawChart, 3000);
 </script>  
 </body>
 </html>

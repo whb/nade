@@ -135,7 +135,7 @@ option = {
     },
     geo: {
         map: 'china',
-        zoom: 4,
+        zoom: 1,
         center: [116.4551, 40.2539],
         label: {
             emphasis: {
