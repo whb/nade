@@ -30,6 +30,13 @@ public class ConsoleServlet extends HttpServlet {
 			return;
 		}
 
+		String subject = request.getParameter("subject");
+		if (subject != null && subject.length() > 0) {
+			request.getServletContext().setAttribute("subject", subject);
+			System.out.println(subject);
+			return;
+		}
+
 		String activeAttackArea = request.getParameter("activeAttackArea");
 		request.getServletContext().setAttribute("activeAttackArea", activeAttackArea);
 

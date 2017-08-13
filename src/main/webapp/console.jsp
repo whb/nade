@@ -26,11 +26,11 @@
   <div class="row">
     <div class="col-md-2">
       <ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
-        <li role="presentation" class="active"><a href="#">DDoS攻击</a></li>
-        <li role="presentation"><a href="#">域名劫持</a></li>
-        <li role="presentation"><a href="#">网页篡改</a></li>
-        <li role="presentation"><a href="#">网络病毒爆发</a></li>
-        <li role="presentation"><a href="#">大规模用户信息泄露</a></li>
+        <li role="presentation" class="active"><a href="#ddos">DDoS攻击</a></li>
+        <li role="presentation"><a href="#dns">域名劫持</a></li>
+        <li role="presentation"><a href="#webpage">网页篡改</a></li>
+        <li role="presentation"><a href="#virus">网络病毒爆发</a></li>
+        <li role="presentation"><a href="#leak">大规模用户信息泄露</a></li>
       </ul>
     </div>
     <div class="col-md-10">
@@ -68,13 +68,22 @@
   </div>
 
 <script type="text/javascript">
+$("#reset-button").click(function() {
+  $.post( "console", { reset: "true" } );
+});
+
+$('li[role="presentation"]').click(function() {
+	$('li[role="presentation"]').removeClass("active");
+	$(this).addClass("active");
+	var subject = $(this).find("a").attr("href").substring(1);
+	$.post( "console", { subject: subject } );
+});
+	
 $(".attack").click(function() {
   $.post( "console", { activeAttackArea: $(this).attr("name") } );
 });
 
-$("#reset-button").click(function() {
-  $.post( "console", { reset: "true" } );
-});
+
 
 
 </script>
