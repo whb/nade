@@ -1,8 +1,8 @@
 package com.bochum.nade.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,9 +26,9 @@ public class ConsoleServlet extends HttpServlet {
 		String activeAttackArea = request.getParameter("activeAttackArea");
 		request.getServletContext().setAttribute("activeAttackArea", activeAttackArea);
 
-		List<String> attackAreasAvailable = (List<String>) request.getServletContext().getAttribute("attackAreasAvailable");
+		Set<String> attackAreasAvailable = (HashSet<String>) request.getServletContext().getAttribute("attackAreasAvailable");
 		if (attackAreasAvailable == null)
-			attackAreasAvailable = new ArrayList<String>();
+			attackAreasAvailable = new HashSet<String>();
 		attackAreasAvailable.add(activeAttackArea);
 		
 		request.getServletContext().setAttribute("attackAreasAvailable", attackAreasAvailable);

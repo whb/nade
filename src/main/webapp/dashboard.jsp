@@ -46,16 +46,22 @@ var ddosChart = echarts.init(document.getElementById('main'));
 ddosChart.setOption(option);
 
 var ddosApi = "api/ddos.json";
-function redrawChart() {
+function getDdosJson() {
 	$.getJSON(ddosApi, function( attackAreasAvailable ) {
+		if(attackAreas.length >= attackAreasAvailable.length) return;
 		attackAreas = attackAreasAvailable;
+		redrawChart();
 	});
+
+}
+
+function redrawChart() {
 	option.series[0].data = buildAttackLines();
 	option.series[1].data = buildAreaScatter();
 	ddosChart.setOption(option);
 }
 
-setInterval(redrawChart, 1000);
+setInterval(getDdosJson, 1000);
 </script>  
 </body>
 </html>
