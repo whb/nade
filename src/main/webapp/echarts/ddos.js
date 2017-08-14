@@ -6,6 +6,7 @@ var geoCoordMap = {
     '北京': [116.4551, 40.2539]
 };
 
+var activeAttackArea;
 var attackAreas = [];
 var attackAreaBases = ['天津', '河北', '山西', '山东'];
 var sourceArea = '北京';

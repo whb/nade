@@ -1,7 +1,9 @@
 package com.bochum.nade.api;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -16,11 +18,16 @@ public class DdosServlet extends JsonResponseServlet {
 	@SuppressWarnings("unchecked")
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-Type", "application/json; charset=UTF-8");
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		String activeAttackArea = (String) request.getServletContext().getAttribute("activeAttackArea");
 		Set<String> attackAreasAvailable = (Set<String>) request.getServletContext().getAttribute("attackAreasAvailable");
 		if (attackAreasAvailable == null)
 			attackAreasAvailable = new HashSet<String>();
 
-		String json = new Gson().toJson(attackAreasAvailable);
+		map.put("activeAttackArea", activeAttackArea);
+		map.put("attackAreasAvailable", attackAreasAvailable);
+		String json = new Gson().toJson(map);
 		response.getWriter().write(json);
 	}
 }

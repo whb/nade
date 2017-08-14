@@ -49,9 +49,16 @@ $( window ).resize(function() {
 
 var ddosApi = "/api/ddos.json";
 function getDdosJson() {
-	$.getJSON(ddosApi, function( attackAreasAvailable ) {
-		if(attackAreas.length == attackAreasAvailable.length) return;
-		attackAreas = attackAreasAvailable;
+	$.getJSON(ddosApi, function( result ) {
+		if(attackAreas.length == result.attackAreasAvailable.length) return;
+		
+		if(activeAttackArea != result.activeAttackArea)
+			activeAttackArea = result.activeAttackArea;
+		else 
+			activeAttackArea = nil;
+		
+		
+		attackAreas = result.attackAreasAvailable;
 		redrawChart();
 	});
 
