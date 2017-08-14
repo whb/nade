@@ -8,60 +8,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
   <link rel="shortcut icon" href="/static/images/favicon.ico">
   <!--[if lte IE 8]><meta http-equiv="refresh" content="0;url=/ie" /><![endif]-->
-  
   <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-  <script src="/static/js/echarts.min.js"></script>
-  <script src="/static/js/map/china.js"></script> 
   <script src="/static/js/jquery-3.2.1.min.js"></script> 
 </head>
 
-<body class="container-fluid">
-  <h1>网络攻防演练-DDOS攻击</h1>
-  <div class="row">
-    <div class="col-md-10">
-      <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-10" id="main" style="height:1000px;"></div>
-      </div>
-      <div class="row">
-                  时序图
-      </div>
-    </div>
-    <div class="col-md-2">
-      <h3>抗DDOS系统简介：</h3>
-      <ul>
-        <li>建设时间：</li>
-        <li>投入：</li>
-        <li>覆盖规模</li>
-        <li>使用效果等</li>
-      </ul>
-    </div>
-  </div>
-
-
+<body id="dashboard" class="container-fluid">
+</body>
 
 <script type="text/javascript">
-<jsp:include page="/echarts/ddos.jsp" />
-var ddosChart = echarts.init(document.getElementById('main'));
-ddosChart.setOption(option);
-
-var ddosApi = "api/ddos.json";
-function getDdosJson() {
-	$.getJSON(ddosApi, function( attackAreasAvailable ) {
-		if(attackAreas.length == attackAreasAvailable.length) return;
-		attackAreas = attackAreasAvailable;
-		redrawChart();
-	});
-
+function loadDdosPage() {
+	$("#dashboard").load( "/dashboard/ddos.html" );
 }
 
-function redrawChart() {
-	option.series[0].data = buildAttackLines();
-	option.series[1].data = buildAreaScatter();
-	ddosChart.setOption(option);
-}
-
-setInterval(getDdosJson, 1000);
-</script>  
-</body>
+loadDdosPage();
+</script>
 </html>
