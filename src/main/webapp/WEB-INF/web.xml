@@ -13,6 +13,10 @@
   </servlet>
 
   <servlet>
+    <servlet-name>SubjectAPI</servlet-name>
+    <servlet-class>com.bochum.nade.api.SubjectServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>DdosAPI</servlet-name>
     <servlet-class>com.bochum.nade.api.DdosServlet</servlet-class>
   </servlet>
@@ -26,6 +30,10 @@
     <url-pattern>/dashboard</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>SubjectAPI</servlet-name>
+    <url-pattern>/api/subject.json</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>DdosAPI</servlet-name>
     <url-pattern>/api/ddos.json</url-pattern>

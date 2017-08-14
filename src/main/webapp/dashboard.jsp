@@ -16,10 +16,41 @@
 </body>
 
 <script type="text/javascript">
-function loadDdosPage() {
-	$("#dashboard").load( "/dashboard/ddos.html" );
+function loadPage(subject) {
+	switch(subject)	{
+  	case 'ddos':
+  	  $("#dashboard").load( "/dashboard/ddos.html" );
+  	  break;
+  	case 'dns':
+  	  $("#dashboard").load( "/dashboard/dns.html" );
+  	  break;
+  	case 'webpage':
+  	  $("#dashboard").load( "/dashboard/webpage.html" );
+  	  break;
+  	case 'virus':
+  	  $("#dashboard").load( "/dashboard/virus.html" );
+  	  break;
+  	case 'leak':
+  	  $("#dashboard").load( "/dashboard/leak.html" );
+  	  break;
+  	default:
+  	  break;
+	}
 }
 
-loadDdosPage();
+var currentSubject = 'ddos';
+loadPage(currentSubject);
+
+var subjectApi = "/api/subject.json";
+function getSubjectJson() {
+	$.getJSON(subjectApi, function( subject ) {
+		if(currentSubject == subject) return;
+		
+		currentSubject = subject;
+		loadPage(subject);
+	});
+}
+
+setInterval(getSubjectJson, 1000);
 </script>
 </html>

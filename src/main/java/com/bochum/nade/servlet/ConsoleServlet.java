@@ -33,7 +33,6 @@ public class ConsoleServlet extends HttpServlet {
 		String subject = request.getParameter("subject");
 		if (subject != null && subject.length() > 0) {
 			request.getServletContext().setAttribute("subject", subject);
-			System.out.println(subject);
 			return;
 		}
 
