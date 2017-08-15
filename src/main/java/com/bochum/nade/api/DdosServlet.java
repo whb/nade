@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
@@ -25,9 +26,23 @@ public class DdosServlet extends JsonResponseServlet {
 		if (attackAreas == null)
 			attackAreas = new HashSet<String>();
 
+		boolean attackViolent = false;
+		
+		if (attackAreas.size() >= 4) {
+			HttpSession session = request.getSession();
+			Integer ajaxCallCount = (Integer) session.getAttribute("ajaxCallCount");
+			if (ajaxCallCount == null) {
+				session.setAttribute("ajaxCallCount", 1);
+			} else if (ajaxCallCount > 3) {
+				attackViolent = true;
+			} else {
+				session.setAttribute("ajaxCallCount", ++ajaxCallCount);
+			}
+		}
+
 		map.put("activeAttackArea", activeAttackArea);
 		map.put("attackAreas", attackAreas);
-		map.put("attackViolent", false);
+		map.put("attackViolent", attackViolent);
 		String json = new Gson().toJson(map);
 		response.getWriter().write(json);
 	}
