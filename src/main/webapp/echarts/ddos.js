@@ -6,8 +6,7 @@ var geoCoordMap = {
     '北京': [116.4551, 40.2539]
 };
 
-var activeAttackArea;
-var attackAreas = [];
+
 var attackAreaBases = ['天津', '河北', '山西', '山东'];
 var sourceArea = '北京';
 
@@ -26,7 +25,7 @@ function buildAreaScatter() {
   areaScatters.push({
       name: sourceArea,
       value: geoCoordMap[sourceArea],
-      symbolSize: 8,
+      symbolSize: 4,
       itemStyle: {
           normal: {
               color: 'red',
@@ -88,7 +87,7 @@ var scatterSerie = {
             formatter: '{b}'
         }
     },
-    symbolSize: 5,
+    symbolSize: 4,
     itemStyle: {
         normal: {
             color: '#0D6695',
@@ -102,7 +101,7 @@ var scatterSerie = {
 var series = [ planeSerie, scatterSerie ];
 
 
-option = {
+var option = {
     backgroundColor: '#404a59',
     title : {
         text: 'DDOS攻击',

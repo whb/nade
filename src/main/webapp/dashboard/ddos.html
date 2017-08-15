@@ -37,36 +37,109 @@
     </div>
   </div>
 
+<script type="text/javascript">
+var initialOption = {
+	geo: {
+		zoom: 1,
+		center: null
+	}
+};
 
+var targetDefaultScatterStyle = {
+  symbolSize: 4,
+  itemStyle: {
+        normal: {
+            color: 'red',
+            borderColor: '#000'
+        }
+  }
+}
+
+var targetViolentScatterStyle = {
+  symbolSize: 8,
+  itemStyle: {
+        normal: {
+            color: 'red',
+            borderColor: '#000'
+        }
+  }
+}
+
+var attackerDefaultScatterStyle = {
+  symbolSize: 4,
+  itemStyle: {
+        normal: {
+        	color: '#0D6695',
+            borderColor: 'gold'
+        }
+  }
+}
+
+var attackerActiveScatterStyle = {
+  symbolSize: 6,
+  itemStyle: {
+        normal: {
+        	color: '#0D6695',
+            borderColor: 'gold'
+        }
+  }
+}
+
+var activeAttackArea;
+var attackAreas = [];
+</script> 
 <script src="/echarts/ddos.js"></script> 
 <script type="text/javascript">
 var ddosChart = echarts.init(document.getElementById('main'));
+//$.extend(option, initialOption);
 ddosChart.setOption(option);
 
 $( window ).resize(function() {
 	ddosChart.resize();
 });
 
+
+var animationOption = {
+	geo: {
+	}
+};
+
 var ddosApi = "/api/ddos.json";
 function getDdosJson() {
 	$.getJSON(ddosApi, function( result ) {
-		if(attackAreas.length == result.attackAreasAvailable.length) return;
+		if(result.attackAreasAvailable.length == 0 && attackAreas.length > 0) {
+			activeAttackArea = null;
+			attackAreas = [];
+			redrawChart(initialOption);
+			return;
+		}
 		
-		if(activeAttackArea != result.activeAttackArea)
-			activeAttackArea = result.activeAttackArea;
-		else 
-			activeAttackArea = nil;
+		if(result.attackViolent) {
+			animationOption.geo.zoom = 4;
+			animationOption.geo.center = geoCoordMap['北京'];
+			redrawChart(animationOption);
+			return;
+		}
 		
-		
-		attackAreas = result.attackAreasAvailable;
-		redrawChart();
+		if(attackAreas.length == result.attackAreasAvailable.length) {
+			return;
+		} else {
+    		if(activeAttackArea != result.activeAttackArea) {
+    			activeAttackArea = result.activeAttackArea;
+    			animationOption.geo.zoom = 3;
+    			animationOption.geo.center = geoCoordMap[activeAttackArea];
+    		} 
+    		attackAreas = result.attackAreasAvailable;
+    		redrawChart(animationOption);
+		}
 	});
 
 }
 
-function redrawChart() {
+function redrawChart(otherOption) {
 	option.series[0].data = buildAttackLines();
 	option.series[1].data = buildAreaScatter();
+	$.extend(option, otherOption);
 	ddosChart.setOption(option);
 }
 
