@@ -38,55 +38,7 @@
   </div>
 
 <script type="text/javascript">
-var initialOption = {
-	geo: {
-		zoom: 1,
-		center: null
-	}
-};
 
-var targetDefaultScatterStyle = {
-  symbolSize: 4,
-  itemStyle: {
-        normal: {
-            color: 'red',
-            borderColor: '#000'
-        }
-  }
-}
-
-var targetViolentScatterStyle = {
-  symbolSize: 8,
-  itemStyle: {
-        normal: {
-            color: 'red',
-            borderColor: '#000'
-        }
-  }
-}
-
-var attackerDefaultScatterStyle = {
-  symbolSize: 4,
-  itemStyle: {
-        normal: {
-        	color: '#0D6695',
-            borderColor: 'gold'
-        }
-  }
-}
-
-var attackerActiveScatterStyle = {
-  symbolSize: 6,
-  itemStyle: {
-        normal: {
-        	color: '#0D6695',
-            borderColor: 'gold'
-        }
-  }
-}
-
-var activeAttackArea;
-var attackAreas = [];
 </script> 
 <script src="/echarts/ddos.js"></script> 
 <script type="text/javascript">
@@ -107,9 +59,9 @@ var animationOption = {
 var ddosApi = "/api/ddos.json";
 function getDdosJson() {
 	$.getJSON(ddosApi, function( result ) {
-		if(result.attackAreasAvailable.length == 0 && attackAreas.length > 0) {
-			activeAttackArea = null;
-			attackAreas = [];
+		if(result.attackAreasAvailable.length == 0 && pageStatus.attackAreas.length > 0) {
+			pageStatus.activeAttackArea = '';
+			pageStatus.attackAreas = [];
 			redrawChart(initialOption);
 			return;
 		}
@@ -121,15 +73,13 @@ function getDdosJson() {
 			return;
 		}
 		
-		if(attackAreas.length == result.attackAreasAvailable.length) {
+		if(pageStatus.attackAreas.length == result.attackAreasAvailable.length) {
 			return;
 		} else {
-    		if(activeAttackArea != result.activeAttackArea) {
-    			activeAttackArea = result.activeAttackArea;
-    			animationOption.geo.zoom = 3;
-    			animationOption.geo.center = geoCoordMap[activeAttackArea];
-    		} 
-    		attackAreas = result.attackAreasAvailable;
+			pageStatus.activeAttackArea = result.activeAttackArea;
+			pageStatus.attackAreas = result.attackAreasAvailable;
+			animationOption.geo.zoom = 3;
+			animationOption.geo.center = geoCoordMap[pageStatus.activeAttackArea];
     		redrawChart(animationOption);
 		}
 	});
