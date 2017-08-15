@@ -59,7 +59,7 @@ var animationOption = {
 var ddosApi = "/api/ddos.json";
 function getDdosJson() {
 	$.getJSON(ddosApi, function( result ) {
-		if(result.attackAreasAvailable.length == 0 && pageStatus.attackAreas.length > 0) {
+		if(result.attackAreas.length == 0 && pageStatus.attackAreas.length > 0) {
 			pageStatus.activeAttackArea = '';
 			pageStatus.attackAreas = [];
 			redrawChart(initialOption);
@@ -67,17 +67,17 @@ function getDdosJson() {
 		}
 		
 		if(result.attackViolent) {
+			pageStatus = result;
 			animationOption.geo.zoom = 4;
 			animationOption.geo.center = geoCoordMap['北京'];
 			redrawChart(animationOption);
 			return;
 		}
 		
-		if(pageStatus.attackAreas.length == result.attackAreasAvailable.length) {
+		if(pageStatus.attackAreas.length == result.attackAreas.length) {
 			return;
 		} else {
-			pageStatus.activeAttackArea = result.activeAttackArea;
-			pageStatus.attackAreas = result.attackAreasAvailable;
+			pageStatus = result;
 			animationOption.geo.zoom = 3;
 			animationOption.geo.center = geoCoordMap[pageStatus.activeAttackArea];
     		redrawChart(animationOption);

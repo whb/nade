@@ -50,8 +50,6 @@ var pageStatus = {
   attackAreas: [],
   attackViolent: false
 };
-//var activeAttackArea;
-//var attackAreas = [];
 
 function getTargetScatterStyle() {
 	return (pageStatus.attackViolent) ? targetViolentScatterStyle : targetDefaultScatterStyle;

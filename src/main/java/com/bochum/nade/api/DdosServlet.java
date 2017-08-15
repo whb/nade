@@ -21,12 +21,13 @@ public class DdosServlet extends JsonResponseServlet {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		String activeAttackArea = (String) request.getServletContext().getAttribute("activeAttackArea");
-		Set<String> attackAreasAvailable = (Set<String>) request.getServletContext().getAttribute("attackAreasAvailable");
-		if (attackAreasAvailable == null)
-			attackAreasAvailable = new HashSet<String>();
+		Set<String> attackAreas = (Set<String>) request.getServletContext().getAttribute("attackAreasAvailable");
+		if (attackAreas == null)
+			attackAreas = new HashSet<String>();
 
 		map.put("activeAttackArea", activeAttackArea);
-		map.put("attackAreasAvailable", attackAreasAvailable);
+		map.put("attackAreas", attackAreas);
+		map.put("attackViolent", false);
 		String json = new Gson().toJson(map);
 		response.getWriter().write(json);
 	}
