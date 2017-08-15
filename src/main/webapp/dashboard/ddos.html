@@ -60,8 +60,7 @@ var ddosApi = "/api/ddos.json";
 function getDdosJson() {
 	$.getJSON(ddosApi, function( result ) {
 		if(result.attackAreas.length == 0 && pageStatus.attackAreas.length > 0) {
-			pageStatus.activeAttackArea = '';
-			pageStatus.attackAreas = [];
+			pageStatus = result;
 			redrawChart(initialOption);
 			return;
 		}

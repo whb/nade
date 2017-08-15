@@ -27,9 +27,9 @@ public class DdosServlet extends JsonResponseServlet {
 			attackAreas = new HashSet<String>();
 
 		boolean attackViolent = false;
-		
+
+		HttpSession session = request.getSession();
 		if (attackAreas.size() >= 4) {
-			HttpSession session = request.getSession();
 			Integer ajaxCallCount = (Integer) session.getAttribute("ajaxCallCount");
 			if (ajaxCallCount == null) {
 				session.setAttribute("ajaxCallCount", 1);
@@ -38,6 +38,8 @@ public class DdosServlet extends JsonResponseServlet {
 			} else {
 				session.setAttribute("ajaxCallCount", ++ajaxCallCount);
 			}
+		} else if (attackAreas.size() == 0) {
+			session.setAttribute("ajaxCallCount", null);
 		}
 
 		map.put("activeAttackArea", activeAttackArea);
