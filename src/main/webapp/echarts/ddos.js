@@ -153,7 +153,7 @@ var scatterSerie = {
 var series = [ planeSerie, scatterSerie ];
 
 
-var option = {
+var moveOption = {
     backgroundColor: '#404a59',
     title : {
         text: 'DDOS攻击',
