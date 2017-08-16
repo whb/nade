@@ -21,7 +21,10 @@ for (var i = 0; i < 1000; i++) {
 beijingFlowOption = {
     title: {
     	left: 'center',
-        text: '北京流量'
+        text: '北京流量',
+        textStyle : {
+            color: '#e0e0e0'
+        }
     },
     tooltip: {
         trigger: 'axis',
@@ -54,13 +57,7 @@ beijingFlowOption = {
         hoverAnimation: false,
         areaStyle: {
             normal: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: 'rgb(145, 245, 255)'
-                }, {
-                    offset: 1,
-                    color: 'rgb(125, 225, 235)'
-                }])
+                color: '#d2d2d2'
             }
         },
         data: data

@@ -159,7 +159,7 @@ var moveOption = {
         text: 'DDOS攻击',
         left: 'center',
         textStyle : {
-            color: '#fff'
+            color: '#e0e0e0'
         }
     },
     tooltip: {
@@ -168,7 +168,6 @@ var moveOption = {
     geo: {
         map: 'china',
         zoom: 1,
-        //center: [107.1826,34.3433],
         label: {
             emphasis: {
                 show: false
