@@ -19,11 +19,11 @@
   <div class="row">
     <div class="col-md-10">
       <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-10" id="main" style="height:1000px;"></div>
+        <div class="col-md-3"></div>
+        <div class="col-md-9" id="main" style="height:1000px;"></div>
       </div>
       <div class="row">
-                  时序图
+        <div class="col-md-12" id="beijingFlow" style="height:250px;"></div>
       </div>
     </div>
     <div class="col-md-2">
@@ -41,13 +41,18 @@
 
 </script> 
 <script src="/echarts/ddos.js"></script> 
+<script src="/echarts/ddos_flow.js"></script> 
 <script type="text/javascript">
 var ddosChart = echarts.init(document.getElementById('main'));
 //$.extend(option, initialOption);
-ddosChart.setOption(option);
+ddosChart.setOption(moveOption);
+
+var beijingFlowChart = echarts.init(document.getElementById('beijingFlow'));
+beijingFlowChart.setOption(beijingFlowOption);
 
 $( window ).resize(function() {
 	ddosChart.resize();
+	beijingFlowChart.resize();
 });
 
 
@@ -86,10 +91,10 @@ function getDdosJson() {
 }
 
 function redrawChart(otherOption) {
-	option.series[0].data = buildAttackLines();
-	option.series[1].data = buildAreaScatter();
-	$.extend(option, otherOption);
-	ddosChart.setOption(option);
+	moveOption.series[0].data = buildAttackLines();
+	moveOption.series[1].data = buildAreaScatter();
+	$.extend(moveOption, otherOption);
+	ddosChart.setOption(moveOption);
 }
 
 setInterval(getDdosJson, 1000);
