@@ -56,10 +56,10 @@ beijingFlowOption = {
             normal: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                     offset: 0,
-                    color: 'rgb(235, 245, 255)'
+                    color: 'rgb(145, 245, 255)'
                 }, {
                     offset: 1,
-                    color: 'rgb(215, 225, 235)'
+                    color: 'rgb(125, 225, 235)'
                 }])
             }
         },
