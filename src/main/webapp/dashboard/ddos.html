@@ -92,7 +92,7 @@ function getDdosJson() {
 			return;
 		}
 		
-		if(result.attackViolent) {
+		if(result.attackViolent && animationOption.geo.zoom != 4) {
 			pageStatus = result;
 			animationOption.geo.zoom = 4;
 			animationOption.geo.center = geoCoordMap['北京'];
