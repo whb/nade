@@ -26,7 +26,7 @@ beijingFlowOption = {
     }
   },
   grid : {
-    left : 100,
+    left : 40,
     right : 20
   },
   tooltip : {

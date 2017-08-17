@@ -22,7 +22,12 @@
     <div class="col-md-10">
       <div class="row">
         <div class="col-md-9" id="main" style="height:1000px;"></div>
-        <div class="col-md-3"></div>
+        <div class="col-md-3">
+          <div id="tianjinFlow" style="height:250px;"></div>
+          <div id="hebeiFlow" style="height:250px;"></div>
+          <div id="shanxiFlow" style="height:250px;"></div>
+          <div id="shandongFlow" style="height:250px;"></div>
+        </div>
       </div>
       <div class="row">
         <div class="col-md-12" id="beijingFlow" style="height:250px;"></div>
@@ -51,9 +56,25 @@ ddosChart.setOption(moveOption);
 var beijingFlowChart = echarts.init(document.getElementById('beijingFlow'));
 beijingFlowChart.setOption(beijingFlowOption);
 
+var tianjinFlowChart = echarts.init(document.getElementById('tianjinFlow'));
+tianjinFlowChart.setOption(beijingFlowOption);
+
+var hebeiFlowChart = echarts.init(document.getElementById('hebeiFlow'));
+hebeiFlowChart.setOption(beijingFlowOption);
+
+var shanxiFlowChart = echarts.init(document.getElementById('shanxiFlow'));
+shanxiFlowChart.setOption(beijingFlowOption);
+
+var shandongFlowChart = echarts.init(document.getElementById('shandongFlow'));
+shandongFlowChart.setOption(beijingFlowOption);
+
 $( window ).resize(function() {
 	ddosChart.resize();
 	beijingFlowChart.resize();
+	tianjinFlowChart.resize();
+	hebeiFlowChart.resize();
+	shanxiFlowChart.resize();
+	shandongFlowChart.resize();
 });
 
 
