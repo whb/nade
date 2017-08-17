@@ -156,7 +156,7 @@ var series = [ planeSerie, scatterSerie ];
 var moveOption = {
     backgroundColor: '#404a59',
     title : {
-        text: 'DDOS攻击',
+        text: '攻击模拟',
         left: 'center',
         textStyle : {
             color: '#e0e0e0'
