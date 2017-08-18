@@ -10,22 +10,6 @@ function randomData() {
   }
 }
 
-function zeroData(i) {
-  startTimes[i] = new Date(+startTimes[i] + interval);
-  return {
-    value : [ startTimes[i], 0 ] 
-  }
-}
-
-function attackRandomData(i) {
-  startTimes[i] = new Date(+startTimes[i] + interval);
-  attackValues[i] = Math.abs(attackValues[i] + Math.random() * 2.01 - 1);
-  return {
-    value : [ startTimes[i], attackValues[i] ] 
-  }
-}
-
-
 var now = +new Date();
 var interval = 200;
 var value = 5 + Math.random();
@@ -35,21 +19,49 @@ for (var i = 0; i < 1000; i++) {
 }
 
 
-var startTimes = [];
-var attackValues = [];
-var attactFlowDatas = [];
-for(var i = 0; i < 4; i++) {
-  startTimes[i] = +new Date();
-  attackValues[i] = 5 + Math.random();
+
+function FlowDataGenerator() {
+  this.interval = 200;
+  this.tick = +new Date();
+  this.value = 5 + Math.random();
+  this.data = [];
   
-  let flowData = [];
-  for (var j = 0; j < 1000; j++) {
-    flowData.push(zeroData(i));
-  }
-  attactFlowDatas.push(flowData);
+  this.zeroData = function() {
+    this.tick = new Date(+this.tick + this.interval);
+    return { value : [ this.tick, 0 ] };
+  };
+  
+  this.randomData = function() {
+    this.tick = new Date(+this.tick + this.interval);
+    this.value = Math.abs(this.value + Math.random() * 2.01 - 1);
+    return { value : [ this.tick, Math.round(this.value) ] };
+  };
+  
+  this.initialData = function() {
+    for (var i = 0; i < 200; i++) {
+      this.data.push(this.zeroData());
+    }
+    return this.data;
+  };
+  
+  this.requestData = function() {
+    for (var i = 0; i < 5; i++) {
+      this.data.shift();
+      this.data.push(this.randomData());
+    }
+    return this.data;
+  };
 }
 
-beijingFlowOption = {
+var attactFlowDatas = {};
+attackAreaBases.forEach(function(area) {
+  attactFlowDatas[area] = new FlowDataGenerator();
+});
+
+
+
+
+var beijingFlowOption = {
   title : {
     left : 'center',
     text : '北京流量',
@@ -118,9 +130,10 @@ var attackAreaFlowOptions = [];
 for(var i = 0; i < 4; i++) {
   let attackOption = $.extend(true, {}, beijingFlowOption);
   attackOption.title.text = attackAreaBases[i];
-  attackOption.series[0].data = attactFlowDatas[i];
+  attackOption.series[0].data = attactFlowDatas[attackAreaBases[i]].initialData();
   attackAreaFlowOptions.push(attackOption);
 }
+
 
 
 setInterval(function() {
@@ -135,21 +148,10 @@ setInterval(function() {
     } ]
   });
 
-  
-  
-  for(var i = 0; i < 4; i++) {
-    var flowData = attactFlowDatas[i];
-    for (var j = 0; j < 5; j++) {
-      flowData.shift();
-      flowData.push(attackRandomData(i));
-    }
-    attactFlowDatas[i] = flowData;
-  }
-  
-  attackFlowCharts.forEach(function(flowChart, index, charts) {
+  attackFlowCharts.forEach(function(flowChart) {
     flowChart.setOption({
       series : [ {
-        data : attactFlowDatas[index]
+        data : attactFlowDatas[flowChart.getOption().title[0].text].requestData()
       } ]
     });
   });
