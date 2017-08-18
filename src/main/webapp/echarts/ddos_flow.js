@@ -2,24 +2,6 @@ function paddingTime(value) {
   return value < 10 ? '0'+value : value;
 }
 
-function randomData() {
-  now = new Date(+now + interval);
-  value = Math.abs(value + Math.random() * 2.01 - 1);
-  return {
-    value : [ now, Math.round(value) ] 
-  }
-}
-
-var now = +new Date();
-var interval = 200;
-var value = 5 + Math.random();
-var targetFlowData = [];
-for (var i = 0; i < 1000; i++) {
-  targetFlowData.push(randomData());
-}
-
-
-
 function FlowDataGenerator() {
   this.interval = 200;
   this.tick = +new Date();
@@ -38,7 +20,7 @@ function FlowDataGenerator() {
   };
   
   this.initialData = function() {
-    for (var i = 0; i < 200; i++) {
+    for (var i = 0; i < 1000; i++) {
       this.data.push(this.zeroData());
     }
     return this.data;
@@ -53,18 +35,28 @@ function FlowDataGenerator() {
   };
 }
 
+function TargetFlowDataGenerator() {}
+TargetFlowDataGenerator.prototype = new FlowDataGenerator();
+TargetFlowDataGenerator.prototype.initialData = function() {
+  for (var i = 0; i < 1000; i++) {
+    this.data.push(this.randomData());
+  }
+  return this.data;
+};
+
 var attactFlowDatas = {};
 attackAreaBases.forEach(function(area) {
   attactFlowDatas[area] = new FlowDataGenerator();
 });
 
+var targetFlowDataGenerator = new TargetFlowDataGenerator();
 
 
 
 var beijingFlowOption = {
   title : {
     left : 'center',
-    text : '北京流量',
+    text : '北京',
     textStyle : {
       color : '#e0e0e0'
     }
@@ -122,7 +114,7 @@ var beijingFlowOption = {
         color : '#00FA9A'
       }
     },
-    data : targetFlowData
+    data : targetFlowDataGenerator.initialData()
   } ]
 };
 
@@ -137,23 +129,18 @@ for(var i = 0; i < 4; i++) {
 
 
 setInterval(function() {
-  for (var i = 0; i < 5; i++) {
-    targetFlowData.shift();
-    targetFlowData.push(randomData());
-  }
-  
-  beijingFlowChart.setOption({
-    series : [ {
-      data : targetFlowData
-    } ]
-  });
-
   attackFlowCharts.forEach(function(flowChart) {
     flowChart.setOption({
       series : [ {
         data : attactFlowDatas[flowChart.getOption().title[0].text].requestData()
       } ]
     });
+  });
+  
+  beijingFlowChart.setOption({
+    series : [ {
+      data : targetFlowDataGenerator.requestData()
+    } ]
   });
 
 }, 1000);
