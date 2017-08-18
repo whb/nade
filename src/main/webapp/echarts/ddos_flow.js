@@ -10,12 +10,43 @@ function randomData() {
   }
 }
 
-var timeValue = [];
+function zeroData(i) {
+  startTimes[i] = new Date(+startTimes[i] + interval);
+  return {
+    value : [ startTimes[i], 0 ] 
+  }
+}
+
+function attackRandomData(i) {
+  startTimes[i] = new Date(+startTimes[i] + interval);
+  attackValues[i] = Math.abs(attackValues[i] + Math.random() * 2.01 - 1);
+  return {
+    value : [ startTimes[i], attackValues[i] ] 
+  }
+}
+
+
 var now = +new Date();
 var interval = 200;
 var value = 5 + Math.random();
+var targetFlowData = [];
 for (var i = 0; i < 1000; i++) {
-  timeValue.push(randomData());
+  targetFlowData.push(randomData());
+}
+
+
+var startTimes = [];
+var attackValues = [];
+var attactFlowDatas = [];
+for(var i = 0; i < 4; i++) {
+  startTimes[i] = +new Date();
+  attackValues[i] = 5 + Math.random();
+  
+  let flowData = [];
+  for (var j = 0; j < 1000; j++) {
+    flowData.push(zeroData(i));
+  }
+  attactFlowDatas.push(flowData);
 }
 
 beijingFlowOption = {
@@ -79,20 +110,48 @@ beijingFlowOption = {
         color : '#00FA9A'
       }
     },
-    data : timeValue
+    data : targetFlowData
   } ]
 };
 
+var attackAreaFlowOptions = [];
+for(var i = 0; i < 4; i++) {
+  let attackOption = $.extend(true, {}, beijingFlowOption);
+  attackOption.title.text = attackAreaBases[i];
+  attackOption.series[0].data = attactFlowDatas[i];
+  attackAreaFlowOptions.push(attackOption);
+}
+
+
 setInterval(function() {
-
   for (var i = 0; i < 5; i++) {
-    timeValue.shift();
-    timeValue.push(randomData());
+    targetFlowData.shift();
+    targetFlowData.push(randomData());
   }
-
+  
   beijingFlowChart.setOption({
     series : [ {
-      data : timeValue
+      data : targetFlowData
     } ]
   });
+
+  
+  
+  for(var i = 0; i < 4; i++) {
+    var flowData = attactFlowDatas[i];
+    for (var j = 0; j < 5; j++) {
+      flowData.shift();
+      flowData.push(attackRandomData(i));
+    }
+    attactFlowDatas[i] = flowData;
+  }
+  
+  attackFlowCharts.forEach(function(flowChart, index, charts) {
+    flowChart.setOption({
+      series : [ {
+        data : attactFlowDatas[index]
+      } ]
+    });
+  });
+
 }, 1000);
