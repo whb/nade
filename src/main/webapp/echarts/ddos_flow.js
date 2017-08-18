@@ -1,18 +1,19 @@
 function paddingTime(value) {
   return value < 10 ? '0'+value : value;
 }
+
 function randomData() {
   now = new Date(+now + interval);
-  value = value + Math.random() * 21 - 10;
+  value = Math.abs(value + Math.random() * 2.01 - 1);
   return {
-    value : [ now, Math.round(value) ]
+    value : [ now, Math.round(value) ] 
   }
 }
 
 var timeValue = [];
 var now = +new Date();
 var interval = 200;
-var value = Math.random() * 1000;
+var value = 5 + Math.random();
 for (var i = 0; i < 1000; i++) {
   timeValue.push(randomData());
 }
@@ -65,6 +66,14 @@ beijingFlowOption = {
     type : 'line',
     showSymbol : false,
     hoverAnimation : false,
+    lineStyle: {
+        normal: {
+            color: '#DC143C',
+            width: 1,
+            opacity: 0.4,
+            curveness: 0.2
+        }
+    },
     areaStyle : {
       normal : {
         color : '#00FA9A'
@@ -82,9 +91,6 @@ setInterval(function() {
   }
 
   beijingFlowChart.setOption({
-    xAxis : {
-
-    },
     series : [ {
       data : timeValue
     } ]

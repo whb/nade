@@ -45,12 +45,6 @@ var attackerActiveScatterStyle = {
   }
 }
 
-var pageStatus = {
-  activeAttackArea: '',
-  attackAreas: [],
-  attackViolent: false
-};
-
 function getTargetScatterStyle() {
 	return (pageStatus.attackViolent) ? targetViolentScatterStyle : targetDefaultScatterStyle;
 }
@@ -67,9 +61,6 @@ var geoCoordMap = {
     '北京': [116.4551, 40.2539]
 };
 
-
-var attackAreaBases = ['天津', '河北', '山西', '山东'];
-var sourceArea = '北京';
 
 function buildAttackLines() {
   var planeLines = [];
