@@ -54,10 +54,10 @@
             <button name="山东" type="button" class="attack btn btn-primary">山东攻击</button>
           </div>
           <div class="row">
-            <button type="button" class="btn btn-info">天津协同</button>
-            <button type="button" class="btn btn-info">河北协同</button>
-            <button type="button" class="btn btn-info">山西协同</button>
-            <button type="button" class="btn btn-info">山东协同</button>
+            <button name="天津" type="button" class="defense btn btn-info">天津协同</button>
+            <button name="河北" type="button" class="defense btn btn-info">河北协同</button>
+            <button name="山西" type="button" class="defense btn btn-info">山西协同</button>
+            <button name="山东" type="button" class="defense btn btn-info">山东协同</button>
           </div>
          </div>
         <div class="col-md-4"></div>
@@ -83,9 +83,9 @@ $(".attack").click(function() {
   $.post( "console", { activeAttackArea: $(this).attr("name") } );
 });
 
-
-
-
+$(".defense").click(function() {
+  $.post( "console", { inactiveAttackArea: $(this).attr("name") } );
+});
 </script>
 </body>
 </html>

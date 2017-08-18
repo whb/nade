@@ -37,14 +37,30 @@ public class ConsoleServlet extends HttpServlet {
 		}
 
 		String activeAttackArea = request.getParameter("activeAttackArea");
-		request.getServletContext().setAttribute("activeAttackArea", activeAttackArea);
+		if (activeAttackArea != null && activeAttackArea.length() > 0) {
+			request.getServletContext().setAttribute("activeAttackArea", activeAttackArea);
 
-		Set<String> attackAreasAvailable = (HashSet<String>) request.getServletContext().getAttribute("attackAreasAvailable");
-		if (attackAreasAvailable == null)
-			attackAreasAvailable = new HashSet<String>();
-		attackAreasAvailable.add(activeAttackArea);
+			Set<String> attackAreasAvailable = (HashSet<String>) request.getServletContext().getAttribute("attackAreasAvailable");
+			if (attackAreasAvailable == null)
+				attackAreasAvailable = new HashSet<String>();
+			attackAreasAvailable.add(activeAttackArea);
 
-		request.getServletContext().setAttribute("attackAreasAvailable", attackAreasAvailable);
+			request.getServletContext().setAttribute("attackAreasAvailable", attackAreasAvailable);
+			return;
+		}
+		
+		String inactiveAttackArea = request.getParameter("inactiveAttackArea");
+		if (inactiveAttackArea != null && inactiveAttackArea.length() > 0) {
+			request.getServletContext().setAttribute("inactiveAttackArea", inactiveAttackArea);
+
+			Set<String> attackAreasAvailable = (HashSet<String>) request.getServletContext().getAttribute("attackAreasAvailable");
+			if (attackAreasAvailable == null)
+				attackAreasAvailable = new HashSet<String>();
+			attackAreasAvailable.remove(inactiveAttackArea);
+
+			request.getServletContext().setAttribute("attackAreasAvailable", attackAreasAvailable);
+			return;
+		}
 	}
 
 	public void destroy() {
