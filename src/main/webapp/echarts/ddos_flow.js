@@ -5,8 +5,9 @@ function paddingTime(value) {
 function FlowDataGenerator() {
   this.interval = 200;
   this.tick = +new Date();
-  this.value = 5 + Math.random();
+  this.value = 20 + Math.random() * 5;
   this.data = [];
+  this.lastValues = [];
   
   this.zeroData = function() {
     this.tick = new Date(+this.tick + this.interval);
@@ -26,10 +27,17 @@ function FlowDataGenerator() {
     return this.data;
   };
   
-  this.requestData = function() {
+  this.requestData = function(isActive) {
     for (var i = 0; i < 5; i++) {
-      this.data.shift();
-      this.data.push(this.randomData());
+      if(isActive) {
+        let rd = this.randomData();
+        this.lastValues[i] = rd['value'][1];
+        this.data.shift();
+        this.data.push(rd);
+      } else {
+        this.lastValues[i] = 0;
+        this.data.push(this.zeroData());
+      }
     }
     return this.data;
   };
@@ -37,9 +45,35 @@ function FlowDataGenerator() {
 
 function TargetFlowDataGenerator() {}
 TargetFlowDataGenerator.prototype = new FlowDataGenerator();
+TargetFlowDataGenerator.prototype.value = 5 + Math.random();
 TargetFlowDataGenerator.prototype.initialData = function() {
   for (var i = 0; i < 1000; i++) {
     this.data.push(this.randomData());
+  }
+  return this.data;
+};
+TargetFlowDataGenerator.prototype.setAttactFlowDatas = function(flowDatas) {
+  this.attactFlowDatas = flowDatas;
+};
+TargetFlowDataGenerator.prototype.attackLastDataSum = function() {
+  let lastDataSum = [];
+  for(var key in this.attactFlowDatas) {
+    let i = 0;
+    this.attactFlowDatas[key].lastValues.forEach(function(value) {
+      
+      if(lastDataSum[i] == null) lastDataSum[i] = 0;
+      lastDataSum[i++] += value;
+    });
+  }
+  return lastDataSum;
+};
+TargetFlowDataGenerator.prototype.requestData = function() {
+  console.log(this.attackLastDataSum());
+  for (var i = 0; i < 5; i++) {
+    this.data.shift();
+    let rd = this.randomData();
+    rd['value'][1] += this.attackLastDataSum()[i];
+    this.data.push(rd);
   }
   return this.data;
 };
@@ -50,7 +84,7 @@ attackAreaBases.forEach(function(area) {
 });
 
 var targetFlowDataGenerator = new TargetFlowDataGenerator();
-
+targetFlowDataGenerator.setAttactFlowDatas(attactFlowDatas);
 
 
 var beijingFlowOption = {
@@ -130,9 +164,11 @@ for(var i = 0; i < 4; i++) {
 
 setInterval(function() {
   attackFlowCharts.forEach(function(flowChart) {
+    var attackArea = flowChart.getOption().title[0].text;
+    var isActive = (pageStatus.attackAreas.indexOf(attackArea)>=0);
     flowChart.setOption({
       series : [ {
-        data : attactFlowDatas[flowChart.getOption().title[0].text].requestData()
+        data : attactFlowDatas[attackArea].requestData(isActive)
       } ]
     });
   });
