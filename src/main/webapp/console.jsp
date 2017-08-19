@@ -22,9 +22,9 @@
       <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked">
           <li role="presentation" class="active"><a href="#ddos">DDoS攻击</a></li>
+          <li role="presentation"><a href="#virus">网络病毒爆发</a></li>
           <li role="presentation"><a href="#dns">域名劫持</a></li>
           <li role="presentation"><a href="#webpage">网页篡改</a></li>
-          <li role="presentation"><a href="#virus">网络病毒爆发</a></li>
           <li role="presentation"><a href="#leak">大规模用户信息泄露</a></li>
         </ul>
       </div>
