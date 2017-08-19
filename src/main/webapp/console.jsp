@@ -17,10 +17,10 @@
 
 <body>
   <h1 class="title">网络攻防演练控制台</h1>
-  <div class="container-fluid">
+  <div class="container">
     <div class="row">
       <div class="col-md-2">
-        <ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
+        <ul class="nav nav-pills nav-stacked">
           <li role="presentation" class="active"><a href="#ddos">DDoS攻击</a></li>
           <li role="presentation"><a href="#dns">域名劫持</a></li>
           <li role="presentation"><a href="#webpage">网页篡改</a></li>

@@ -107,6 +107,10 @@ body.container-fluid .title {
   color: #eee;
 }
 
+.nav li {
+  font-size: 16px;
+}
+
 .console  {
   position: relative;
   padding: 30px 15px;
@@ -118,9 +122,15 @@ body.container-fluid .title {
   border-radius:25px;
 }
 
+.console img {
+    display: block;
+    margin: auto;
+    width: 99%;
+}
+
 .console .btn {
-  padding: 15px 25px;
+  padding: 15px 15px;
   margin: 5px;
   font-size: 20px;
-  width: 160px;
+  width: 140px;
 }
