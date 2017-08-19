@@ -16,7 +16,7 @@
 </head>
 
 <body>
-  <h1>网络攻防演练控制台</h1>
+  <h1 class="title">网络攻防演练控制台</h1>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-2">
