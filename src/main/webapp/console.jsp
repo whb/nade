@@ -33,6 +33,7 @@
         <div class="row">
           <div class="col-md-8">
             <img src="/static/images/workflow.png" />
+            <hr>
             <div class="row">
               <button name="天津" type="button" class="attack btn btn-outline">
                 <i class="fa fa-rocket fa-lg"></i> 天津攻击
@@ -47,6 +48,7 @@
                 <i class="fa fa-rocket fa-lg"></i> 山东攻击
               </button>
             </div>
+            <hr>
             <div class="row">
               <button name="天津" type="button" class="defense btn btn-outline">
                 <i class="fa fa-shield fa-lg"></i> 天津协同
