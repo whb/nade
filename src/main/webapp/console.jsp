@@ -48,16 +48,16 @@
               </button>
             </div>
             <div class="row">
-              <button name="天津" type="button" class="defense btn btn-outline" disabled="disabled">
+              <button name="天津" type="button" class="defense btn btn-outline">
                 <i class="fa fa-shield fa-lg"></i> 天津协同
               </button>
-              <button name="河北" type="button" class="defense btn btn-outline" disabled="disabled">
+              <button name="河北" type="button" class="defense btn btn-outline">
                 <i class="fa fa-shield fa-lg"></i> 河北协同
               </button>
-              <button name="山西" type="button" class="defense btn btn-outline" disabled="disabled">
+              <button name="山西" type="button" class="defense btn btn-outline">
                 <i class="fa fa-shield fa-lg"></i> 山西协同
               </button>
-              <button name="山东" type="button" class="defense btn btn-outline" disabled="disabled">
+              <button name="山东" type="button" class="defense btn btn-outline">
                 <i class="fa fa-shield fa-lg"></i> 山东协同
               </button>
             </div>
