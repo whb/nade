@@ -109,14 +109,18 @@ body.container-fluid .title {
 
 .console  {
   position: relative;
-  padding: 30px 0;
+  padding: 30px 15px;
   color: #0d8fe3;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0,0,0,.1);
+  background-color: #e4eAfB;
+  border:2px solid;
+  border-radius:25px;
 }
 
 .console .btn {
   padding: 15px 25px;
   margin: 5px;
   font-size: 20px;
+  width: 160px;
 }
