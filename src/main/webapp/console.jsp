@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="/static/css/font-awesome.min.css">
 <link rel="stylesheet" href="/static/css/main.css">
 <script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -20,7 +21,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-2">
-        <ul class="nav nav-pills nav-stacked">
+        <ul id="consoleTabs" class="nav nav-pills nav-stacked" role="tablist">
           <li role="presentation" class="active"><a href="#ddos">DDoS攻击</a></li>
           <li role="presentation"><a href="#virus">网络病毒爆发</a></li>
           <li role="presentation"><a href="#dns">域名劫持</a></li>
@@ -30,57 +31,67 @@
       </div>
       
       <div class="col-md-10 console">
-        <div class="row">
-          <div class="col-md-8">
-            <img src="/static/images/workflow.png" />
-            <hr>
-            <div class="row">
-              <button name="天津" type="button" class="attack btn btn-outline">
-                <i class="fa fa-rocket fa-lg"></i> 天津攻击
-              </button>
-              <button name="河北" type="button" class="attack btn btn-outline">
-                <i class="fa fa-rocket fa-lg"></i> 河北攻击
-              </button>
-              <button name="山西" type="button" class="attack btn btn-outline">
-                <i class="fa fa-rocket fa-lg"></i> 山西攻击
-              </button>
-              <button name="山东" type="button" class="attack btn btn-outline">
-                <i class="fa fa-rocket fa-lg"></i> 山东攻击
-              </button>
-            </div>
-            <hr>
-            <div class="row">
-              <button name="天津" type="button" class="defense btn btn-outline">
-                <i class="fa fa-shield fa-lg"></i> 天津协同
-              </button>
-              <button name="河北" type="button" class="defense btn btn-outline">
-                <i class="fa fa-shield fa-lg"></i> 河北协同
-              </button>
-              <button name="山西" type="button" class="defense btn btn-outline">
-                <i class="fa fa-shield fa-lg"></i> 山西协同
-              </button>
-              <button name="山东" type="button" class="defense btn btn-outline">
-                <i class="fa fa-shield fa-lg"></i> 山东协同
-              </button>
-            </div>
-          </div>
-          
-          <div class="col-md-4">
-            <table class="table table-bordered">
-              <tbody>
-                <tr>
-                  <th>当前演练</th>
-                  <td>DDOS攻击</td>
-                </tr>
-                <tr>
-                  <th>参演区域</th>
-                  <td>山东、山西、河北、天津、北京</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="ddos">
+              <div class="row">
+                <div class="col-md-8">
+                  <img src="/static/images/workflow.png" />
+                  <hr>
+                  <div class="row">
+                    <button name="天津" type="button" class="attack btn btn-outline">
+                      <i class="fa fa-rocket fa-lg"></i> 天津攻击
+                    </button>
+                    <button name="河北" type="button" class="attack btn btn-outline">
+                      <i class="fa fa-rocket fa-lg"></i> 河北攻击
+                    </button>
+                    <button name="山西" type="button" class="attack btn btn-outline">
+                      <i class="fa fa-rocket fa-lg"></i> 山西攻击
+                    </button>
+                    <button name="山东" type="button" class="attack btn btn-outline">
+                      <i class="fa fa-rocket fa-lg"></i> 山东攻击
+                    </button>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <button name="天津" type="button" class="defense btn btn-outline">
+                      <i class="fa fa-shield fa-lg"></i> 天津协同
+                    </button>
+                    <button name="河北" type="button" class="defense btn btn-outline">
+                      <i class="fa fa-shield fa-lg"></i> 河北协同
+                    </button>
+                    <button name="山西" type="button" class="defense btn btn-outline">
+                      <i class="fa fa-shield fa-lg"></i> 山西协同
+                    </button>
+                    <button name="山东" type="button" class="defense btn btn-outline">
+                      <i class="fa fa-shield fa-lg"></i> 山东协同
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="col-md-4">
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <th>当前演练</th>
+                        <td>DDOS攻击</td>
+                      </tr>
+                      <tr>
+                        <th>参演区域</th>
+                        <td>山东、山西、河北、天津、北京</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
         </div>
+        
+        <div role="tabpanel" class="tab-pane" id="virus">...</div>
+        <div role="tabpanel" class="tab-pane" id="dns">域名劫持</div>
+        <div role="tabpanel" class="tab-pane" id="webpage">网页篡改</div>
+        <div role="tabpanel" class="tab-pane" id="leak">大规模用户信息泄露</div>
       </div>
+      </div>
+      
     </div>
 
   </div>
@@ -100,6 +111,11 @@
           subject : subject
         });
       });
+      
+      $('#consoleTabs a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+      })
 
       $(".attack").click(function() {
         $.post("console", {

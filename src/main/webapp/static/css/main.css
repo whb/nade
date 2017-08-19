@@ -122,6 +122,7 @@ body.container-fluid .title {
   background-color: #e4eAfB;
   border:1px solid;
   border-radius:25px;
+  min-height: 350px;
 }
 
 .console img {
