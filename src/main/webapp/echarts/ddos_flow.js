@@ -68,7 +68,6 @@ TargetFlowDataGenerator.prototype.attackLastDataSum = function() {
   return lastDataSum;
 };
 TargetFlowDataGenerator.prototype.requestData = function() {
-  console.log(this.attackLastDataSum());
   for (var i = 0; i < 5; i++) {
     this.data.shift();
     let rd = this.randomData();
@@ -128,7 +127,8 @@ var beijingFlowOption = {
     boundaryGap : [ 0, '100%' ],
     splitLine : {
       show : true
-    }
+    },
+    min: 0,
   },
   series : [ {
     name : '模拟数据',

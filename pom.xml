@@ -38,8 +38,10 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <version>8.1.16.v20140903</version>
         <configuration>
+          <scanIntervalSeconds>2</scanIntervalSeconds>
           <webApp>
             <contextPath>/</contextPath>
+            <defaultsDescriptor>${project.basedir}/jetty/webdefault.xml</defaultsDescriptor>
           </webApp>
           <connectors>
             <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">

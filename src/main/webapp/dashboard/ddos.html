@@ -21,12 +21,12 @@
   <div class="row">
     <div class="col-md-10">
       <div class="row">
-        <div class="col-md-9" id="main" style="height:1000px;"></div>
+        <div class="col-md-9" id="main" style="height:800px;"></div>
         <div class="col-md-3">
-          <div class="attackFlow" id="tianjinFlow" style="height:250px;"></div>
-          <div class="attackFlow" id="hebeiFlow" style="height:250px;"></div>
-          <div class="attackFlow" id="shanxiFlow" style="height:250px;"></div>
-          <div class="attackFlow" id="shandongFlow" style="height:250px;"></div>
+          <div class="attackFlow" id="tianjinFlow" style="height:200px;"></div>
+          <div class="attackFlow" id="hebeiFlow" style="height:200px;"></div>
+          <div class="attackFlow" id="shanxiFlow" style="height:200px;"></div>
+          <div class="attackFlow" id="shandongFlow" style="height:200px;"></div>
         </div>
       </div>
       <div class="row">
@@ -57,6 +57,8 @@ var pageStatus = {
 <script src="/echarts/ddos_flow.js"></script> 
 <script type="text/javascript">
 var ddosChart = echarts.init(document.getElementById('main'));
+console.log(moveOption.series[1].effect);
+console.log(moveOption.series[1].lineStyle);
 ddosChart.setOption(moveOption);
 
 var beijingFlowChart = echarts.init(document.getElementById('beijingFlow'));
@@ -93,9 +95,9 @@ function getDdosJson() {
 			return;
 		}
 		
-		if(result.attackViolent && animationOption.geo.zoom != 4) {
+		if(result.attackViolent && animationOption.geo.zoom != 5) {
 			pageStatus = result;
-			animationOption.geo.zoom = 4;
+			animationOption.geo.zoom = 5;
 			animationOption.geo.center = geoCoordMap['北京'];
 			redrawChart(animationOption);
 			return;
@@ -105,7 +107,7 @@ function getDdosJson() {
 			return;
 		} else {
 			pageStatus = result;
-			animationOption.geo.zoom = 3;
+			animationOption.geo.zoom = 4;
 			animationOption.geo.center = geoCoordMap[pageStatus.activeAttackArea];
     		redrawChart(animationOption);
 		}
@@ -115,8 +117,9 @@ function getDdosJson() {
 
 function redrawChart(otherOption) {
 	moveOption.series[0].data = buildAttackLines();
-	moveOption.series[1].data = buildAreaScatter();
-	$.extend(moveOption, otherOption);
+	moveOption.series[1].data = buildAttackLines();
+	moveOption.series[2].data = buildAreaScatter();
+	$.extend(true, moveOption, otherOption);
 	ddosChart.setOption(moveOption);
 }
 
