@@ -137,3 +137,18 @@ body.container-fluid .title {
   font-size: 20px;
   width: 140px;
 }
+
+
+.statistic-wrapper h4 {
+  font-size: 18px;
+  font-weight:bold;
+}
+
+.statistic-wrapper dd {
+  font-size: 32px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+} 
+
+
+ 

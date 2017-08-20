@@ -38,9 +38,7 @@ function loadPage(subject) {
 	}
 }
 
-var currentSubject = 'ddos';
-loadPage(currentSubject);
-
+var currentSubject;
 var subjectApi = "/api/subject.json";
 function getSubjectJson() {
 	$.getJSON(subjectApi, function( subject ) {

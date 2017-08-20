@@ -14,6 +14,8 @@ public class SubjectServlet extends JsonResponseServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-Type", "application/json; charset=UTF-8");
 		String subject = (String) request.getServletContext().getAttribute("subject");
+		if (subject == null || subject.length() == 0)
+			subject = "ddos";
 		String json = new Gson().toJson(subject);
 		response.getWriter().write(json);
 	}

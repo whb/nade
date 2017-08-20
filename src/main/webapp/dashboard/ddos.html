@@ -44,6 +44,7 @@
       </ul>
     </div>
   </div>
+</body>
 
 <script type="text/javascript">
 var attackAreaBases = ['天津', '河北', '山西', '山东'];
@@ -58,8 +59,6 @@ var pageStatus = {
 <script src="/echarts/ddos_flow.js"></script> 
 <script type="text/javascript">
 var ddosChart = echarts.init(document.getElementById('main'));
-console.log(moveOption.series[1].effect);
-console.log(moveOption.series[1].lineStyle);
 ddosChart.setOption(moveOption);
 
 var beijingFlowChart = echarts.init(document.getElementById('beijingFlow'));
@@ -73,58 +72,57 @@ $(".attackFlow").each(function(index, chartDiv) {
 });
 
 $( window ).resize(function() {
-	ddosChart.resize();
-	beijingFlowChart.resize();
-	
-	attackFlowCharts.forEach(function(flowChart) {
-	  flowChart.resize();
-	});
+  ddosChart.resize();
+  beijingFlowChart.resize();
+  
+  attackFlowCharts.forEach(function(flowChart) {
+    flowChart.resize();
+  });
 });
 
 
 var animationOption = {
-	geo: {
-	}
+  geo: {
+  }
 };
 
 var ddosApi = "/api/ddos.json";
 function getDdosJson() {
-	$.getJSON(ddosApi, function( result ) {
-		if(result.attackAreas.length == 0 && pageStatus.attackAreas.length > 0) {
-			pageStatus = result;
-			redrawChart(initialOption);
-			return;
-		}
-		
-		if(result.attackViolent && animationOption.geo.zoom != 5) {
-			pageStatus = result;
-			animationOption.geo.zoom = 5;
-			animationOption.geo.center = geoCoordMap['北京'];
-			redrawChart(animationOption);
-			return;
-		}
-		
-		if(pageStatus.attackAreas.length == result.attackAreas.length) {
-			return;
-		} else {
-			pageStatus = result;
-			animationOption.geo.zoom = 4;
-			animationOption.geo.center = geoCoordMap[pageStatus.activeAttackArea];
-    		redrawChart(animationOption);
-		}
-	});
+  $.getJSON(ddosApi, function( result ) {
+    if(result.attackAreas.length == 0 && pageStatus.attackAreas.length > 0) {
+      pageStatus = result;
+      redrawChart(initialOption);
+      return;
+    }
+    
+    if(result.attackViolent && animationOption.geo.zoom != 5) {
+      pageStatus = result;
+      animationOption.geo.zoom = 5;
+      animationOption.geo.center = geoCoordMap['北京'];
+      redrawChart(animationOption);
+      return;
+    }
+    
+    if(pageStatus.attackAreas.length == result.attackAreas.length) {
+      return;
+    } else {
+      pageStatus = result;
+      animationOption.geo.zoom = 4;
+      animationOption.geo.center = geoCoordMap[pageStatus.activeAttackArea];
+        redrawChart(animationOption);
+    }
+  });
 
 }
 
 function redrawChart(otherOption) {
-	moveOption.series[0].data = buildAttackLines();
-	moveOption.series[1].data = buildAttackLines();
-	moveOption.series[2].data = buildAreaScatter();
-	$.extend(true, moveOption, otherOption);
-	ddosChart.setOption(moveOption);
+  moveOption.series[0].data = buildAttackLines();
+  moveOption.series[1].data = buildAttackLines();
+  moveOption.series[2].data = buildAreaScatter();
+  $.extend(true, moveOption, otherOption);
+  ddosChart.setOption(moveOption);
 }
 
 setInterval(getDdosJson, 1000);
-</script>  
-</body>
+</script>
 </html>
