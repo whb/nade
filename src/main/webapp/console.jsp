@@ -22,7 +22,7 @@
     <div class="row">
       <div class="col-md-2">
         <ul id="consoleTabs" class="nav nav-pills nav-stacked" role="tablist">
-          <li role="presentation" class="active"><a href="#ddos">DDoS攻击</a></li>
+          <li role="presentation"><a href="#ddos">DDoS攻击</a></li>
           <li role="presentation"><a href="#virus">网络病毒爆发</a></li>
           <li role="presentation"><a href="#dns">域名劫持</a></li>
           <li role="presentation"><a href="#webpage">网页篡改</a></li>
@@ -32,7 +32,7 @@
       
 <div class="col-md-10 console">
 <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="ddos">
+        <div role="tabpanel" class="tab-pane" id="ddos">
               <div class="row">
                 <div class="col-md-8">
                   <img src="/static/images/workflow.png" />
@@ -124,42 +124,45 @@
     </div>
 
   </div>
-
-  <script type="text/javascript">
-      $("#reset-button").click(function() {
-        $.post("console", {
-          reset : "true"
-        });
-      });
-
-      $('#consoleTabs a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-        var subject = $(this).attr("href").substring(1);
-        $.post("console", {
-          subject : subject
-        });
-      })
-
-      $("#ddos .attack").click(function() {
-        $.post("console", {
-          activeAttackArea : $(this).attr("name")
-        });
-      });
-
-      $("#ddos .defense").click(function() {
-        $.post("console", {
-          inactiveAttackArea : $(this).attr("name")
-        });
-      });
-      
-      $("#virus .btn").click(function() {
-        $.post("console", {
-          action : $(this).attr("name")
-        });
-      });
-
-
-    </script>
 </body>
+
+<script type="text/javascript">
+$("#reset-button").click(function() {
+  $.post("console", {
+    reset : "true"
+  });
+});
+
+$('#consoleTabs a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+  var subject = $(this).attr("href").substring(1);
+  $.post("console", {
+    subject : subject
+  });
+})
+
+$("#ddos .attack").click(function() {
+  $.post("console", {
+    activeAttackArea : $(this).attr("name")
+  });
+});
+
+$("#ddos .defense").click(function() {
+  $.post("console", {
+    inactiveAttackArea : $(this).attr("name")
+  });
+});
+
+$("#virus .btn").click(function() {
+  $.post("console", {
+    action : $(this).attr("name")
+  });
+});
+
+$(function() {
+  $("#consoleTabs a[href$='${applicationScope['subject']}']").tab('show');
+});
+
+</script>
 </html>

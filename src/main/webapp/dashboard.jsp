@@ -9,6 +9,7 @@
   <link rel="shortcut icon" href="/static/images/favicon.ico">
   <!--[if lte IE 8]><meta http-equiv="refresh" content="0;url=/ie" /><![endif]-->
   <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/main.css">
   <script src="/static/js/jquery-3.2.1.min.js"></script>
 </head>
 

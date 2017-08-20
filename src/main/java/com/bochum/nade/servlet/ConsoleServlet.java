@@ -17,6 +17,10 @@ public class ConsoleServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String subject = (String) request.getServletContext().getAttribute("subject");
+		if (subject == null || subject.length() == 0)
+			request.getServletContext().setAttribute("subject", "ddos");
+
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/console.jsp");
 		requestDispatcher.forward(request, response);
 	}
