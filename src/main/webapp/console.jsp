@@ -30,8 +30,8 @@
         </ul>
       </div>
       
-      <div class="col-md-10 console">
-      <div class="tab-content">
+<div class="col-md-10 console">
+<div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="ddos">
               <div class="row">
                 <div class="col-md-8">
@@ -85,12 +85,41 @@
               </div>
         </div>
         
-        <div role="tabpanel" class="tab-pane" id="virus">...</div>
+        
+        <div role="tabpanel" class="tab-pane" id="virus">
+            <div class="row">
+                <div class="col-md-8">
+                    <button name="spread" type="button" class="attack btn btn-outline">
+                      <i class="fa fa-rocket fa-lg"></i> 启动传播
+                    </button>
+                    <button name="block" type="button" class="defense btn btn-outline">
+                      <i class="fa fa-shield fa-lg"></i> 发起封堵
+                    </button>
+                </div>
+                
+                <div class="col-md-4">
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <th>当前演练</th>
+                        <td>网络病毒爆发</td>
+                      </tr>
+                      <tr>
+                        <th>参演区域</th>
+                        <td>山东、山西、河北、天津、北京</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+        </div>
+        
+        
         <div role="tabpanel" class="tab-pane" id="dns">域名劫持</div>
         <div role="tabpanel" class="tab-pane" id="webpage">网页篡改</div>
         <div role="tabpanel" class="tab-pane" id="leak">大规模用户信息泄露</div>
-      </div>
-      </div>
+</div>
+</div>
       
     </div>
 
@@ -103,31 +132,34 @@
         });
       });
 
-      $('li[role="presentation"]').click(function() {
-        $('li[role="presentation"]').removeClass("active");
-        $(this).addClass("active");
-        var subject = $(this).find("a").attr("href").substring(1);
-        $.post("console", {
-          subject : subject
-        });
-      });
-      
       $('#consoleTabs a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
+        var subject = $(this).attr("href").substring(1);
+        $.post("console", {
+          subject : subject
+        });
       })
 
-      $(".attack").click(function() {
+      $("#ddos .attack").click(function() {
         $.post("console", {
           activeAttackArea : $(this).attr("name")
         });
       });
 
-      $(".defense").click(function() {
+      $("#ddos .defense").click(function() {
         $.post("console", {
           inactiveAttackArea : $(this).attr("name")
         });
       });
+      
+      $("#virus .btn").click(function() {
+        $.post("console", {
+          action : $(this).attr("name")
+        });
+      });
+
+
     </script>
 </body>
 </html>

@@ -21,7 +21,6 @@ public class ConsoleServlet extends HttpServlet {
 		requestDispatcher.forward(request, response);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String reset = request.getParameter("reset");
 		if ("true".equals(reset)) {
@@ -36,6 +35,21 @@ public class ConsoleServlet extends HttpServlet {
 			return;
 		}
 
+		subject = (String) request.getServletContext().getAttribute("subject");
+		if (subject == null || subject.length() == 0)
+			subject = "ddos";
+
+		if (subject.equals("ddos")) {
+			doDdos(request);
+		} else if (subject.equals("virus")) {
+			doVirus(request);
+		} else {
+
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void doDdos(HttpServletRequest request) {
 		String activeAttackArea = request.getParameter("activeAttackArea");
 		if (activeAttackArea != null && activeAttackArea.length() > 0) {
 			request.getServletContext().setAttribute("activeAttackArea", activeAttackArea);
@@ -48,7 +62,7 @@ public class ConsoleServlet extends HttpServlet {
 			request.getServletContext().setAttribute("attackAreasAvailable", attackAreasAvailable);
 			return;
 		}
-		
+
 		String inactiveAttackArea = request.getParameter("inactiveAttackArea");
 		if (inactiveAttackArea != null && inactiveAttackArea.length() > 0) {
 			request.getServletContext().setAttribute("inactiveAttackArea", inactiveAttackArea);
@@ -63,6 +77,11 @@ public class ConsoleServlet extends HttpServlet {
 		}
 	}
 
-	public void destroy() {
+	private void doVirus(HttpServletRequest request) {
+		String action = request.getParameter("action");
+		if (action != null && action.length() > 0) {
+			request.getServletContext().setAttribute("action", action);
+			return;
+		}
 	}
 }
