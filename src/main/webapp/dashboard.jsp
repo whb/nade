@@ -9,10 +9,7 @@
   <link rel="shortcut icon" href="/static/images/favicon.ico">
   <!--[if lte IE 8]><meta http-equiv="refresh" content="0;url=/ie" /><![endif]-->
   <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-  <script src="/static/js/echarts.min.js"></script>
-  <script src="/static/js/map/china.js"></script> 
   <script src="/static/js/jquery-3.2.1.min.js"></script>
-  <script src="/static/js/odometer.min.js"></script> 
 </head>
 
 <body id="dashboard" class="container-fluid">
@@ -46,7 +43,14 @@ function loadPage(subject) {
 
 var currentSubject;
 var subjectApi = "/api/subject.json";
-function loadSubjectPage() {
+function refreshPage() {
+	$.getJSON(subjectApi, function( subject ) {
+		if(currentSubject == subject) return;
+		
+		window.location.reload();
+	});
+}
+function loadSubjectPageOnRefresh() {
 	$.getJSON(subjectApi, function( subject ) {
 		if(currentSubject == subject) return;
 		
@@ -54,7 +58,7 @@ function loadSubjectPage() {
 		loadPage(subject);
 	});
 }
-loadSubjectPage();
-setInterval(loadSubjectPage, 1000);
+loadSubjectPageOnRefresh();
+setInterval(refreshPage, 1000);
 </script>
 </html>
