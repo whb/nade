@@ -16,49 +16,52 @@
 </body>
 
 <script type="text/javascript">
-function loadPage(subject) {
-	var url;
-	switch(subject)	{
-  	case 'ddos':
-  	  url = "/dashboard/ddos.html";
-  	  break;
-  	case 'dns':
-  	  url = "/dashboard/dns.html";
-  	  break;
-  	case 'webpage':
-  	  url = "/dashboard/webpage.html";
-  	  break;
-  	case 'virus':
-  	  url = "/dashboard/virus.html";
-  	  break;
-  	case 'leak':
-  	  url = "/dashboard/leak.html";
-  	  break;
-  	default:
-  	  url = "";
-  	  break;
-	}
-	$("#dashboard").load(url);
-}
+$(function() {
+  function loadPage(subject) {
+  	var url;
+  	switch(subject)	{
+    	case 'ddos':
+    	  url = "/dashboard/ddos.html";
+    	  break;
+    	case 'dns':
+    	  url = "/dashboard/dns.html";
+    	  break;
+    	case 'webpage':
+    	  url = "/dashboard/webpage.html";
+    	  break;
+    	case 'virus':
+    	  url = "/dashboard/virus.html";
+    	  break;
+    	case 'leak':
+    	  url = "/dashboard/leak.html";
+    	  break;
+    	default:
+    	  url = "";
+    	  break;
+  	}
+  	$("#dashboard").load(url);
+  }
 
-var currentSubject;
-var subjectApi = "/api/subject.json";
-function refreshPage() {
-	$.getJSON(subjectApi, function( subject ) {
-		if(currentSubject == subject) return;
-		
-		window.location.reload();
-	});
-}
-function loadSubjectPageOnRefresh() {
-	$.getJSON(subjectApi, function( subject ) {
-		if(currentSubject == subject) return;
-		
-		currentSubject = subject;
-		loadPage(subject);
-	});
-}
-loadSubjectPageOnRefresh();
-setInterval(refreshPage, 1000);
+  var currentSubject;
+  var subjectApi = "/api/subject.json";
+  function refreshPage() {
+  	$.getJSON(subjectApi, function( subject ) {
+  		if(currentSubject == subject) return;
+  		
+  		window.location.reload();
+  	});
+  }
+  function loadSubjectPageOnRefresh() {
+  	$.getJSON(subjectApi, function( subject ) {
+  		if(currentSubject == subject) return;
+  		
+  		currentSubject = subject;
+  		loadPage(subject);
+  	});
+  }
+  loadSubjectPageOnRefresh();
+  setInterval(refreshPage, 1000);
+});
+
 </script>
 </html>

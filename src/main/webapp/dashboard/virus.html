@@ -71,33 +71,35 @@
 
 <script src="/echarts/virus.js"></script> 
 <script type="text/javascript">
-var virusChart = echarts.init(document.getElementById('main'));
-virusChart.setOption(spreadOption);
+$(function() {
+  var virusChart = echarts.init(document.getElementById('main'));
+  virusChart.setOption(spreadOption);
 
 
-$(window).resize(function() {
-  virusChart.resize();
-});
-
-
-var animationOption = {
-  geo: {
-  }
-};
-
-// 兼容console中jquery。load，DOMContentLoaded没有触发。
-Odometer.init();
-
-var virusApi = "/api/virus.json";
-function getAndDisplayVirus() {
-  $.getJSON(virusApi, function( result ) {
-	result.infectionHostsNum.forEach(function(areaNum) {
-      $("#" + areaNum.name + "HostsNum").text(areaNum.value);
-    });
+  $(window).resize(function() {
+    virusChart.resize();
   });
-}
 
-getAndDisplayVirus();
-setInterval(getAndDisplayVirus, 5000);
+
+  var animationOption = {
+    geo: {
+    }
+  };
+
+  // 兼容console中jquery。load，DOMContentLoaded没有触发。
+  Odometer.init();
+
+  var virusApi = "/api/virus.json";
+  function getAndDisplayVirus() {
+    $.getJSON(virusApi, function( result ) {
+  	result.infectionHostsNum.forEach(function(areaNum) {
+        $("#" + areaNum.name + "HostsNum").text(areaNum.value);
+      });
+    });
+  }
+
+  getAndDisplayVirus();
+  setInterval(getAndDisplayVirus, 5000);
+});
 </script>
 </html>
