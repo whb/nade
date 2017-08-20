@@ -20,6 +20,10 @@
     <servlet-name>DdosAPI</servlet-name>
     <servlet-class>com.bochum.nade.api.DdosServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>VirusAPI</servlet-name>
+    <servlet-class>com.bochum.nade.api.VirusServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>Console</servlet-name>
@@ -37,5 +41,9 @@
   <servlet-mapping>
     <servlet-name>DdosAPI</servlet-name>
     <url-pattern>/api/ddos.json</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>VirusAPI</servlet-name>
+    <url-pattern>/api/virus.json</url-pattern>
   </servlet-mapping>
 </web-app>

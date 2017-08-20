@@ -27,27 +27,27 @@
         <div class="col-md-3 statistic-wrapper">
           <h4>被感染主机数量</h4>
           <dl>
-              <dd id="beijingHostsNum" class="j-hosts-num odometer odometer-auto-theme" data-num="0">0</dd>
+              <dd id="beijingHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
               <dt>北京</dt>
           </dl>
           <dl>
-              <dd id="tianjinHostsNum" class="j-hosts-num odometer odometer-auto-theme" data-num=""></dd>
+              <dd id="tianjinHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
               <dt>天津</dt>
           </dl>
           <dl>
-              <dd id="hebeiHostsNum" class="j-hosts-num odometer odometer-auto-theme" data-num=""></dd>
+              <dd id="hebeiHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
               <dt>河北</dt>
           </dl>
           <dl>
-              <dd id="shanxiHostsNum" class="j-hosts-num odometer odometer-auto-theme" data-num=""></dd>
+              <dd id="shanxiHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
               <dt>山西</dt>
           </dl>
           <dl>
-              <dd id="shandongHostsNum" class="j-hosts-num odometer odometer-auto-theme" data-num=""></dd>
+              <dd id="shandongHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
               <dt>山东</dt>
           </dl>
           <dl>
-              <dd id="totalHostsNum" class="j-hosts-num odometer odometer-auto-theme" data-num=""></dd>
+              <dd id="totalHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
               <dt>全国</dt>
           </dl>
         </div>
@@ -89,19 +89,15 @@ var animationOption = {
 Odometer.init();
 
 var virusApi = "/api/virus.json";
-var hostsNum = 740809;
 function getAndDisplayVirus() {
-//   $.getJSON(virusApi, function( result ) {
-
-//   });
-  
-  
-  $("#beijingHostsNum").text(hostsNum);
-  $("#tianjinHostsNum").text(hostsNum);
-  hostsNum += 16;
+  $.getJSON(virusApi, function( result ) {
+	result.infectionHostsNum.forEach(function(areaNum) {
+      $("#" + areaNum.name + "HostsNum").text(areaNum.value);
+    });
+  });
 }
 
 getAndDisplayVirus();
-setInterval(getAndDisplayVirus, 3000);
+setInterval(getAndDisplayVirus, 5000);
 </script>
 </html>
