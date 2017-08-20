@@ -9,7 +9,10 @@
   <link rel="shortcut icon" href="/static/images/favicon.ico">
   <!--[if lte IE 8]><meta http-equiv="refresh" content="0;url=/ie" /><![endif]-->
   <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-  <script src="/static/js/jquery-3.2.1.min.js"></script> 
+  <script src="/static/js/echarts.min.js"></script>
+  <script src="/static/js/map/china.js"></script> 
+  <script src="/static/js/jquery-3.2.1.min.js"></script>
+  <script src="/static/js/odometer.min.js"></script> 
 </head>
 
 <body id="dashboard" class="container-fluid">
@@ -17,30 +20,33 @@
 
 <script type="text/javascript">
 function loadPage(subject) {
+	var url;
 	switch(subject)	{
   	case 'ddos':
-  	  $("#dashboard").load( "/dashboard/ddos.html" );
+  	  url = "/dashboard/ddos.html";
   	  break;
   	case 'dns':
-  	  $("#dashboard").load( "/dashboard/dns.html" );
+  	  url = "/dashboard/dns.html";
   	  break;
   	case 'webpage':
-  	  $("#dashboard").load( "/dashboard/webpage.html" );
+  	  url = "/dashboard/webpage.html";
   	  break;
   	case 'virus':
-  	  $("#dashboard").load( "/dashboard/virus.html" );
+  	  url = "/dashboard/virus.html";
   	  break;
   	case 'leak':
-  	  $("#dashboard").load( "/dashboard/leak.html" );
+  	  url = "/dashboard/leak.html";
   	  break;
   	default:
+  	  url = "";
   	  break;
 	}
+	$("#dashboard").load(url);
 }
 
 var currentSubject;
 var subjectApi = "/api/subject.json";
-function getSubjectJson() {
+function loadSubjectPage() {
 	$.getJSON(subjectApi, function( subject ) {
 		if(currentSubject == subject) return;
 		
@@ -48,7 +54,7 @@ function getSubjectJson() {
 		loadPage(subject);
 	});
 }
-
-setInterval(getSubjectJson, 1000);
+loadSubjectPage();
+setInterval(loadSubjectPage, 1000);
 </script>
 </html>

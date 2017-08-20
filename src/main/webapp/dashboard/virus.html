@@ -27,7 +27,7 @@
         <div class="col-md-3 statistic-wrapper">
           <h4>被感染主机数量</h4>
           <dl>
-              <dd id="beijingHostsNum" class="j-hosts-num odometer odometer-auto-theme" data-num=""></dd>
+              <dd id="beijingHostsNum" class="j-hosts-num odometer odometer-auto-theme" data-num="0">0</dd>
               <dt>北京</dt>
           </dl>
           <dl>
@@ -85,18 +85,23 @@ var animationOption = {
   }
 };
 
+// 兼容console中jquery。load，DOMContentLoaded没有触发。
+Odometer.init();
+
 var virusApi = "/api/virus.json";
 var hostsNum = 740809;
-function getVirusJson() {
+function getAndDisplayVirus() {
 //   $.getJSON(virusApi, function( result ) {
 
 //   });
   
-  $(".odometer").text(hostsNum);
+  
+  $("#beijingHostsNum").text(hostsNum);
+  $("#tianjinHostsNum").text(hostsNum);
   hostsNum += 16;
 }
 
-
-setInterval(getVirusJson, 3000);
+getAndDisplayVirus();
+setInterval(getAndDisplayVirus, 3000);
 </script>
 </html>
