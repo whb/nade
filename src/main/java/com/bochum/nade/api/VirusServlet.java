@@ -22,7 +22,7 @@ public class VirusServlet extends JsonResponseServlet {
 	private static final long serialVersionUID = 6119709263019798714L;
 	private static final int BEGIN_NUM_OF_municipality_AREA = 2000;
 	private static final int BEGIN_NUM_OF_KEY_AREA = 200;
-	private static final int INCREACE_NUM = 200;
+	private static final int INCREACE_NUM = 500;
 	
 	private static ProvinceArea[] provinceAreas;
 	
@@ -72,7 +72,7 @@ public class VirusServlet extends JsonResponseServlet {
 		if(isKeyArea(hostNum.getName())) {
 			return true;
 		} else {
-			return (new Random()).nextDouble() > 0.8;
+			return (new Random()).nextDouble() > 0.9;
 		}
 	}
 

@@ -412,7 +412,7 @@ spreadOption = {
     },
     geo: {
         map: 'china',
-        zoom: 1.2,
+        zoom: 1.25,
         label: {
             emphasis: {
                 show: false

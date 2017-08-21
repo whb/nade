@@ -178,7 +178,7 @@ var moveOption = {
     },
     geo: {
         map: 'china',
-        zoom: 1,
+        zoom: 1.25,
         label: {
             emphasis: {
                 show: false
