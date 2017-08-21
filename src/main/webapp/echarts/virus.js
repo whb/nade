@@ -410,15 +410,6 @@ spreadOption = {
     tooltip : {
         trigger: 'item'
     },
-    legend: {
-        orient: 'vertical',
-        y: 'bottom',
-        x:'right',
-        data:['pm2.5'],
-        textStyle: {
-            color: '#fff'
-        }
-    },
     geo: {
         map: 'china',
         label: {

@@ -23,6 +23,14 @@ public class VirusServlet extends JsonResponseServlet {
 	private static final int BEGIN_NUM_OF_KEY_AREA = 1000;
 	private static final int INCREACE_NUM = 200;
 	private static final int OTHER_AREA_NUM = 200;
+	
+	private static ProvinceArea[] provinceAreas;
+	
+	public void init() throws ServletException {
+		String jsonString = readFromFile("province_areas.json");
+		System.out.println(jsonString);
+		provinceAreas = new Gson().fromJson(jsonString, ProvinceArea[].class);
+	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-Type", "application/json; charset=UTF-8");
@@ -56,13 +64,39 @@ public class VirusServlet extends JsonResponseServlet {
 	}
 
 	private List<NameValue> readIntialDataFromFile(HttpServletRequest request) {
-		String filename = "/WEB-INF/test/virus_area_num.json";
+		String jsonString = readFromFile("virus_area_num.json");
+		List<NameValue> intialHostsNum = new ArrayList<NameValue>();
+		Type collectionType = new TypeToken<ArrayList<NameValue>>() {}.getType();
+		intialHostsNum = new Gson().fromJson(jsonString, collectionType);
+
+		for (NameValue hostNum : intialHostsNum) {
+			hostNum.setValue(calNum(hostNum.getName()));
+		}
+
+		return intialHostsNum;
+	}
+
+	private Integer calNum(String name) {
+		for(ProvinceArea p : provinceAreas) {
+			for(String area : p.getAreas()) {
+				if(area.equals(name)) {
+					if(p.isMunicipality()) {
+						return 500;
+					} else {
+						return 100;
+					}
+				}
+			}
+		}
+		return 0;
+	}
+
+	private String readFromFile(String filename) {
+		InputStream is = getServletContext().getResourceAsStream("/WEB-INF/test/" + filename);
 		StringBuffer sb = new StringBuffer();
-		InputStream is = getServletContext().getResourceAsStream(filename);
 		if (is != null) {
-			BufferedReader reader;
 			try {
-				reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 				String text;
 				while ((text = reader.readLine()) != null) {
 					sb.append(text);
@@ -71,15 +105,7 @@ public class VirusServlet extends JsonResponseServlet {
 				e.printStackTrace();
 			}
 		}
-		List<NameValue> intialHostsNum = new ArrayList<NameValue>();
-		Type collectionType = new TypeToken<ArrayList<NameValue>>() {}.getType();
-		intialHostsNum = new Gson().fromJson(sb.toString(), collectionType);
-
-		for (NameValue hostNum : intialHostsNum) {
-			hostNum.setValue(0);
-		}
-
-		return intialHostsNum;
+		return sb.toString();
 	}
 
 	@SuppressWarnings("unchecked")

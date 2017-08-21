@@ -1,0 +1,7 @@
+[ 
+  {province: "北京", municipality: true, areas: ["北京"]},
+  {province: "天津", municipality: true, areas: ["天津"]},
+  {province: "河北", municipality: false, areas: ["承德","张家口","沧州","唐山","邢台","秦皇岛","石家庄","保定"]},
+  {province: "山西", municipality: false, areas: ["太原","临汾","大同"]},
+  {province: "山东", municipality: false, areas: ["招远","青岛","乳山","莱西","日照","胶南","文登","威海","烟台","即墨","临沂","莱州","蓬莱","章丘","胶州","潍坊","枣庄","泰安","济宁","聊城","德州","济宁","廊坊","菏泽"]}
+] 
