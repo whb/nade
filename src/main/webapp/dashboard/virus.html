@@ -54,7 +54,7 @@
       </div>
       <div class="row" style="height:10px;"></div>
       <div class="row">
-        <div class="col-md-12" id="hostsNumFlow" style="height:250px;"></div>
+        <div class="col-md-12" id="totalNumFlow" style="height:250px;"></div>
       </div>
     </div>
     <div class="col-md-2">
@@ -69,15 +69,20 @@
   </div>
 </body>
 
-<script src="/echarts/virus.js"></script> 
+<script src="/echarts/virus.js"></script>
+<script src="/echarts/virus_flow.js"></script> 
 <script type="text/javascript">
 $(function() {
   var virusChart = echarts.init(document.getElementById('main'));
   virusChart.setOption(spreadOption);
+  
+  var totalNumFlowChart = echarts.init(document.getElementById('totalNumFlow'));
+  totalNumFlowChart.setOption(totalNumFlowOption);
 
 
   $(window).resize(function() {
     virusChart.resize();
+    totalNumFlowChart.resize();
   });
 
 
@@ -101,7 +106,21 @@ $(function() {
               return b.value - a.value;
           }).slice(0, 6))},
         ]
-      });      
+      });     
+      
+      
+      result.infectionHostsNum.forEach(function(areaNum) {
+        if(areaPinyin[areaNum.name] == 'total') {
+          totalNumData.shift();
+          now = new Date(+now + 5000);
+          totalNumData.push([now, areaNum.value]);
+        }
+      });
+      totalNumFlowChart.setOption({
+        series : [
+          {data: totalNumData}
+        ]
+      });     
       
       result.infectionHostsNum.forEach(function(areaNum) {
           $("#" + areaPinyin[areaNum.name] + "HostsNum").text(areaNum.value);
