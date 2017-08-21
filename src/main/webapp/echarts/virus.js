@@ -429,14 +429,48 @@ spreadOption = {
             }
         }
     },
+    visualMap: [
+        {
+            left: 'right',
+            bottom: '5%',
+            dimension: 2,
+            min: 0,
+            max: 5000,
+            show: false,
+            itemHeight: 120,
+            calculable: true,
+            precision: 0.1,
+            text: ['明暗：二氧化硫'],
+            textGap: 30,
+            textStyle: {
+                color: '#fff'
+            },
+            inRange: {
+                symbolSize: [0, 30],
+                colorLightness: [1, 0.5],
+            },
+            outOfRange: {
+                symbolSize: [0, 30],
+                color: ['rgba(255,255,255,.2)']
+            },
+            controller: {
+                inRange: {
+                    color: ['#c23531']
+                },
+                outOfRange: {
+                    color: ['#444']
+                }
+            }
+        }
+    ],
     series : [
         {
-            name: 'VIHN',
+            name: '数量',
             type: 'scatter',
             coordinateSystem: 'geo',
             data: convertData(data),
             symbolSize: function (val) {
-                return val[2] / 200;
+                return (val[2] / 200 > 25) ? 25 : val[2] / 200;
             },
             label: {
                 normal: {
@@ -462,7 +496,7 @@ spreadOption = {
                 return b.value - a.value;
             }).slice(0, 6)),
             symbolSize: function (val) {
-                return val[2] / 200;
+                return (val[2] / 200 > 25) ? 25 : val[2] / 200;
             },
             showEffectOn: 'render',
             rippleEffect: {
