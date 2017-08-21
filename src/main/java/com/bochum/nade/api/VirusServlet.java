@@ -20,9 +20,9 @@ import com.google.gson.reflect.TypeToken;
 
 public class VirusServlet extends JsonResponseServlet {
 	private static final long serialVersionUID = 6119709263019798714L;
-	private static final int BEGIN_NUM_OF_municipality_AREA = 2000;
+	private static final int BEGIN_NUM_OF_municipality_AREA = 3000;
 	private static final int BEGIN_NUM_OF_KEY_AREA = 200;
-	private static final int INCREACE_NUM = 100;
+	private static final int INCREACE_NUM = 200;
 	
 	private static ProvinceArea[] provinceAreas;
 	
@@ -69,11 +69,26 @@ public class VirusServlet extends JsonResponseServlet {
 	
 	
 	private boolean isPriority(NameValue hostNum) {
-		if(isKeyArea(hostNum.getName())) {
+		if(isShandongArea(hostNum.getName())) {
+			return (new Random()).nextDouble() > 0.65;
+		} else if(isKeyArea(hostNum.getName())) {
 			return true;
 		} else {
 			return (new Random()).nextDouble() > 0.9;
 		}
+	}
+
+	private boolean isShandongArea(String name) {
+		for(ProvinceArea p : provinceAreas) {
+			if(p.getProvince().equals("山东")) {
+				for(String area : p.getAreas()) {
+					if(area.equals(name)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	private boolean isKeyArea(String name) {
