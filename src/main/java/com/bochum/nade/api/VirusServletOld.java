@@ -18,16 +18,17 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class VirusServlet extends JsonResponseServlet {
+public class VirusServletOld extends JsonResponseServlet {
 	private static final long serialVersionUID = 6119709263019798714L;
-	private static final int BEGIN_NUM_OF_municipality_AREA = 2000;
-	private static final int BEGIN_NUM_OF_KEY_AREA = 200;
+	private static final int BEGIN_NUM_OF_KEY_AREA = 1000;
 	private static final int INCREACE_NUM = 200;
+	private static final int OTHER_AREA_NUM = 200;
 	
 	private static ProvinceArea[] provinceAreas;
 	
 	public void init() throws ServletException {
 		String jsonString = readFromFile("province_areas.json");
+		System.out.println(jsonString);
 		provinceAreas = new Gson().fromJson(jsonString, ProvinceArea[].class);
 	}
 
@@ -36,18 +37,16 @@ public class VirusServlet extends JsonResponseServlet {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		List<NameValue> areaHostsNum = buildAreaHostsNum(request);
-		List<NameValue> categoryHostsNum = buildCategoryHostsNum(areaHostsNum);
+		List<Map<String, Object>> infectionHostsNum = buildInfectionHostsNum(request);
 
 		request.getServletContext().setAttribute("areaHostsNum", areaHostsNum);
-		request.getServletContext().setAttribute("infectionHostsNum", categoryHostsNum);
+		request.getServletContext().setAttribute("infectionHostsNum", infectionHostsNum);
 
 		map.put("areaHostsNum", areaHostsNum);
-		map.put("infectionHostsNum", categoryHostsNum);
+		map.put("infectionHostsNum", infectionHostsNum);
 		String json = new Gson().toJson(map);
 		response.getWriter().write(json);
 	}
-
-
 
 	@SuppressWarnings("unchecked")
 	private List<NameValue> buildAreaHostsNum(HttpServletRequest request) {
@@ -57,34 +56,11 @@ public class VirusServlet extends JsonResponseServlet {
 		} else {
 			for (NameValue hostNum : areaHostsNum) {
 				Integer value = (Integer) (hostNum.getValue());
-				if(isPriority(hostNum)) {
-					value = value + rangeRandom(INCREACE_NUM);
-				}
+				value = value + rangeRandom(INCREACE_NUM);
 				hostNum.setValue(value);
 			}
 		}
 		return areaHostsNum;
-	}
-
-	
-	
-	private boolean isPriority(NameValue hostNum) {
-		if(isKeyArea(hostNum.getName())) {
-			return true;
-		} else {
-			return (new Random()).nextDouble() > 0.8;
-		}
-	}
-
-	private boolean isKeyArea(String name) {
-		for(ProvinceArea p : provinceAreas) {
-			for(String area : p.getAreas()) {
-				if(area.equals(name)) {
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 
 	private List<NameValue> readIntialDataFromFile(HttpServletRequest request) {
@@ -105,54 +81,11 @@ public class VirusServlet extends JsonResponseServlet {
 			for(String area : p.getAreas()) {
 				if(area.equals(name)) {
 					if(p.isMunicipality()) {
-						return rangeRandom(BEGIN_NUM_OF_municipality_AREA);
+						return 500;
 					} else {
-						return rangeRandom(BEGIN_NUM_OF_KEY_AREA);
+						return 100;
 					}
 				}
-			}
-		}
-		return 0;
-	}
-	
-	
-	private List<NameValue> buildCategoryHostsNum(List<NameValue> areaHostsNum) {
-		List<NameValue> categoryHostsNum = new ArrayList<NameValue>();
-		for(ProvinceArea p : provinceAreas) {
-			NameValue nv = new NameValue();
-			nv.setName(p.getProvince());
-			nv.setValue(sumCategory(areaHostsNum, p));
-			categoryHostsNum.add(nv);
-		}
-		
-		NameValue total = new NameValue();
-		total.setName("全国");
-		total.setValue(sumAll(areaHostsNum));
-		categoryHostsNum.add(total);
-		
-		return categoryHostsNum;
-	}
-
-	private Integer sumAll(List<NameValue> areaHostsNum) {
-		int total = 0;
-		for(NameValue areaNum : areaHostsNum) {
-			total +=areaNum.getValue();
-		}
-		return total;
-	}
-
-	private Integer sumCategory(List<NameValue> areaHostsNum, ProvinceArea p) {
-		int categoryNum = 0;
-		for(String area : p.getAreas()) {
-			categoryNum += findNum(areaHostsNum, area);
-		}
-		return categoryNum;
-	}
-
-	private int findNum(List<NameValue> areaHostsNum, String area) {
-		for(NameValue areaNum : areaHostsNum) {
-			if(areaNum.getName().equals(area)) {
-				return areaNum.getValue();
 			}
 		}
 		return 0;
@@ -173,6 +106,51 @@ public class VirusServlet extends JsonResponseServlet {
 			}
 		}
 		return sb.toString();
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Map<String, Object>> buildInfectionHostsNum(HttpServletRequest request) {
+		List<Map<String, Object>> infectionHostsNum = (List<Map<String, Object>>) request.getServletContext()
+				.getAttribute("infectionHostsNum");
+		if (infectionHostsNum == null) {
+			infectionHostsNum = new ArrayList<Map<String, Object>>();
+			infectionHostsNum.add(buildMap("beijing", BEGIN_NUM_OF_KEY_AREA));
+			infectionHostsNum.add(buildMap("tianjin", BEGIN_NUM_OF_KEY_AREA));
+			infectionHostsNum.add(buildMap("hebei", BEGIN_NUM_OF_KEY_AREA));
+			infectionHostsNum.add(buildMap("shanxi", BEGIN_NUM_OF_KEY_AREA));
+			infectionHostsNum.add(buildMap("shandong", BEGIN_NUM_OF_KEY_AREA));
+		} else {
+			for (Map<String, Object> areaHostNum : infectionHostsNum) {
+				Integer value = (Integer) (areaHostNum.get("value"));
+				value = value + rangeRandom(INCREACE_NUM);
+				areaHostNum.put("value", value);
+			}
+		}
+		infectionHostsNum.add(buildSumMap(OTHER_AREA_NUM, infectionHostsNum));
+		return infectionHostsNum;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private Map buildMap(String area, int range) {
+		int value = rangeRandom(range);
+		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("name", area);
+		m.put("value", value);
+		return m;
+	}
+
+	private Map<String, Object> buildSumMap(int range, List<Map<String, Object>> infectionHostsNum) {
+		Integer sum = 0;
+		for (Map<String, Object> areaHostNum : infectionHostsNum) {
+			if ("total".equals(areaHostNum.get("name")))
+				continue;
+			sum += (Integer) areaHostNum.get("value");
+		}
+		sum += rangeRandom(range);
+		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("name", "total");
+		m.put("value", sum);
+		return m;
 	}
 
 	private int rangeRandom(int range) {

@@ -85,6 +85,8 @@ $(function() {
     geo: {
     }
   };
+  
+  var areaPinyin = {'北京': 'beijing', '天津': 'tianjin', '河北': 'hebei', '山西': 'shanxi', '山东': 'shandong', '全国': 'total'};
 
   // 兼容console中jquery。load，DOMContentLoaded没有触发。
   Odometer.init();
@@ -102,7 +104,7 @@ $(function() {
       });      
       
       result.infectionHostsNum.forEach(function(areaNum) {
-          $("#" + areaNum.name + "HostsNum").text(areaNum.value);
+          $("#" + areaPinyin[areaNum.name] + "HostsNum").text(areaNum.value);
         });
       });
   }
