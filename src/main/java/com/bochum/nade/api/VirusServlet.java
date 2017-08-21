@@ -30,7 +30,7 @@ public class VirusServlet extends JsonResponseServlet {
 
 		List<NameValue> areaHostsNum = buildAreaHostsNum(request);
 		List<Map<String, Object>> infectionHostsNum = buildInfectionHostsNum(request);
-		
+
 		request.getServletContext().setAttribute("areaHostsNum", areaHostsNum);
 		request.getServletContext().setAttribute("infectionHostsNum", infectionHostsNum);
 
@@ -74,6 +74,10 @@ public class VirusServlet extends JsonResponseServlet {
 		List<NameValue> intialHostsNum = new ArrayList<NameValue>();
 		Type collectionType = new TypeToken<ArrayList<NameValue>>() {}.getType();
 		intialHostsNum = new Gson().fromJson(sb.toString(), collectionType);
+
+		for (NameValue hostNum : intialHostsNum) {
+			hostNum.setValue(0);
+		}
 
 		return intialHostsNum;
 	}

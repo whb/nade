@@ -92,14 +92,23 @@ $(function() {
   var virusApi = "/api/virus.json";
   function getAndDisplayVirus() {
     $.getJSON(virusApi, function( result ) {
-  	result.infectionHostsNum.forEach(function(areaNum) {
-        $("#" + areaNum.name + "HostsNum").text(areaNum.value);
+      virusChart.setOption({
+        series : [
+          {data: convertData(result.areaHostsNum)},
+          {data: convertData(result.areaHostsNum.sort(function (a, b) {
+              return b.value - a.value;
+          }).slice(0, 6))},
+        ]
+      });      
+      
+      result.infectionHostsNum.forEach(function(areaNum) {
+          $("#" + areaNum.name + "HostsNum").text(areaNum.value);
+        });
       });
-    });
   }
 
   getAndDisplayVirus();
-  setInterval(getAndDisplayVirus, 5000);
+  setInterval(getAndDisplayVirus, 6000);
 });
 </script>
 </html>

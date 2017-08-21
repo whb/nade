@@ -390,7 +390,7 @@ var convertData = function (data) {
         if (geoCoord) {
             res.push({
                 name: data[i].name,
-                value: geoCoord.concat(data[i].value)
+                value: geoCoord.concat(data[i].value/20)
             });
         }
     }
