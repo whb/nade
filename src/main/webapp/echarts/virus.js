@@ -390,7 +390,7 @@ var convertData = function (data) {
         if (geoCoord) {
             res.push({
                 name: data[i].name,
-                value: geoCoord.concat(data[i].value/20)
+                value: geoCoord.concat(data[i].value)
             });
         }
     }
@@ -431,12 +431,12 @@ spreadOption = {
     },
     series : [
         {
-            name: 'pm2.5',
+            name: 'VIHN',
             type: 'scatter',
             coordinateSystem: 'geo',
             data: convertData(data),
             symbolSize: function (val) {
-                return val[2] / 10;
+                return val[2] / 200;
             },
             label: {
                 normal: {
@@ -462,7 +462,7 @@ spreadOption = {
                 return b.value - a.value;
             }).slice(0, 6)),
             symbolSize: function (val) {
-                return val[2] / 10;
+                return val[2] / 200;
             },
             showEffectOn: 'render',
             rippleEffect: {
