@@ -446,11 +446,12 @@ spreadOption = {
                 color: '#fff'
             },
             inRange: {
-                symbolSize: [0, 30],
-                colorLightness: [1, 0.5],
+                symbolSize: [2, 30],
+                //colorLightness: [1, 0.5],
+                color: ['#ddb926', 'lightskyblue', 'gold','#ee4444']
             },
             outOfRange: {
-                symbolSize: [0, 30],
+                symbolSize: [2, 30],
                 color: ['rgba(255,255,255,.2)']
             },
             controller: {
