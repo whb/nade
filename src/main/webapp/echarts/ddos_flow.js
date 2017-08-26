@@ -88,7 +88,8 @@ targetFlowDataGenerator.setAttactFlowDatas(attactFlowDatas);
 
 var beijingFlowOption = {
   title : {
-    left : 'center',
+    left : 35,
+    top : 28,
     text : '北京',
     textStyle : {
       color : '#e0e0e0'
