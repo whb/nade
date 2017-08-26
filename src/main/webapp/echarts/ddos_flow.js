@@ -131,6 +131,26 @@ var beijingFlowOption = {
     },
     min: 0,
   },
+  visualMap: {
+        type: 'piecewise',
+        show: false,
+       
+        pieces: [{
+            lte: 10,
+            color: 'green'
+        }, {
+            gt: 10,
+            lte: 50,
+            color: 'blue'
+        }, {
+            gt: 50,
+            lte: 100,
+            color: 'yellow'
+        }, {
+            gt: 100,
+            color: 'red'
+        }]
+  },
   series : [ {
     name : '模拟数据',
     type : 'line',
