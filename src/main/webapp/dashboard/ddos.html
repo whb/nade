@@ -16,25 +16,21 @@
 </head>
 
 <body class="container-fluid">
-  <h1 class="title">网络攻防演练-DDOS攻击</h1>
-
   <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-12">
       <div class="row">
-        <div class="col-md-9" id="main" style="height:800px;"></div>
-        <div class="col-md-3">
-          <div class="attackFlow" id="tianjinFlow" style="height:200px;"></div>
-          <div class="attackFlow" id="hebeiFlow" style="height:200px;"></div>
-          <div class="attackFlow" id="shanxiFlow" style="height:200px;"></div>
-          <div class="attackFlow" id="shandongFlow" style="height:200px;"></div>
-        </div>
+        <div id="main" style="height:1080px;"></div>
       </div>
-      <div class="row" style="height:10px;"></div>
-      <div class="row">
-        <div class="col-md-12" id="beijingFlow" style="height:250px;"></div>
-      </div>
+
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3 chart_column">
+      <div class="attackFlow" id="tianjinFlow" style="height:200px;"></div>
+      <div class="attackFlow" id="hebeiFlow" style="height:200px;"></div>
+      <div class="attackFlow" id="shanxiFlow" style="height:200px;"></div>
+      <div class="attackFlow" id="shandongFlow" style="height:200px;"></div>
+    </div>
+
+    <div class="col-md-2 text_column" >
       <h3>抗DDOS系统简介：</h3>
       <ul>
         <li>建设时间：</li>
@@ -43,6 +39,8 @@
         <li>使用效果等</li>
       </ul>
     </div>
+    <div class="col-md-10 long_chart" id="beijingFlow" style="height:200px;"></div>
+
   </div>
 </body>
 

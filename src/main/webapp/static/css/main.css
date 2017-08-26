@@ -150,5 +150,21 @@ body.container-fluid .title {
   margin-bottom: 5px;
 } 
 
+.text_column {
+  position: relative; top: -1030px;
+  float : right;
+  /*filter:alpha(opacity=50); opacity:0.5;*/
+}
 
+.chart_column {
+  position: relative; top: -1060px;
+  float : left;
+  /*filter:alpha(opacity=50); opacity:0.5;*/
+}
+
+.long_chart {
+  position: relative; top: -960px;
+  float : left;
+  /*filter:alpha(opacity=50); opacity:0.5;*/
+}
  

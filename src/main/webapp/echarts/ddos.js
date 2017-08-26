@@ -167,10 +167,13 @@ var series = [ trailSerie, planeSerie, scatterSerie ];
 var moveOption = {
     backgroundColor: '#404a59',
     title : {
-        text: '攻击模拟',
+        text: '网络攻防演练-DDOS攻击',
         left: 'center',
+        top: 50,
         textStyle : {
-            color: '#e0e0e0'
+            color: '#e0e0e0',
+            fontSize: 36,
+            fontWeight: 'normal'
         }
     },
     tooltip: {
