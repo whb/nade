@@ -106,12 +106,12 @@ var planeSerie = {
         trailLength: 0,
         color: 'maroon',
         symbol: planePath,
-        symbolSize: 12
+        symbolSize: 14
     },
     lineStyle: {
         normal: {
             color: '#a6c84c',
-            width: 1,
+            width: 2,
             opacity: 0.8,
             curveness: 0.2
         }
@@ -148,7 +148,7 @@ var scatterSerie = {
     rippleEffect: {
         period: 8,
         scale: 6,
-        brushType: 'stroke'
+        brushType: 'fill'
     },
     label: {
         normal: {
