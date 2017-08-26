@@ -30,7 +30,7 @@
       <div class="attackFlow" id="shandongFlow" style="height:200px;"></div>
     </div>
 
-    <div class="col-md-2 text_column" >
+    <div class="col-md-3 text_column" >
       <h3>抗DDOS系统简介：</h3>
       <ul>
         <li>建设时间：</li>
@@ -39,8 +39,9 @@
         <li>使用效果等</li>
       </ul>
     </div>
-    <div class="col-md-10 long_chart" id="beijingFlow" style="height:200px;"></div>
-
+    <div class="row">
+      <div class="col-md-9 long_chart" id="beijingFlow" style="height:200px;"></div>
+    </div>
   </div>
 </body>
 
@@ -93,10 +94,10 @@ function getDdosJson() {
       return;
     }
     
-    if(result.attackViolent && animationOption.geo.zoom != 5) {
+    if(result.attackViolent && animationOption.geo.zoom != 7) {
       pageStatus = result;
-      animationOption.geo.zoom = 5;
-      animationOption.geo.center = geoCoordMap['北京'];
+      animationOption.geo.zoom = 7;
+      animationOption.geo.center = geoCoordMap['河北'];
       redrawChart(animationOption);
       return;
     }
@@ -105,7 +106,7 @@ function getDdosJson() {
       return;
     } else {
       pageStatus = result;
-      animationOption.geo.zoom = 4;
+      animationOption.geo.zoom = 5;
       animationOption.geo.center = geoCoordMap[pageStatus.activeAttackArea];
         redrawChart(animationOption);
     }
