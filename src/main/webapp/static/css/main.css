@@ -151,19 +151,19 @@ body.container-fluid .title {
 } 
 
 .text_column {
-  position: relative; top: -1030px;
+  position: absolute; top: 100px; right: 0px;
   float : right;
   /*filter:alpha(opacity=50); opacity:0.5;*/
 }
 
 .chart_column {
-  position: relative; top: -940px;
+  position: absolute; top: 100px;
   float : left;
   /*filter:alpha(opacity=50); opacity:0.5;*/
 }
 
 .long_chart {
-  position: relative; top: -960px;
+  position: absolute; top: 886px;
   float : left;
   /*filter:alpha(opacity=50); opacity:0.5;*/
 }
