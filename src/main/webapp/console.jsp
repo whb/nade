@@ -68,6 +68,12 @@
                       <i class="fa fa-shield fa-lg"></i> 山东协同
                     </button>
                   </div>
+                  <hr>
+                  <div class="row">
+                    <button id="alarm-button" type="button" class="btn btn-outline">
+                      <i class="fa fa-exclamation-triangle fa-lg"></i> 发出警报
+                    </button>
+                  </div>
                 </div>
                 
                 <div class="col-md-4">
@@ -132,6 +138,12 @@
 $("#reset-button").click(function() {
   $.post("console", {
     reset : "true"
+  });
+});
+
+$("#alarm-button").click(function() {
+  $.post("console", {
+    ddosAlarm : "true"
   });
 });
 

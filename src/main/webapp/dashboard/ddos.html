@@ -9,10 +9,12 @@
   <!--[if lte IE 8]><meta http-equiv="refresh" content="0;url=/ie" /><![endif]-->
   
   <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/font-awesome.min.css">
   <link rel="stylesheet" href="/static/css/main.css">
   <script src="/static/js/echarts.min.js"></script>
   <script src="/static/js/map/china.js"></script> 
   <script src="/static/js/jquery-3.2.1.min.js"></script> 
+  <script src="/static/js/bootstrap.min.js"></script>
 </head>
 
 <body class="container-fluid">
@@ -38,12 +40,33 @@
         <li>覆盖规模</li>
         <li>使用效果等</li>
       </ul>
+      
+      <div class="alarm">
+      </div>
     </div>
-    <div class="row">
-      <div class="col-md-9 long_chart" id="beijingFlow" style="height:200px;"></div>
-    </div>
+    <div class="col-md-10 long_chart" id="beijingFlow" style="height:200px;"></div>
   </div>
+
+  
+<div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <h1 class="alarm"><i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;警告</h1>
+        <h1>发现DDOS攻击!!!</h1>
+      </div>
+    </div>
+</div>
 </body>
+
+<script type="text/javascript">
+var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
+  clearTimeout(alarmModal.data('hideInteval'))
+  var id = setTimeout(function(){
+      alarmModal.modal('hide');
+  }, 8000);
+  alarmModal.data('hideInteval', id);
+})
+</script> 
 
 <script type="text/javascript">
 var attackAreaBases = ['天津', '河北', '山西', '山东'];
@@ -86,8 +109,12 @@ var animationOption = {
 };
 
 var ddosApi = "/api/ddos.json";
-function getDdosJson() {
+function getDdosJsonAndRedraw() {
   $.getJSON(ddosApi, function( result ) {
+    if(result.ddosAlarm) {
+      $('#alarmModal').modal('show');
+    }
+    
     if(result.attackAreas.length == 0 && pageStatus.attackAreas.length > 0) {
       pageStatus = result;
       redrawChart(initialOption);
@@ -122,6 +149,6 @@ function redrawChart(otherOption) {
   ddosChart.setOption(moveOption);
 }
 
-setInterval(getDdosJson, 1000);
+setInterval(getDdosJsonAndRedraw, 1000);
 </script>
 </html>

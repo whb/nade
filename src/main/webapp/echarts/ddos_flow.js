@@ -182,7 +182,6 @@ setInterval(function() {
     });
   });
   
-  console.log(areaStyleColor[pageStatus.attackAreas.length]);
   beijingFlowChart.setOption({
     yAxis : {
       max: 150
