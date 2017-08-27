@@ -86,6 +86,8 @@ var targetFlowDataGenerator = new TargetFlowDataGenerator();
 targetFlowDataGenerator.setAttactFlowDatas(attactFlowDatas);
 
 
+var areaStyleColor = ['lightgreen', 'lightskyblue', 'yellow', 'darkorange','#ee4444'];
+
 var beijingFlowOption = {
   title : {
     left : 35,
@@ -146,7 +148,7 @@ var beijingFlowOption = {
     },
     areaStyle : {
       normal : {
-        color : '#00FA9A'
+        color : areaStyleColor[0]
       }
     },
     data : targetFlowDataGenerator.initialData()
@@ -162,7 +164,6 @@ for(var i = 0; i < 4; i++) {
 }
 
 
-
 setInterval(function() {
   attackFlowCharts.forEach(function(flowChart) {
     var attackArea = flowChart.getOption().title[0].text;
@@ -174,8 +175,14 @@ setInterval(function() {
     });
   });
   
+  console.log(areaStyleColor[pageStatus.attackAreas.length]);
   beijingFlowChart.setOption({
     series : [ {
+      areaStyle : {
+        normal : {
+          color : areaStyleColor[pageStatus.attackAreas.length]
+        }
+      },
       data : targetFlowDataGenerator.requestData()
     } ]
   });
