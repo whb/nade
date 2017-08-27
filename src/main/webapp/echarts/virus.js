@@ -400,11 +400,14 @@ var convertData = function (data) {
 spreadOption = {
     backgroundColor: '#404a59',
     title: {
-        text: '病毒传播示意图',
+        text: '网络攻防演练-网络病毒爆发',
         subtext: '京、津、冀、晋、鲁五省',
         left: 'center',
-        textStyle: {
-            color: '#eee'
+        top: 50,
+        textStyle : {
+            color: '#e0e0e0',
+            fontSize: 36,
+            fontWeight: 'normal'
         }
     },
     tooltip : {

@@ -18,55 +18,51 @@
 </head>
 
 <body class="container-fluid">
-  <h1  class="title">网络攻防演练-网络病毒爆发</h1>
-  
-  <div class="row">
-    <div class="col-md-10">
+  <div class="col-md-12">
       <div class="row">
-        <div class="col-md-9" id="main" style="height:800px;"></div>
-        <div class="col-md-3 statistic-wrapper">
-          <h4>被感染主机数量</h4>
-          <dl>
-              <dd id="beijingHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
-              <dt>北京</dt>
-          </dl>
-          <dl>
-              <dd id="tianjinHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
-              <dt>天津</dt>
-          </dl>
-          <dl>
-              <dd id="hebeiHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
-              <dt>河北</dt>
-          </dl>
-          <dl>
-              <dd id="shanxiHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
-              <dt>山西</dt>
-          </dl>
-          <dl>
-              <dd id="shandongHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
-              <dt>山东</dt>
-          </dl>
-          <dl>
-              <dd id="totalHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
-              <dt>全国</dt>
-          </dl>
-        </div>
+        <div id="main" style="height:1080px;"></div>
       </div>
-      <div class="row" style="height:10px;"></div>
-      <div class="row">
-        <div class="col-md-12" id="totalNumFlow" style="height:250px;"></div>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <h3>封堵病毒系统简介：</h3>
-      <ul>
-        <li>建设时间：</li>
-        <li>投入：</li>
-        <li>覆盖规模</li>
-        <li>使用效果等</li>
-      </ul>
-    </div>
   </div>
+  
+  <div class="col-md-3 statistic-wrapper chart_column">
+      <h4>被感染主机数量</h4>
+      <dl>
+          <dd id="beijingHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
+          <dt>北京</dt>
+      </dl>
+      <dl>
+          <dd id="tianjinHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
+          <dt>天津</dt>
+      </dl>
+      <dl>
+          <dd id="hebeiHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
+          <dt>河北</dt>
+      </dl>
+      <dl>
+          <dd id="shanxiHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
+          <dt>山西</dt>
+      </dl>
+      <dl>
+          <dd id="shandongHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
+          <dt>山东</dt>
+      </dl>
+      <dl>
+          <dd id="totalHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
+          <dt>全国</dt>
+      </dl>
+  </div>
+  
+  <div class="col-md-3 text_column">
+    <h3>封堵病毒系统简介：</h3>
+    <ul>
+      <li>建设时间：</li>
+      <li>投入：</li>
+      <li>覆盖规模</li>
+      <li>使用效果等</li>
+    </ul>
+  </div>
+  
+  <div class="col-md-9 long_chart" id="totalNumFlow" style="height:200px;"></div>
 </body>
 
 <script src="/echarts/virus.js"></script>

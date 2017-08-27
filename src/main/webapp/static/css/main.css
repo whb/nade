@@ -163,7 +163,7 @@ body.container-fluid .title {
 }
 
 .long_chart {
-  position: absolute; top: 886px;
+  position: absolute; top: 888px;
   float : left;
   /*filter:alpha(opacity=50); opacity:0.5;*/
 }

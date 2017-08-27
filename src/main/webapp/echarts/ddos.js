@@ -170,6 +170,7 @@ var moveOption = {
     backgroundColor: '#404a59',
     title : {
         text: '网络攻防演练-DDOS攻击',
+        subtext: '京、津、冀、晋、鲁五省',
         left: 'center',
         top: 50,
         textStyle : {

@@ -15,6 +15,7 @@ var initialData = function() {
 var totalNumFlowOption = {
   title : {
     left : 'center',
+    top : 28,
     text : '全国感染病毒主机数量',
     textStyle : {
       color : '#e0e0e0'
