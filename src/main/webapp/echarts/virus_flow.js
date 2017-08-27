@@ -52,6 +52,25 @@ var totalNumFlowOption = {
     },
     min: 0,
   },
+  visualMap: {
+    type: 'piecewise',
+    show: false,
+    pieces: [{
+        lte: 10000,
+        color: 'green'
+    }, {
+        gt: 10000,
+        lte: 50000,
+        color: 'blue'
+    }, {
+        gt: 50000,
+        lte: 100000,
+        color: 'yellow'
+    }, {
+        gt: 100000,
+        color: 'red'
+    }]
+  },
   series : [ {
     name : '主机数量',
     type : 'line',
@@ -59,7 +78,7 @@ var totalNumFlowOption = {
     hoverAnimation : false,
     lineStyle: {
         normal: {
-            color: '#DC143C',
+            color: 'white',
             width: 1,
             opacity: 0.4,
             curveness: 0.2
@@ -67,7 +86,7 @@ var totalNumFlowOption = {
     },
     areaStyle : {
       normal : {
-        color : '#00FA9A'
+        color : 'white'
       }
     },
     data : initialData()
