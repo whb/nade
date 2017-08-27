@@ -16,7 +16,13 @@ function FlowDataGenerator() {
   
   this.randomData = function() {
     this.tick = new Date(+this.tick + this.interval);
-    this.value = Math.abs(this.value + Math.random() * 2.01 - 1);
+    if(this.value > 40) {
+      this.value = Math.abs(this.value - Math.random() * 2);
+    } else if (this.value < 15) {
+      this.value = Math.abs(this.value + Math.random() * 2.01 - 0.8);
+    } else {
+      this.value = Math.abs(this.value + Math.random() * 2.01 - 1);
+    }
     return { value : [ this.tick, Math.round(this.value) ] };
   };
   
@@ -179,7 +185,7 @@ setInterval(function() {
   console.log(areaStyleColor[pageStatus.attackAreas.length]);
   beijingFlowChart.setOption({
     yAxis : {
-      max: 140
+      max: 150
     },
     series : [ {
       areaStyle : {

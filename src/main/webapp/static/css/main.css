@@ -157,7 +157,7 @@ body.container-fluid .title {
 }
 
 .chart_column {
-  position: relative; top: -1060px;
+  position: relative; top: -940px;
   float : left;
   /*filter:alpha(opacity=50); opacity:0.5;*/
 }
