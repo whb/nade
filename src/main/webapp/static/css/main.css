@@ -97,7 +97,7 @@ body.container-fluid {
 
 .title  {
   position: relative;
-  padding: 30px 0;
+  padding: 10px 0;
   color: #0d8fe3;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0,0,0,.1);
@@ -166,5 +166,20 @@ body.container-fluid .title {
   position: relative; top: -960px;
   float : left;
   /*filter:alpha(opacity=50); opacity:0.5;*/
+}
+
+
+#reset-button {
+  margin: 20px 5px;
+}
+
+.btn-circle {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
 }
  

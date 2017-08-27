@@ -28,6 +28,10 @@
           <li role="presentation"><a href="#webpage">网页篡改</a></li>
           <li role="presentation"><a href="#leak">大规模用户信息泄露</a></li>
         </ul>
+        
+        <div style="text-align:center;">
+           重新<button id="reset-button"  type="button" class="btn btn-circle btn-outline"><i class="fa fa-refresh"></i></button>开始
+        </div>
       </div>
       
 <div class="col-md-10 console">

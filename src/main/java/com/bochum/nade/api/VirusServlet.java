@@ -34,14 +34,16 @@ public class VirusServlet extends JsonResponseServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-Type", "application/json; charset=UTF-8");
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+
 		List<NameValue> areaHostsNum;
 		if ("spread".equals(request.getServletContext().getAttribute("action"))) {
 			areaHostsNum = buildAreaHostsNum(request);
+		} else if ("reset".equals(request.getServletContext().getAttribute("action"))) {
+			areaHostsNum = readZeroDataFromFile(request);
 		} else {
 			areaHostsNum = keepOrBuildZeroAreaHostsNum(request);
 		}
-		
+
 		List<NameValue> categoryHostsNum = buildCategoryHostsNum(areaHostsNum);
 		request.getServletContext().setAttribute("areaHostsNum", areaHostsNum);
 		request.getServletContext().setAttribute("infectionHostsNum", categoryHostsNum);
@@ -116,7 +118,8 @@ public class VirusServlet extends JsonResponseServlet {
 	private List<NameValue> readIntialDataFromFile(HttpServletRequest request) {
 		String jsonString = readFromFile("virus_area_num.json");
 		List<NameValue> intialHostsNum = new ArrayList<NameValue>();
-		Type collectionType = new TypeToken<ArrayList<NameValue>>() {}.getType();
+		Type collectionType = new TypeToken<ArrayList<NameValue>>() {
+		}.getType();
 		intialHostsNum = new Gson().fromJson(jsonString, collectionType);
 
 		for (NameValue hostNum : intialHostsNum) {
@@ -125,11 +128,12 @@ public class VirusServlet extends JsonResponseServlet {
 
 		return intialHostsNum;
 	}
-	
+
 	private List<NameValue> readZeroDataFromFile(HttpServletRequest request) {
 		String jsonString = readFromFile("virus_area_num.json");
 		List<NameValue> intialHostsNum = new ArrayList<NameValue>();
-		Type collectionType = new TypeToken<ArrayList<NameValue>>() {}.getType();
+		Type collectionType = new TypeToken<ArrayList<NameValue>>() {
+		}.getType();
 		intialHostsNum = new Gson().fromJson(jsonString, collectionType);
 
 		for (NameValue hostNum : intialHostsNum) {
@@ -153,7 +157,7 @@ public class VirusServlet extends JsonResponseServlet {
 		}
 		return 0;
 	}
-	
+
 	private List<NameValue> buildCategoryHostsNum(List<NameValue> areaHostsNum) {
 		List<NameValue> categoryHostsNum = new ArrayList<NameValue>();
 		for (ProvinceArea p : provinceAreas) {
