@@ -35,8 +35,6 @@
         <div role="tabpanel" class="tab-pane" id="ddos">
               <div class="row">
                 <div class="col-md-8">
-                  <img src="/static/images/workflow.png" />
-                  <hr>
                   <div class="row">
                     <button name="天津" type="button" class="attack btn btn-outline">
                       <i class="fa fa-rocket fa-lg"></i> 天津攻击
@@ -134,7 +132,7 @@ $("#reset-button").click(function() {
 });
 
 $('#consoleTabs a').click(function (e) {
-  e.preventDefault();
+  //e.preventDefault();
   $(this).tab('show');
   var subject = $(this).attr("href").substring(1);
   $.post("console", {
