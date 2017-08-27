@@ -48,6 +48,12 @@ public class VirusServlet extends JsonResponseServlet {
 		request.getServletContext().setAttribute("areaHostsNum", areaHostsNum);
 		request.getServletContext().setAttribute("infectionHostsNum", categoryHostsNum);
 
+		Boolean alarm = (Boolean) request.getServletContext().getAttribute("alarm");
+		if(alarm != null && alarm) {
+			map.put("alarm", alarm);
+			request.getServletContext().setAttribute("alarm", null);
+		}
+		
 		map.put("areaHostsNum", areaHostsNum);
 		map.put("infectionHostsNum", categoryHostsNum);
 

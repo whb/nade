@@ -111,7 +111,7 @@ var animationOption = {
 var ddosApi = "/api/ddos.json";
 function getDdosJsonAndRedraw() {
   $.getJSON(ddosApi, function( result ) {
-    if(result.ddosAlarm) {
+    if(result.alarm) {
       $('#alarmModal').modal('show');
     }
     

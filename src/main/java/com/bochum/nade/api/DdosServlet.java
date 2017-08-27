@@ -42,10 +42,10 @@ public class DdosServlet extends JsonResponseServlet {
 			session.setAttribute("ajaxCallCount", null);
 		}
 
-		Boolean ddosAlarm = (Boolean) request.getServletContext().getAttribute("ddosAlarm");
-		if(ddosAlarm != null && ddosAlarm) {
-			map.put("ddosAlarm", ddosAlarm);
-			request.getServletContext().setAttribute("ddosAlarm", null);
+		Boolean alarm = (Boolean) request.getServletContext().getAttribute("alarm");
+		if(alarm != null && alarm) {
+			map.put("alarm", alarm);
+			request.getServletContext().setAttribute("alarm", null);
 		}
 		
 		map.put("activeAttackArea", activeAttackArea);

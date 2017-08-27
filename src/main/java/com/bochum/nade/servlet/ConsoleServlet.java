@@ -26,9 +26,9 @@ public class ConsoleServlet extends HttpServlet {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String ddosAlarm = request.getParameter("ddosAlarm");
+		String ddosAlarm = request.getParameter("alarm");
 		if ("true".equals(ddosAlarm)) {
-			request.getServletContext().setAttribute("ddosAlarm", true);
+			request.getServletContext().setAttribute("alarm", true);
 			return;
 		}
 		
