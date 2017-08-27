@@ -86,7 +86,7 @@ var targetFlowDataGenerator = new TargetFlowDataGenerator();
 targetFlowDataGenerator.setAttactFlowDatas(attactFlowDatas);
 
 
-var areaStyleColor = ['lightgreen', 'lightskyblue', 'yellow', 'darkorange','#ee4444'];
+var areaStyleColor = ['lightgreen', 'lightskyblue', 'yellow', 'orange','red'];
 
 var beijingFlowOption = {
   title : {
@@ -132,6 +132,7 @@ var beijingFlowOption = {
       show : true
     },
     min: 0,
+    max: 50
   },
   series : [ {
     name : '模拟数据',
@@ -148,7 +149,7 @@ var beijingFlowOption = {
     },
     areaStyle : {
       normal : {
-        color : areaStyleColor[0]
+        color : 'lightyellow'
       }
     },
     data : targetFlowDataGenerator.initialData()
@@ -177,6 +178,9 @@ setInterval(function() {
   
   console.log(areaStyleColor[pageStatus.attackAreas.length]);
   beijingFlowChart.setOption({
+    yAxis : {
+      max: 140
+    },
     series : [ {
       areaStyle : {
         normal : {
