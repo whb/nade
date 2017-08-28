@@ -171,7 +171,7 @@ $("#ddos .attack").click(function() {
 
 $("#ddos .defense").click(function() {
   $.post("console", {
-    inactiveAttackArea : $(this).attr("name")
+    defensingArea : $(this).attr("name")
   });
 });
 

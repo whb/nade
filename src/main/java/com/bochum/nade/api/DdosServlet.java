@@ -1,9 +1,12 @@
 package com.bochum.nade.api;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -22,12 +25,32 @@ public class DdosServlet extends JsonResponseServlet {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		String activeAttackArea = (String) request.getServletContext().getAttribute("activeAttackArea");
-		Set<String> attackAreas = (Set<String>) request.getServletContext().getAttribute("attackAreasAvailable");
+		String lastDefensingArea = (String) request.getServletContext().getAttribute("lastDefensingArea");
+
+		Set<String> attackAreas = (Set<String>) request.getServletContext().getAttribute("attackAreas");
 		if (attackAreas == null)
 			attackAreas = new HashSet<String>();
+		Map<String, Date> defensingAreaMap = (Map<String, Date>) request.getServletContext().getAttribute("defensingAreaMap");
+		if (defensingAreaMap == null)
+			defensingAreaMap = new HashMap<String, Date>();
+
+		Iterator<Entry<String, Date>> it = defensingAreaMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, Date> entry = it.next();
+			String defensingArea = entry.getKey();
+			Date beginTime = entry.getValue();
+
+			Date now = new Date();
+			if ((now.getTime() - beginTime.getTime()) > 4000) {
+				attackAreas.remove(defensingArea);
+				it.remove();
+			}
+		}
+		
+		request.getServletContext().setAttribute("attackAreas", attackAreas);
+		request.getServletContext().setAttribute("defensingAreaMap", defensingAreaMap);
 
 		boolean attackViolent = false;
-
 		HttpSession session = request.getSession();
 		if (attackAreas.size() >= 4) {
 			Integer ajaxCallCount = (Integer) session.getAttribute("ajaxCallCount");
@@ -43,15 +66,18 @@ public class DdosServlet extends JsonResponseServlet {
 		}
 
 		Boolean alarm = (Boolean) request.getServletContext().getAttribute("alarm");
-		if(alarm != null && alarm) {
+		if (alarm != null && alarm) {
 			map.put("alarm", alarm);
 			request.getServletContext().setAttribute("alarm", null);
 		}
-		
+
 		map.put("activeAttackArea", activeAttackArea);
+		map.put("lastDefensingArea", lastDefensingArea);
 		map.put("attackAreas", attackAreas);
+		map.put("defensingAreas", defensingAreaMap.keySet());
 		map.put("attackViolent", attackViolent);
 		String json = new Gson().toJson(map);
 		response.getWriter().write(json);
 	}
+
 }

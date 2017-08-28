@@ -1,7 +1,10 @@
 package com.bochum.nade.servlet;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
@@ -31,7 +34,7 @@ public class ConsoleServlet extends HttpServlet {
 			request.getServletContext().setAttribute("alarm", true);
 			return;
 		}
-		
+
 		String subject = request.getParameter("subject");
 		if (subject != null && subject.length() > 0) {
 			request.getServletContext().setAttribute("subject", subject);
@@ -55,38 +58,53 @@ public class ConsoleServlet extends HttpServlet {
 	private void doDdos(HttpServletRequest request) {
 		String reset = request.getParameter("reset");
 		if ("true".equals(reset)) {
-			request.getServletContext().setAttribute("ddosAlarm", null);
+			request.getServletContext().setAttribute("alarm", null);
 			request.getServletContext().setAttribute("activeAttackArea", null);
-			request.getServletContext().setAttribute("attackAreasAvailable", null);
+			request.getServletContext().setAttribute("lastDefensingArea", null);
+
+			request.getServletContext().setAttribute("attackAreas", null);
+			request.getServletContext().setAttribute("defensingAreaMap", null);
 			return;
 		}
-		
-		
+
 		String activeAttackArea = request.getParameter("activeAttackArea");
+		
 		if (activeAttackArea != null && activeAttackArea.length() > 0) {
 			request.getServletContext().setAttribute("activeAttackArea", activeAttackArea);
 
-			Set<String> attackAreasAvailable = (HashSet<String>) request.getServletContext().getAttribute("attackAreasAvailable");
-			if (attackAreasAvailable == null)
-				attackAreasAvailable = new HashSet<String>();
-			attackAreasAvailable.add(activeAttackArea);
-
-			request.getServletContext().setAttribute("attackAreasAvailable", attackAreasAvailable);
+			addActiveArea(request, activeAttackArea);
 			return;
 		}
 
-		String inactiveAttackArea = request.getParameter("inactiveAttackArea");
-		if (inactiveAttackArea != null && inactiveAttackArea.length() > 0) {
-			request.getServletContext().setAttribute("inactiveAttackArea", inactiveAttackArea);
+		String defensingArea = request.getParameter("defensingArea");
+		if (defensingArea != null && defensingArea.length() > 0 && isAlreadyActive(request, defensingArea)) {
+			request.getServletContext().setAttribute("lastDefensingArea", defensingArea);
 
-			Set<String> attackAreasAvailable = (HashSet<String>) request.getServletContext().getAttribute("attackAreasAvailable");
-			if (attackAreasAvailable == null)
-				attackAreasAvailable = new HashSet<String>();
-			attackAreasAvailable.remove(inactiveAttackArea);
+			Map<String, Date> defensingAreaMap = (Map<String, Date>) request.getServletContext().getAttribute("defensingAreaMap");
+			if (defensingAreaMap == null)
+				defensingAreaMap = new HashMap<String, Date>();
+			defensingAreaMap.put(defensingArea, new Date());
 
-			request.getServletContext().setAttribute("attackAreasAvailable", attackAreasAvailable);
 			return;
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private boolean isAlreadyActive(HttpServletRequest request, String defensingArea) {
+		Set<String> attackAreas = (HashSet<String>) request.getServletContext().getAttribute("attackAreas");
+		if (attackAreas == null)
+			attackAreas = new HashSet<String>();
+
+		return attackAreas.contains(defensingArea);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void addActiveArea(HttpServletRequest request, String activeAttackArea) {
+		Set<String> attackAreas = (HashSet<String>) request.getServletContext().getAttribute("attackAreas");
+		if (attackAreas == null)
+			attackAreas = new HashSet<String>();
+		attackAreas.add(activeAttackArea);
+		request.getServletContext().setAttribute("attackAreas", attackAreas);
 	}
 
 	private void doVirus(HttpServletRequest request) {
@@ -95,7 +113,7 @@ public class ConsoleServlet extends HttpServlet {
 			request.getServletContext().setAttribute("action", "reset");
 			return;
 		}
-		
+
 		String action = request.getParameter("action");
 		if (action != null && action.length() > 0) {
 			request.getServletContext().setAttribute("action", action);

@@ -140,6 +140,20 @@ function buildAreaScatter() {
   }
   return areaScatters;
 }
+
+function buildDefenseMarkPoint() {
+  if(!pageStatus.defensingAreas) return [];
+  var areaScatters = [];
+  for (var i = 0; i < pageStatus.defensingAreas.length; i++) {
+    var areaScatter = {
+        name: '协同',
+        coord: geoCoordMap[pageStatus.defensingAreas[i]]
+    };
+    areaScatters.push(areaScatter);
+  }
+  return areaScatters;
+}
+
 var scatterSerie = {
     type: 'effectScatter',
     coordinateSystem: 'geo',
@@ -156,7 +170,6 @@ var scatterSerie = {
             formatter: '{b}'
         }
     },
-    
     markPoint: {
       symbol: 'circle',
       symbolSize: 70,
@@ -169,16 +182,14 @@ var scatterSerie = {
       },
       label:{
           normal:{
-              show: false,
-              position: 'right',
+              show: true,
+              position: 'insideTop',
               formatter:function(d){return d.name}
           }
       },
-      data: [
-//             {name: '协同', coord:geoCoordMap['天津']}
-      ]
-  },
-
+      data: buildDefenseMarkPoint()
+    },
+    
     data: buildAreaScatter()
 }
 
@@ -230,5 +241,6 @@ var moveOption = {
             }
         }]
     },
+    
     series: series
 };
