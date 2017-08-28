@@ -2,8 +2,8 @@ package com.bochum.nade.api;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -22,32 +22,28 @@ public class DdosServlet extends JsonResponseServlet {
 	@SuppressWarnings("unchecked")
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-Type", "application/json; charset=UTF-8");
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
 
 		String activeAttackArea = (String) request.getServletContext().getAttribute("activeAttackArea");
 		String lastDefensingArea = (String) request.getServletContext().getAttribute("lastDefensingArea");
 
 		Set<String> attackAreas = (Set<String>) request.getServletContext().getAttribute("attackAreas");
 		if (attackAreas == null)
-			attackAreas = new HashSet<String>();
+			attackAreas = new LinkedHashSet<String>();
 		Map<String, Date> defensingAreaMap = (Map<String, Date>) request.getServletContext().getAttribute("defensingAreaMap");
 		if (defensingAreaMap == null)
-			defensingAreaMap = new HashMap<String, Date>();
+			defensingAreaMap = new LinkedHashMap<String, Date>();
 
 		Iterator<Entry<String, Date>> it = defensingAreaMap.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<String, Date> entry = it.next();
-			String defensingArea = entry.getKey();
 			Date beginTime = entry.getValue();
 
 			Date now = new Date();
 			if ((now.getTime() - beginTime.getTime()) > 4000) {
-				attackAreas.remove(defensingArea);
 				it.remove();
 			}
 		}
-		
-		request.getServletContext().setAttribute("attackAreas", attackAreas);
 		request.getServletContext().setAttribute("defensingAreaMap", defensingAreaMap);
 
 		boolean attackViolent = false;
@@ -71,6 +67,15 @@ public class DdosServlet extends JsonResponseServlet {
 			request.getServletContext().setAttribute("alarm", null);
 		}
 
+		String focusArea = "河北";
+		for (String attackArea : attackAreas) {
+			focusArea = attackArea;
+		}
+		for (String defensingArea : defensingAreaMap.keySet()) {
+			focusArea = defensingArea;
+		}
+
+		map.put("focusArea", focusArea);
 		map.put("activeAttackArea", activeAttackArea);
 		map.put("lastDefensingArea", lastDefensingArea);
 		map.put("attackAreas", attackAreas);

@@ -2,8 +2,8 @@ package com.bochum.nade.servlet;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -68,7 +68,7 @@ public class ConsoleServlet extends HttpServlet {
 		}
 
 		String activeAttackArea = request.getParameter("activeAttackArea");
-		
+
 		if (activeAttackArea != null && activeAttackArea.length() > 0) {
 			request.getServletContext().setAttribute("activeAttackArea", activeAttackArea);
 
@@ -77,12 +77,12 @@ public class ConsoleServlet extends HttpServlet {
 		}
 
 		String defensingArea = request.getParameter("defensingArea");
-		if (defensingArea != null && defensingArea.length() > 0 && isAlreadyActive(request, defensingArea)) {
+		if (defensingArea != null && defensingArea.length() > 0 && isRemoveFromActive(request, defensingArea)) {
 			request.getServletContext().setAttribute("lastDefensingArea", defensingArea);
 
 			Map<String, Date> defensingAreaMap = (Map<String, Date>) request.getServletContext().getAttribute("defensingAreaMap");
 			if (defensingAreaMap == null)
-				defensingAreaMap = new HashMap<String, Date>();
+				defensingAreaMap = new LinkedHashMap<String, Date>();
 			defensingAreaMap.put(defensingArea, new Date());
 
 			return;
@@ -90,19 +90,24 @@ public class ConsoleServlet extends HttpServlet {
 	}
 
 	@SuppressWarnings("unchecked")
-	private boolean isAlreadyActive(HttpServletRequest request, String defensingArea) {
-		Set<String> attackAreas = (HashSet<String>) request.getServletContext().getAttribute("attackAreas");
+	private boolean isRemoveFromActive(HttpServletRequest request, String defensingArea) {
+		Set<String> attackAreas = (LinkedHashSet<String>) request.getServletContext().getAttribute("attackAreas");
 		if (attackAreas == null)
-			attackAreas = new HashSet<String>();
+			attackAreas = new LinkedHashSet<String>();
+		boolean alreadyActive = attackAreas.contains(defensingArea);
+		if (alreadyActive) {
+			attackAreas.remove(defensingArea);
+			request.getServletContext().setAttribute("attackAreas", attackAreas);
+		}
 
-		return attackAreas.contains(defensingArea);
+		return alreadyActive;
 	}
 
 	@SuppressWarnings("unchecked")
 	private void addActiveArea(HttpServletRequest request, String activeAttackArea) {
-		Set<String> attackAreas = (HashSet<String>) request.getServletContext().getAttribute("attackAreas");
+		Set<String> attackAreas = (LinkedHashSet<String>) request.getServletContext().getAttribute("attackAreas");
 		if (attackAreas == null)
-			attackAreas = new HashSet<String>();
+			attackAreas = new LinkedHashSet<String>();
 		attackAreas.add(activeAttackArea);
 		request.getServletContext().setAttribute("attackAreas", attackAreas);
 	}

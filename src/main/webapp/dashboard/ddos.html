@@ -76,7 +76,8 @@ var pageStatus = {
   lastDefensingArea: '',
   attackAreas: [],
   defensingAreas: [],
-  attackViolent: false
+  attackViolent: false,
+  focusArea: '河北'
 };
 </script> 
 <script src="/echarts/ddos.js"></script> 
@@ -117,7 +118,8 @@ function getDdosJsonAndRedraw() {
       $('#alarmModal').modal('show');
     }
     
-    if(result.attackAreas.length == 0 && pageStatus.attackAreas.length > 0) {
+    if(result.defensingAreas.length + result.attackAreas.length == 0 
+        && pageStatus.defensingAreas.length + pageStatus.attackAreas.length > 0 ) {
       pageStatus = result;
       redrawChart(initialOption);
       return;
@@ -131,9 +133,10 @@ function getDdosJsonAndRedraw() {
       return;
     }
     
-    if(result.defensingAreas.length > 0) {
+    if(pageStatus.defensingAreas.length > 0 || result.defensingAreas.length > 0) {
       pageStatus = result;
-      animationOption.geo.center = geoCoordMap[pageStatus.lastDefensingArea];
+      animationOption.geo.zoom = 5;
+      animationOption.geo.center = geoCoordMap[pageStatus.focusArea];
       redrawChart(animationOption);
       return;
     }
@@ -143,8 +146,8 @@ function getDdosJsonAndRedraw() {
     } else {
       pageStatus = result;
       animationOption.geo.zoom = 5;
-      animationOption.geo.center = geoCoordMap[pageStatus.activeAttackArea];
-        redrawChart(animationOption);
+      animationOption.geo.center = geoCoordMap[pageStatus.focusArea];
+      redrawChart(animationOption);
     }
   });
 
@@ -155,6 +158,8 @@ function redrawChart(otherOption) {
   moveOption.series[1].data = buildAttackLines();
   moveOption.series[2].data = buildAreaScatter();
   moveOption.series[2].markPoint.data = buildDefenseMarkPoint();
+  moveOption.series[3].data = buildDefensingLines();
+  moveOption.series[4].data = buildDefensingLines();
   $.extend(true, moveOption, otherOption);
   ddosChart.setOption(moveOption);
 }
