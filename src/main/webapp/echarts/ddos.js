@@ -83,9 +83,9 @@ var trailSerie = {
     effect: {
         show: true,
         period: 0.5,
-        trailLength: 0.7,
+        trailLength: 0.4,
         color: '#fff',
-        symbolSize: 4
+        symbolSize: 6
     },
     lineStyle: {
         normal: {
@@ -106,12 +106,12 @@ var planeSerie = {
         trailLength: 0,
         color: 'maroon',
         symbol: planePath,
-        symbolSize: 14
+        symbolSize: 16
     },
     lineStyle: {
         normal: {
             color: '#a6c84c',
-            width: 2,
+            width: 3,
             opacity: 0.8,
             curveness: 0.2
         }
@@ -131,16 +131,15 @@ function buildAreaScatter() {
   areaScatters.push(scatter);
     
   for (var i = 0; i < attackAreaBases.length; i++) {
-	var areaScatter = {
+    var areaScatter = {
         name: attackAreaBases[i],
         value: geoCoordMap[attackAreaBases[i]]
     };
-	$.extend(areaScatter, getAttackerScatterStyle(attackAreaBases[i]));
+    $.extend(areaScatter, getAttackerScatterStyle(attackAreaBases[i]));
     areaScatters.push(areaScatter);
   }
   return areaScatters;
 }
-
 var scatterSerie = {
     type: 'effectScatter',
     coordinateSystem: 'geo',
@@ -157,10 +156,31 @@ var scatterSerie = {
             formatter: '{b}'
         }
     },
+    
+    markPoint: {
+      symbol: 'circle',
+      symbolSize: 70,
+      itemStyle: {
+        normal: {
+          color: 'rgba(128, 128, 255, 0)',
+          borderColor: '#1e90ff',
+          borderWidth: 5
+        }
+      },
+      label:{
+          normal:{
+              show: false,
+              position: 'right',
+              formatter:function(d){return d.name}
+          }
+      },
+      data: [
+//             {name: '协同', coord:geoCoordMap['天津']}
+      ]
+  },
 
     data: buildAreaScatter()
-} 
-
+}
 
 
 var series = [ trailSerie, planeSerie, scatterSerie ];
