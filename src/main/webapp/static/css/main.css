@@ -183,9 +183,6 @@ body.container-fluid .title {
   border-radius: 25px;
 }
 
-
-
-
 @keyframes alarm-color {
     0%   {background-color: yellow;}
     100% {background-color: red;}
@@ -218,37 +215,27 @@ h1.alarm {
   font-size: 42px;
   font-weight: bold;
 }
-/* .modal{
-	width: 100%;
-	position: fixed;
-	text-align: center;
-	margin: 0px auto;
-	top: 0px;
-	left: 0px;
-	bottom: 0px;
-	right: 0px;
-	z-index: 1050;
+
+.text_column .intro, .alarm, .defense {
+	border: 1px dashed lightblue;
+	border-radius: 10px;
+	padding: 10px;
+	margin: 30px 0;
+	min-height: 200px; 
 }
-.modal_wrapper{
-	display: table;
-	overflow: auto;
-	overflow-y: scroll;
-	height: 100%;
-	-webkit-overflow-scrolling: touch;
-	outline: 0;
-	text-align: center;
-	margin: 0px auto;
+.text_column h2 {
+	margin-bottom: 30px;
 }
-.modal-dialog{
-	margin-top: 0px;
-	display: table-cell;
-	vertical-align: middle;
-	margin: 0px 20px;
-	background-color: yellow;
-} 
-.modal.fade .modal-dialog {
-  transform: translate(0, 0%) !important;
-  -ms-transform: translate(0, 0%) !important; 
-  -webkit-transform: translate(0, 0%) !important; 
-} */
+.text_column .label {
+    padding: .4em .6em .3em;
+    font-size: 85%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    border-radius: 1em;
+}
+
+.text_column p {
+	font-size: 18px;
+}
  
