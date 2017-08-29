@@ -133,18 +133,17 @@
             <div class="row">
                 <div class="col-md-8">
                   <div class="row">
-                      <button name="spread" type="button" class="attack btn btn-outline">
-                        <i class="fa fa-rocket fa-lg"></i> 启动篡改
+                      <button name="attack" type="button" class="attack btn btn-outline">
+                        <i class="fa fa-rocket fa-lg"></i> 启动攻击
                       </button>
-                      <button name="block" type="button" class="defense btn btn-outline">
+                      <button name="alarm" type="button" class="alarm btn btn-outline">
+                        <i class="fa fa-exclamation-triangle fa-lg"></i> 发出警报
+                      </button>
+                      <button name="defense" type="button" class="defense btn btn-outline">
                         <i class="fa fa-shield fa-lg"></i> 应急处置
                       </button>
                   </div>
-                  <div class="row">
-                    <button type="button" class="alarm-button btn btn-outline">
-                      <i class="fa fa-exclamation-triangle fa-lg"></i> 发出警报
-                    </button>
-                  </div>
+
                 </div>
                 
                 <div class="col-md-4">
@@ -156,7 +155,7 @@
                       </tr>
                       <tr>
                         <th>参演区域</th>
-                        <td>山东、山西、河北、天津、北京</td>
+                        <td>河北、天津</td>
                       </tr>
                     </tbody>
                   </table>
@@ -166,7 +165,6 @@
         
         
         <div role="tabpanel" class="tab-pane" id="dns">域名劫持</div>
-        <div role="tabpanel" class="tab-pane" id="webpage">网页篡改</div>
         <div role="tabpanel" class="tab-pane" id="leak">大规模用户信息泄露</div>
 </div>
 </div>
@@ -211,6 +209,12 @@ $("#ddos .defense").click(function() {
 });
 
 $("#virus .btn").click(function() {
+  $.post("console", {
+    action : $(this).attr("name")
+  });
+});
+
+$("#webpage .btn").click(function() {
   $.post("console", {
     action : $(this).attr("name")
   });

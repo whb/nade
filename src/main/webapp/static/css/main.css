@@ -238,4 +238,8 @@ h1.alarm {
 .text_column p {
 	font-size: 18px;
 }
+
+.text_column > .alarm {
+	color: red;
+}
  
