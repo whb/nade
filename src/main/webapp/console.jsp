@@ -139,8 +139,11 @@
                       <button name="alarm" type="button" class="alarm btn btn-outline">
                         <i class="fa fa-exclamation-triangle fa-lg"></i> 发出警报
                       </button>
+                      <button name="repair" type="button" class="repair btn btn-outline">
+                        <i class="fa fa-wrench fa-lg"></i> 应急处理
+                      </button>
                       <button name="defense" type="button" class="defense btn btn-outline">
-                        <i class="fa fa-shield fa-lg"></i> 应急处置
+                        <i class="fa fa-shield fa-lg"></i> 协同处置
                       </button>
                   </div>
 

@@ -49,6 +49,8 @@ public class ConsoleServlet extends HttpServlet {
 			doDdos(request);
 		} else if (subject.equals("virus")) {
 			doVirus(request);
+		} else if (subject.equals("webpage")) {
+			doWebPage(request);
 		} else {
 
 		}
@@ -80,7 +82,8 @@ public class ConsoleServlet extends HttpServlet {
 		if (defensingArea != null && defensingArea.length() > 0 && isRemoveFromActive(request, defensingArea)) {
 			request.getServletContext().setAttribute("lastDefensingArea", defensingArea);
 
-			Map<String, Date> defensingAreaMap = (Map<String, Date>) request.getServletContext().getAttribute("defensingAreaMap");
+			Map<String, Date> defensingAreaMap = (Map<String, Date>) request.getServletContext()
+					.getAttribute("defensingAreaMap");
 			if (defensingAreaMap == null)
 				defensingAreaMap = new LinkedHashMap<String, Date>();
 			defensingAreaMap.put(defensingArea, new Date());
@@ -125,4 +128,20 @@ public class ConsoleServlet extends HttpServlet {
 			return;
 		}
 	}
+
+	private void doWebPage(HttpServletRequest request) {
+		String reset = request.getParameter("reset");
+		if ("true".equals(reset)) {
+			request.getServletContext().setAttribute("action", "reset");
+			return;
+		}
+		
+		String action = request.getParameter("action");
+		if (action != null && action.length() > 0) {
+			request.getServletContext().setAttribute("action", action);
+			return;
+		}
+
+	}
+
 }

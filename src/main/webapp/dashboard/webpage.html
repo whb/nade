@@ -61,6 +61,15 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   alarmModal.data('hideInteval', id);
 })
 </script> 
+<script type="text/javascript">
+var pageStatus = {
+	status: 'initial',
+	attackArea: '河北',
+	targetArea: '天津',
+	alarm_text: '',
+	chart_image: ''
+};
+</script> 
 <script src="/echarts/webpage.js"></script> 
 <script type="text/javascript">
 var webpageChart = echarts.init(document.getElementById('main'));
@@ -73,9 +82,12 @@ $(window).resize(function() {
 var webpageApi = "/api/webpage.json";
 function getWebpageJsonAndRedraw() {
   $.getJSON(webpageApi, function( result ) {
-    if(result.alarm) {
+    
+    if(result.status == 'alarm' && pageStatus.status != result.status) {
       $('#alarmModal').modal('show');
     }
+    
+    pageStatus = result;
   });
 }
 
