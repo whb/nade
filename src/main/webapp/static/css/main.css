@@ -162,11 +162,17 @@ body.container-fluid .title {
   /*filter:alpha(opacity=50); opacity:0.5;*/
 }
 
+.screenshot_column {
+  position: absolute; top: 200px;
+  float : left;
+}
+
 .long_chart {
   position: absolute; top: 888px;
   float : left;
   /*filter:alpha(opacity=50); opacity:0.5;*/
 }
+
 
 
 #reset-button {

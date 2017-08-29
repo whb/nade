@@ -24,7 +24,8 @@
       </div>
     </div>
     
-    <div class="col-md-3 chart_column">
+    <div class="col-md-6 screenshot_column">
+      <div id="screenshot_pic"></div>
     </div>
 
     <div class="col-md-3 text_column" >
@@ -91,25 +92,42 @@ function getWebpageJsonAndRedraw() {
     
     if(result.status == 'attack') {
       redrawChart();
-      $('#alarm_text').html(result.alarm_text);
+      displayAlarmText(result.alarm_text);
+      
     } else if(result.status == 'alarm') {
       $('#alarmModal').modal('show');
-      $('#alarm_text').html(result.alarm_text);
-      // show distort_webpage.jpg
+      displayAlarmText(result.alarm_text);
+      var imgHtml = '<img src="/static/images/distort_webpage.jpg" width="100%" height="100%"/>';
+      displayScreenshot(imgHtml);
+      
     } else if(result.status == 'analyze') {
-      $('#defense_text').html(result.defense_text);
+      displayDefenseText(result.defense_text);
+      
     } else if(result.status == 'repair') {
-      $('#defense_text').html(result.defense_text);
-      $('#alarm_text').html('');
+      
+      $.each(result.defense_text, function( index, text ) {
+        
+      });
+      
+       
+      $('#defense_text').fadeOut(1000).html(result.defense_text[0]).fadeIn(2000).delay(5000);
+      $('#defense_text').fadeOut(1000).html(result.defense_text[1]).fadeIn(2000).delay(5000);
+//      $('#defense_text').fadeIn(2000).delay(5000);
+      
+      //displayDefenseText(result.defense_text);
+      $('#alarm_text').fadeOut(1000);
+      $('#screenshot_pic').fadeOut(1000);
+      
     } else if(result.status == 'defense') {
-      $('#defense_text').html(result.defense_text);
+      displayDefenseText(result.defense_text);
       redrawChart();
+      
     } else {
       redrawChart();
-      $('#alarm_text').html('');
-      $('#defense_text').html('');
+      hideColumns();
     }
     
+    // text animate  https://daneden.github.io/animate.css/
   });
 }
 
@@ -120,6 +138,31 @@ function redrawChart() {
   attackChart.setOption(moveOption);
 }
 
+function hideColumns() {
+  $('#alarm_text').fadeOut(1000);
+  $('#defense_text').fadeOut(1000);
+  $('#screenshot_pic').fadeOut(1000);
+}
+
+function displayAlarmText(alarm_text) {
+  $('#alarm_text').fadeOut(1000);
+  $('#alarm_text').html(alarm_text);
+  $('#alarm_text').fadeIn(2000);
+}
+
+function displayDefenseText(defense_text) {
+  $('#defense_text').fadeOut(1000);
+  $('#defense_text').html(defense_text);
+  $('#defense_text').fadeIn(2000);
+}
+
+function displayScreenshot(imgHtml) {
+  $('#screenshot_pic').fadeOut(1000);
+  $('#screenshot_pic').html(imgHtml);
+  $('#screenshot_pic').delay(9000).slideDown(5000);
+}
+
+hideColumns();
 setInterval(getWebpageJsonAndRedraw, 1000);
 </script>
 </html>
