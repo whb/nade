@@ -24,8 +24,8 @@
         <ul id="consoleTabs" class="nav nav-pills nav-stacked" role="tablist">
           <li role="presentation"><a href="#ddos">DDoS攻击</a></li>
           <li role="presentation"><a href="#virus">网络病毒爆发</a></li>
-          <li role="presentation"><a href="#dns">域名劫持</a></li>
           <li role="presentation"><a href="#webpage">网页篡改</a></li>
+          <li role="presentation"><a href="#dns">域名劫持</a></li>
           <li role="presentation"><a href="#leak">大规模用户信息泄露</a></li>
         </ul>
         
@@ -118,6 +118,41 @@
                       <tr>
                         <th>当前演练</th>
                         <td>网络病毒爆发</td>
+                      </tr>
+                      <tr>
+                        <th>参演区域</th>
+                        <td>山东、山西、河北、天津、北京</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+        </div>
+        
+        <div role="tabpanel" class="tab-pane" id="webpage">
+            <div class="row">
+                <div class="col-md-8">
+                  <div class="row">
+                      <button name="spread" type="button" class="attack btn btn-outline">
+                        <i class="fa fa-rocket fa-lg"></i> 启动篡改
+                      </button>
+                      <button name="block" type="button" class="defense btn btn-outline">
+                        <i class="fa fa-shield fa-lg"></i> 应急处置
+                      </button>
+                  </div>
+                  <div class="row">
+                    <button type="button" class="alarm-button btn btn-outline">
+                      <i class="fa fa-exclamation-triangle fa-lg"></i> 发出警报
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="col-md-4">
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <th>当前演练</th>
+                        <td>网页篡改</td>
                       </tr>
                       <tr>
                         <th>参演区域</th>

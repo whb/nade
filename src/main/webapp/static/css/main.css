@@ -216,7 +216,7 @@ h1.alarm {
   font-weight: bold;
 }
 
-.text_column .intro, .alarm, .defense {
+.text_column > .intro,.text_column > .alarm,.text_column > .defense {
 	border: 1px dashed lightblue;
 	border-radius: 10px;
 	padding: 10px;
