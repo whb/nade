@@ -24,6 +24,10 @@
     <servlet-name>VirusAPI</servlet-name>
     <servlet-class>com.bochum.nade.api.VirusServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>WebPageAPI</servlet-name>
+    <servlet-class>com.bochum.nade.api.WebPageServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>Console</servlet-name>
@@ -45,5 +49,9 @@
   <servlet-mapping>
     <servlet-name>VirusAPI</servlet-name>
     <url-pattern>/api/virus.json</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>WebPageAPI</servlet-name>
+    <url-pattern>/api/webpage.json</url-pattern>
   </servlet-mapping>
 </web-app>

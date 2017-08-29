@@ -73,6 +73,9 @@ $(window).resize(function() {
 var webpageApi = "/api/webpage.json";
 function getWebpageJsonAndRedraw() {
   $.getJSON(webpageApi, function( result ) {
+    if(result.alarm) {
+      $('#alarmModal').modal('show');
+    }
   });
 }
 
