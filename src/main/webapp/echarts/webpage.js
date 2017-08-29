@@ -46,11 +46,11 @@ var attackerActiveScatterStyle = {
 }
 
 function getTargetScatterStyle() {
-	return (true) ? targetViolentScatterStyle : targetDefaultScatterStyle;
+	return (['attack', 'alarm', 'repair'].includes(pageStatus.status)) ? targetViolentScatterStyle : targetDefaultScatterStyle;
 }
 
 function getAttackerScatterStyle(attackArea) {
-	return (attackAreaBases.indexOf(attackArea)>=0) ? attackerActiveScatterStyle : attackerDefaultScatterStyle;
+	return (['attack', 'alarm', 'repair'].includes(pageStatus.status)) ? attackerActiveScatterStyle : attackerDefaultScatterStyle;
 }
 
 var geoCoordMap = {
@@ -61,16 +61,15 @@ var geoCoordMap = {
     '北京': [116.4551, 40.2539]
 };
 
-var attackAreaBases = ['河北'];
-var targetArea = '天津';
 
 function buildAttackLines() {
+  if(['attack', 'alarm', 'repair'].includes(pageStatus.status))
+    return [];
+  
   var planeLines = [];
-  for (var i = 0; i < attackAreaBases.length; i++) {
-    planeLines.push({ 
-      coords: [geoCoordMap[attackAreaBases[i]], geoCoordMap[targetArea]] 
-    });
-  }
+  planeLines.push({ 
+    coords: [geoCoordMap[pageStatus.attackArea], geoCoordMap[pageStatus.targetArea]] 
+  });
   return planeLines;
 }
 
@@ -124,20 +123,19 @@ function buildAreaScatter() {
   var areaScatters = [];
 
   var scatter = {
-		name: targetArea,
-		value: geoCoordMap[targetArea],
+		name: pageStatus.targetArea,
+		value: geoCoordMap[pageStatus.targetArea],
   };
   $.extend(scatter, getTargetScatterStyle());
   areaScatters.push(scatter);
     
-  for (var i = 0; i < attackAreaBases.length; i++) {
-    var areaScatter = {
-        name: attackAreaBases[i],
-        value: geoCoordMap[attackAreaBases[i]]
-    };
-    $.extend(areaScatter, getAttackerScatterStyle(attackAreaBases[i]));
-    areaScatters.push(areaScatter);
-  }
+  var areaScatter = {
+      name: pageStatus.attackArea,
+      value: geoCoordMap[pageStatus.attackArea]
+  };
+  $.extend(areaScatter, getAttackerScatterStyle(pageStatus.attackArea));
+  areaScatters.push(areaScatter);
+
   return areaScatters;
 }
 
@@ -145,11 +143,9 @@ function buildAreaScatter() {
 
 function buildAttackLines() {
   var planeLines = [];
-  for (var i = 0; i < attackAreaBases.length; i++) {
-    planeLines.push({ 
-      coords: [geoCoordMap[attackAreaBases[i]], geoCoordMap[targetArea]] 
-    });
-  }
+  planeLines.push({ 
+    coords: [geoCoordMap[pageStatus.attackArea], geoCoordMap[pageStatus.targetArea]] 
+  });
   return planeLines;
 }
 
