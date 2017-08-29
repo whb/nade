@@ -63,7 +63,7 @@ var geoCoordMap = {
 
 
 function buildAttackLines() {
-  if(['attack', 'alarm', 'repair'].includes(pageStatus.status))
+  if(!['attack', 'alarm', 'repair'].includes(pageStatus.status))
     return [];
   
   var planeLines = [];
@@ -137,16 +137,6 @@ function buildAreaScatter() {
   areaScatters.push(areaScatter);
 
   return areaScatters;
-}
-
-
-
-function buildAttackLines() {
-  var planeLines = [];
-  planeLines.push({ 
-    coords: [geoCoordMap[pageStatus.attackArea], geoCoordMap[pageStatus.targetArea]] 
-  });
-  return planeLines;
 }
 
 

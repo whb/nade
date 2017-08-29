@@ -82,17 +82,20 @@ $(window).resize(function() {
 var webpageApi = "/api/webpage.json";
 function getWebpageJsonAndRedraw() {
   $.getJSON(webpageApi, function( result ) {
+    if(pageStatus.status == result.status) {
+		return;
+    }
     
     if(result.status == 'alarm' && pageStatus.status != result.status) {
       $('#alarmModal').modal('show');
     }
-    
     pageStatus = result;
+    redrawChart();
   });
 }
 
-function redrawChart(otherOption) {
-
+function redrawChart() {
+  webpageChart.setOption(moveOption);
 }
 
 setInterval(getWebpageJsonAndRedraw, 1000);
