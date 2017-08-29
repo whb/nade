@@ -25,22 +25,28 @@ public class WebPageServlet extends JsonResponseServlet {
 		
 		
 		if ("attack".equals(request.getServletContext().getAttribute("action"))) {
-			map.put("status", "attacked");
-			map.put("attackArea", "河北");
-			map.put("targetArea", "天津");
+			map.put("status", "attack");
 			map.put("alarm_text", "攻击者发起口令破解攻击。");
 		} else if ("alarm".equals(request.getServletContext().getAttribute("action"))) {
 			map.put("status", "alarm");
 			map.put("alarm_text", "用户口令被破解（admin/p@ssw0rd）");
 			map.put("chart_image", "distort_webpage.jpg");
+		} else if ("analyze".equals(request.getServletContext().getAttribute("action"))) {
+			map.put("status", "analyze");
+			map.put("defense_text", "攻击源IP地址：125.39.240.113");
 		} else if ("repair".equals(request.getServletContext().getAttribute("action"))) {
+			map.put("status", "repair");
+			String[] displayTexts={"更新应用服务器管理员口令","恢复被篡改的页面代码","升级应用服务器系统补丁", "查杀系统病毒"};
+			map.put("defense_text", displayTexts);
 		} else if ("defense".equals(request.getServletContext().getAttribute("action"))) {
+			map.put("status", "defense");
+			map.put("defense_text", "封堵攻击源IP地址：125.39.240.113");
 		} else {
 			map.put("status", "initial");
-			map.put("attackArea", "河北");
-			map.put("targetArea", "天津");
 		}
 
+		map.put("attackArea", "河北");
+		map.put("targetArea", "天津");
 		String json = new Gson().toJson(map);
 		response.getWriter().write(json);
 	}

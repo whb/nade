@@ -34,10 +34,11 @@
       </div>
       
       <div class="alarm">
-      <h2>攻击者发起口令破解攻击。</h2>
+      <h2 id="alarm_text"></h2>
       </div>
       
       <div class="defense">
+      <h2 id="defense_text"></h2>
       </div>
     </div>
     
@@ -72,11 +73,11 @@ var pageStatus = {
 </script> 
 <script src="/echarts/webpage.js"></script> 
 <script type="text/javascript">
-var webpageChart = echarts.init(document.getElementById('main'));
-webpageChart.setOption(moveOption);
+var attackChart = echarts.init(document.getElementById('main'));
+attackChart.setOption(moveOption);
 
 $(window).resize(function() {
-  webpageChart.resize();
+  attackChart.resize();
 });
 
 var webpageApi = "/api/webpage.json";
@@ -86,16 +87,37 @@ function getWebpageJsonAndRedraw() {
 		return;
     }
     
-    if(result.status == 'alarm' && pageStatus.status != result.status) {
-      $('#alarmModal').modal('show');
-    }
     pageStatus = result;
-    redrawChart();
+    
+    if(result.status == 'attack') {
+      redrawChart();
+      $('#alarm_text').html(result.alarm_text);
+    } else if(result.status == 'alarm') {
+      $('#alarmModal').modal('show');
+      $('#alarm_text').html(result.alarm_text);
+      // show distort_webpage.jpg
+    } else if(result.status == 'analyze') {
+      $('#defense_text').html(result.defense_text);
+    } else if(result.status == 'repair') {
+      $('#defense_text').html(result.defense_text);
+      $('#alarm_text').html('');
+    } else if(result.status == 'defense') {
+      $('#defense_text').html(result.defense_text);
+      redrawChart();
+    } else {
+      redrawChart();
+      $('#alarm_text').html('');
+      $('#defense_text').html('');
+    }
+    
   });
 }
 
 function redrawChart() {
-  webpageChart.setOption(moveOption);
+  moveOption.series[0].data = buildAttackLines();
+  moveOption.series[1].data = buildAttackLines();
+  moveOption.series[2].data = buildAreaScatter();
+  attackChart.setOption(moveOption);
 }
 
 setInterval(getWebpageJsonAndRedraw, 1000);

@@ -139,6 +139,9 @@
                       <button name="alarm" type="button" class="alarm btn btn-outline">
                         <i class="fa fa-exclamation-triangle fa-lg"></i> 发出警报
                       </button>
+                      <button name="analyze" type="button" class="repair btn btn-outline">
+                        <i class="fa fa-search fa-lg"></i> 事件研判
+                      </button>
                       <button name="repair" type="button" class="repair btn btn-outline">
                         <i class="fa fa-wrench fa-lg"></i> 应急处理
                       </button>
