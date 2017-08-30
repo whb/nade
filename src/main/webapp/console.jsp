@@ -274,6 +274,12 @@ $("#webpage .btn").click(function() {
   });
 });
 
+$("#dns .btn").click(function() {
+  $.post("console", {
+    action : $(this).attr("name")
+  });
+});
+
 $(function() {
   $("#consoleTabs a[href$='${applicationScope['subject']}']").tab('show');
 });

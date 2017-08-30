@@ -26,17 +26,18 @@ public class DnsServlet extends JsonResponseServlet {
 		
 		if ("attack".equals(request.getServletContext().getAttribute("action"))) {
 			map.put("status", "attack");
-			map.put("alarm_text", "攻击者发起口令破解攻击。");
+			map.put("alarm_text", "攻击者向域名解析服务器发起口令破解攻击。");
 		} else if ("alarm".equals(request.getServletContext().getAttribute("action"))) {
 			map.put("status", "alarm");
-			map.put("alarm_text", "用户口令被破解（admin/p@ssw0rd）");
-			map.put("screenshot", "distort_webpage.jpg");
+			map.put("alarm_text", "用户口令被破解（admin/abc123456）");
+			map.put("screenshot", "distort_a_record.jpg");
 		} else if ("analyze".equals(request.getServletContext().getAttribute("action"))) {
 			map.put("status", "analyze");
-			map.put("defense_text", "攻击源IP地址：125.39.240.113");
+			String[] displayTexts={"攻击源IP地址：125.39.240.113","攻击目的IP地址: 205.139.40.16","攻击主要协议: HTTP、TCP"};
+			map.put("defense_text", displayTexts);
 		} else if ("repair".equals(request.getServletContext().getAttribute("action"))) {
 			map.put("status", "repair");
-			String[] displayTexts={"更新应用服务器管理员口令","恢复被篡改的页面代码","升级应用服务器系统补丁", "查杀系统病毒"};
+			String[] displayTexts={"更新域名解析服务器管理员口令","清空域名服务器缓存","重建域名服务器解析列表", "将官网的域名解析指向正确网站"};
 			map.put("defense_text", displayTexts);
 		} else if ("defense".equals(request.getServletContext().getAttribute("action"))) {
 			map.put("status", "defense");

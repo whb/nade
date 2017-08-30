@@ -51,7 +51,7 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <h1 class="alarm"><i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;警报（Ⅱ级）</h1>
-        <h1>发现网页篡改！</h1>
+        <h1>发现域名被劫持！</h1>
       </div>
     </div>
 </div>
@@ -112,9 +112,9 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
       separator: ",",
       speed: 6000,
       complete: function () {
-        if (this.phrases[this.index] === "更新应用服务器管理员口令") {
+        if (this.phrases[this.index] === "更新域名解析服务器管理员口令") {
           WebPage.hideAlarmText();
-        } else if (this.phrases[this.index] === "恢复被篡改的页面代码") {
+        } else if (this.phrases[this.index] === "将官网的域名解析指向正确网站") {
           WebPage.hideScreenshot();
         }
 		
@@ -166,7 +166,7 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   },
   
   analyze : function() {
-    this.displayDefenseText();
+    this.morphextDefenseText();
   },
   
   repair : function() {
@@ -188,9 +188,6 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
     this.activeGeo = {};
     this.redrawChart();
     this.hideColumns();
-    this.pageStatus = {
-    	status: ''
-    };
   },
 }
 </script> 
