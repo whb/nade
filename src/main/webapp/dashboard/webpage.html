@@ -188,6 +188,9 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
     this.activeGeo = {};
     this.redrawChart();
     this.hideColumns();
+    this.pageStatus = {
+    	status: ''
+    };
   },
 }
 </script> 
@@ -216,6 +219,7 @@ function getJsonAndDraw() {
         break;
       case "defense":
         WebPage.defense();
+        break;
       case "confirm":
         WebPage.confirm();
         break;

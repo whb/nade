@@ -1,3 +1,5 @@
+var activeStatus = ['attack', 'alarm', 'repair'];
+
 var targetDefaultScatterStyle = {
   symbolSize: 6,
   itemStyle: {
@@ -39,11 +41,11 @@ var attackerActiveScatterStyle = {
 }
 
 function getTargetScatterStyle() {
-	return (['attack', 'alarm', 'repair'].includes(WebPage.pageStatus.status)) ? targetViolentScatterStyle : targetDefaultScatterStyle;
+	return (activeStatus.includes(WebPage.pageStatus.status)) ? targetViolentScatterStyle : targetDefaultScatterStyle;
 }
 
 function getAttackerScatterStyle(attackArea) {
-	return (['attack', 'alarm', 'repair'].includes(WebPage.pageStatus.status)) ? attackerActiveScatterStyle : attackerDefaultScatterStyle;
+	return (activeStatus.includes(WebPage.pageStatus.status)) ? attackerActiveScatterStyle : attackerDefaultScatterStyle;
 }
 
 var geoCoordMap = {
@@ -56,7 +58,7 @@ var geoCoordMap = {
 
 
 function buildAttackLines() {
-  if(!['attack', 'alarm', 'repair'].includes(WebPage.pageStatus.status))
+  if(!activeStatus.includes(WebPage.pageStatus.status))
     return [];
   
   var planeLines = [];
