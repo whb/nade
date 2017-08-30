@@ -41,6 +41,9 @@ public class WebPageServlet extends JsonResponseServlet {
 		} else if ("defense".equals(request.getServletContext().getAttribute("action"))) {
 			map.put("status", "defense");
 			map.put("defense_text", "封堵攻击源IP地址：125.39.240.113");
+		} else if ("confirm".equals(request.getServletContext().getAttribute("action"))) {
+			map.put("status", "confirm");
+			map.put("defense_text", "验证官网主页恢复");
 		} else {
 			map.put("status", "initial");
 		}

@@ -116,7 +116,9 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
           WebPage.hideAlarmText();
         } else if (this.phrases[this.index] === "恢复被篡改的页面代码") {
           WebPage.hideScreenshot();
-        } else if (this.index === this.phrases.length - 1) {
+        }
+		
+        if (this.index === this.phrases.length - 1) {
           this.stop();
         }
       }
@@ -177,6 +179,10 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
     this.redrawChart();
   },
   
+  confirm : function() {
+    this.displayDefenseText();
+  },
+  
   initial : function() {
     this.activeGeo = {};
     this.redrawChart();
@@ -209,6 +215,8 @@ function getJsonAndDraw() {
         break;
       case "defense":
         WebPage.defense();
+      case "confirm":
+        WebPage.confirm();
         break;
       default:
         WebPage.initial();
