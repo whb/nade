@@ -42,7 +42,7 @@
       <h2 id="alarm_text"></h2>
       </div>
       
-      <div class="defense">
+      <div class="defense" id="defense_div">
       <h2 id="defense_text"></h2>
       </div>
     </div>
@@ -105,8 +105,9 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   },
   
   morphextDefenseText : function() {
-    this.defenseText.html(this.pageStatus.defense_text.join());
-    this.defenseText.show();
+    $('#defense_div').empty();
+    $('#defense_div').append('<h2 id="defense_text">' + this.pageStatus.defense_text.join() + '</h2>');
+    this.defenseText = $('#defense_text');
     this.defenseText.Morphext({
       animation: "slideInRight",
       separator: ",",
