@@ -1,9 +1,4 @@
-var initialOption = {
-	geo: {
-		zoom: 1,
-		center: null
-	}
-};
+var activeGeo = {};
 
 var targetDefaultScatterStyle = {
   symbolSize: 6,
@@ -163,6 +158,39 @@ var scatterSerie = {
 
 var series = [ trailSerie, planeSerie, scatterSerie];
 
+var initialGeo = {
+    map: 'china',
+    zoom: 1.25,
+    center: null,
+    label: {
+        emphasis: {
+            show: false
+        }
+    },
+    roam: true,
+    silent: true,
+    itemStyle: {
+        normal: {
+            areaColor: '#323c48',
+            borderColor: '#404a59'
+        },
+        emphasis: {
+            areaColor: '#2a333d'
+        }
+    },
+    regions: [{
+        name: '天津',
+        itemStyle: {
+            normal: {
+                areaColor: '#2a333d',
+            }
+        }
+    }]
+};
+
+function buildZoomCenter() {
+  return $.extend(true, {}, initialGeo, activeGeo);
+}
 
 var moveOption = {
     backgroundColor: '#404a59',
@@ -180,34 +208,7 @@ var moveOption = {
     tooltip: {
         trigger: 'item',
     },
-    geo: {
-        map: 'china',
-        zoom: 1.25,
-        label: {
-            emphasis: {
-                show: false
-            }
-        },
-        roam: true,
-        silent: true,
-        itemStyle: {
-            normal: {
-                areaColor: '#323c48',
-                borderColor: '#404a59'
-            },
-            emphasis: {
-                areaColor: '#2a333d'
-            }
-        },
-        regions: [{
-            name: '天津',
-            itemStyle: {
-                normal: {
-                    areaColor: '#2a333d',
-                }
-            }
-        }]
-    },
+    geo: buildZoomCenter(),
     
     series: series
 };

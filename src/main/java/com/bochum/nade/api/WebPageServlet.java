@@ -30,7 +30,7 @@ public class WebPageServlet extends JsonResponseServlet {
 		} else if ("alarm".equals(request.getServletContext().getAttribute("action"))) {
 			map.put("status", "alarm");
 			map.put("alarm_text", "用户口令被破解（admin/p@ssw0rd）");
-			map.put("chart_image", "distort_webpage.jpg");
+			map.put("screenshot", "distort_webpage.jpg");
 		} else if ("analyze".equals(request.getServletContext().getAttribute("action"))) {
 			map.put("status", "analyze");
 			map.put("defense_text", "攻击源IP地址：125.39.240.113");

@@ -50,7 +50,7 @@
 <div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <h1 class="alarm"><i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;警报</h1>
+        <h1 class="alarm"><i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;Ⅱ级警报</h1>
         <h1>发现网页篡改!!!</h1>
       </div>
     </div>
@@ -74,97 +74,277 @@ var pageStatus = {
 </script> 
 <script src="/echarts/webpage.js"></script> 
 <script type="text/javascript">
-var attackChart = echarts.init(document.getElementById('main'));
-
 $(window).resize(function() {
-  attackChart.resize();
+  WebPage.attackChart.resize();
 });
 
-var webpageApi = "/api/webpage.json";
+;WebPage = {
+  api : "/api/webpage.json",
+  pageStatus : {
+  	status: ''
+  },
+  
+  attackChart : echarts.init(document.getElementById('main')),
+  alarmModal  : $('#alarmModal'),
+  alarmText   : $('#alarm_text'),
+  defenseText : $('#defense_text'),
+  screenshotPic : $('#screenshot_pic'),
+  
+  screenshotUrl : function() {
+    return '<img src="/static/images/' + this.pageStatus.screenshot + '" width="100%" height="100%"/>';
+  },
+  
+  popupAlarmModal : function() {
+    this.alarmModal.modal('show');
+  },
+  
+  displayAlarmText : function() {
+    this.alarmText.fadeOut(1000);
+    this.alarmText.html(this.pageStatus.alarm_text);
+    this.alarmText.fadeIn(2000);
+  },
+  
+  hideAlarmText : function() {
+    this.alarmText.fadeOut(1000);
+  },
+  
+  displayDefenseText : function() {
+    this.defenseText.html(this.pageStatus.defense_text);
+    this.defenseText.fadeIn(2000);
+  },
+  
+  morphextDefenseText : function() {
+    this.defenseText.html(this.pageStatus.defense_text.join());
+    this.defenseText.show();
+    this.defenseText.Morphext({
+      animation: "slideInRight",
+      separator: ",",
+      speed: 6000,
+      complete: function () {
+        if (this.phrases[this.index] === "更新应用服务器管理员口令") {
+          WebPage.hideAlarmText();
+        } else if (this.phrases[this.index] === "恢复被篡改的页面代码") {
+          WebPage.hideScreenshot();
+        } else if (this.index === this.phrases.length - 1) {
+          this.stop();
+        }
+      }
+    });
+  },
+  
+  displayScreenshot : function() {
+    this.screenshotPic.fadeOut(1000);
+    this.screenshotPic.html(this.screenshotUrl());
+    this.screenshotPic.delay(9000).slideDown(4000);
+  },
+  
+  hideScreenshot : function() {
+    this.screenshotPic.fadeOut(1000);
+  },
+  
+  hideColumns : function() {
+    this.alarmText.fadeOut(1000);
+    this.defenseText.fadeOut(1000);
+    this.screenshotPic.fadeOut(1000);
+  },
+
+  redrawChart : function() {
+    moveOption.series[0].data = buildAttackLines();
+    moveOption.series[1].data = buildAttackLines();
+    moveOption.series[2].data = buildAreaScatter();
+    moveOption.geo = buildZoomCenter();
+    this.attackChart.setOption(moveOption);
+  },
+  
+ 
+  attack : function() {
+    activeGeo = {
+        zoom: 4,
+        center: geoCoordMap[this.pageStatus.attackArea]
+      };
+    this.redrawChart();
+    this.displayAlarmText();
+  },
+  
+  alarm : function() {
+    this.popupAlarmModal();
+    this.displayAlarmText();
+    this.displayScreenshot();
+  },
+  
+  analyze : function() {
+    this.displayDefenseText();
+  },
+  
+  repair : function() {
+    this.morphextDefenseText();
+  },
+  
+  defense : function() {
+    this.displayDefenseText();
+    activeGeo = {};
+    this.redrawChart();
+  },
+  
+  initial : function() {
+    activeGeo = {};
+    this.redrawChart();
+    this.hideColumns();
+  },
+}
+
+
+
+
 function getJsonAndDraw() {
-  $.getJSON(webpageApi, function( result ) {
-    if(pageStatus.status == result.status) {
+  $.getJSON(WebPage.api, function( result ) {
+    if(WebPage.pageStatus.status == result.status) {
 		return;
     }
     
+    WebPage.pageStatus = result;
     pageStatus = result;
-    if(result.status == 'attack') {
-      redrawChart();
-      displayAlarmText(result.alarm_text);
-      
-    } else if(result.status == 'alarm') {
-      $('#alarmModal').modal('show');
-      displayAlarmText(result.alarm_text);
-      var imgHtml = '<img src="/static/images/distort_webpage.jpg" width="100%" height="100%"/>';
-      displayScreenshot(imgHtml);
-      
-    } else if(result.status == 'analyze') {
-      displayDefenseText(result.defense_text);
-      
-    } else if(result.status == 'repair') {
-      $("#defense_text").html(result.defense_text.join());
-      $("#defense_text").show();
-      $("#defense_text").Morphext({
-        animation: "slideInRight",
-        separator: ",",
-        speed: 6000,
-        complete: function () {
-          if (this.phrases[this.index] === "更新应用服务器管理员口令") {
-            $('#alarm_text').fadeOut(2000);
-          }
-          
-          if (this.phrases[this.index] === "恢复被篡改的页面代码") {
-            $('#screenshot_pic').fadeOut(2000);
-          }
-          
-          if (this.index === this.phrases.length - 1) {
-            this.stop();
-          }
-        }
-      });
-      
-    } else if(result.status == 'defense') {
-      displayDefenseText(result.defense_text);
-      redrawChart();
-      
-    } else {
-      redrawChart();
-      hideColumns();
-    }
+    
+    switch(result.status) {
+      case "attack":
+        WebPage.attack();
+        break;
+      case "alarm":
+        WebPage.alarm();
+        break;
+      case "analyze":
+        WebPage.analyze();
+        break;
+      case "repair":
+        WebPage.repair();
+        break;
+      case "defense":
+        WebPage.defense();
+        break;
+      default:
+        WebPage.initial();
+	  }
   });
-}
-
-function redrawChart() {
-  moveOption.series[0].data = buildAttackLines();
-  moveOption.series[1].data = buildAttackLines();
-  moveOption.series[2].data = buildAreaScatter();
-  attackChart.setOption(moveOption);
-}
-
-function hideColumns() {
-  $('#alarm_text').fadeOut(1000);
-  $('#defense_text').fadeOut(1000);
-  $('#screenshot_pic').fadeOut(1000);
-}
-
-function displayAlarmText(alarm_text) {
-  $('#alarm_text').fadeOut(1000);
-  $('#alarm_text').html(alarm_text);
-  $('#alarm_text').fadeIn(2000);
-}
-
-function displayDefenseText(defense_text) {
-  $('#defense_text').html(defense_text);
-  $('#defense_text').fadeIn(2000);
-}
-
-function displayScreenshot(imgHtml) {
-  $('#screenshot_pic').fadeOut(1000);
-  $('#screenshot_pic').html(imgHtml);
-  $('#screenshot_pic').delay(9000).slideDown(5000);
 }
 
 getJsonAndDraw();
 setInterval(getJsonAndDraw, 1000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var webpageApi = "/api/webpage.json";
+// function getJsonAndDraw() {
+//   $.getJSON(webpageApi, function( result ) {
+//     if(pageStatus.status == result.status) {
+// 		return;
+//     }
+    
+//     pageStatus = result;
+//     if(result.status == 'attack') {
+//       activeGeo = {
+//         zoom: 4,
+//       	center: geoCoordMap[pageStatus.attackArea]
+//       };
+//       redrawChart();
+//       displayAlarmText(result.alarm_text);
+      
+//     } else if(result.status == 'alarm') {
+//       $('#alarmModal').modal('show');
+//       displayAlarmText(result.alarm_text);
+//       var imgHtml = '<img src="/static/images/distort_webpage.jpg" width="100%" height="100%"/>';
+//       displayScreenshot(imgHtml);
+      
+//     } else if(result.status == 'analyze') {
+//       displayDefenseText(result.defense_text);
+      
+//     } else if(result.status == 'repair') {
+//       $("#defense_text").html(result.defense_text.join());
+//       $("#defense_text").show();
+//       $("#defense_text").Morphext({
+//         animation: "slideInRight",
+//         separator: ",",
+//         speed: 6000,
+//         complete: function () {
+//           if (this.phrases[this.index] === "更新应用服务器管理员口令") {
+//             $('#alarm_text').fadeOut(2000);
+//           }
+          
+//           if (this.phrases[this.index] === "恢复被篡改的页面代码") {
+//             $('#screenshot_pic').fadeOut(2000);
+//           }
+          
+//           if (this.index === this.phrases.length - 1) {
+//             this.stop();
+//           }
+//         }
+//       });
+      
+//     } else if(result.status == 'defense') {
+//       displayDefenseText(result.defense_text);
+//       activeGeo = {};
+//       redrawChart();
+      
+//     } else {
+//       activeGeo = {};
+//       redrawChart();
+//       hideColumns();
+//     }
+//   });
+// }
+
+// function redrawChart() {
+//   moveOption.series[0].data = buildAttackLines();
+//   moveOption.series[1].data = buildAttackLines();
+//   moveOption.series[2].data = buildAreaScatter();
+//   moveOption.geo = buildZoomCenter();
+//   attackChart.setOption(moveOption);
+// }
+
+// function hideColumns() {
+//   $('#alarm_text').fadeOut(1000);
+//   $('#defense_text').fadeOut(1000);
+//   $('#screenshot_pic').fadeOut(1000);
+// }
+
+// function displayAlarmText(alarm_text) {
+//   $('#alarm_text').fadeOut(1000);
+//   $('#alarm_text').html(alarm_text);
+//   $('#alarm_text').fadeIn(2000);
+// }
+
+// function displayDefenseText(defense_text) {
+//   $('#defense_text').html(defense_text);
+//   $('#defense_text').fadeIn(2000);
+// }
+
+// function displayScreenshot(imgHtml) {
+//   $('#screenshot_pic').fadeOut(1000);
+//   $('#screenshot_pic').html(imgHtml);
+//   $('#screenshot_pic').delay(9000).slideDown(5000);
+// }
+
+// getJsonAndDraw();
+// setInterval(getJsonAndDraw, 1000);
 </script>
 </html>
