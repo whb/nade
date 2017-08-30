@@ -69,25 +69,19 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
 </script> 
 <script type="text/javascript">
 var pageStatus = {
-	status: 'initial',
-	attackArea: '河北',
-	targetArea: '天津',
-	alarm_text: '',
-	chart_image: ''
+  	status: '',
 };
 </script> 
 <script src="/echarts/webpage.js"></script> 
 <script type="text/javascript">
 var attackChart = echarts.init(document.getElementById('main'));
-attackChart.setOption(moveOption);
 
 $(window).resize(function() {
   attackChart.resize();
 });
 
-
 var webpageApi = "/api/webpage.json";
-function getWebpageJsonAndRedraw() {
+function getJsonAndDraw() {
   $.getJSON(webpageApi, function( result ) {
     if(pageStatus.status == result.status) {
 		return;
@@ -170,7 +164,7 @@ function displayScreenshot(imgHtml) {
   $('#screenshot_pic').delay(9000).slideDown(5000);
 }
 
-hideColumns();
-setInterval(getWebpageJsonAndRedraw, 1000);
+getJsonAndDraw();
+setInterval(getJsonAndDraw, 1000);
 </script>
 </html>
