@@ -68,21 +68,12 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
 })
 </script> 
 <script type="text/javascript">
-var pageStatus = {
-  	status: '',
-};
-</script> 
-<script src="/echarts/webpage.js"></script> 
-<script type="text/javascript">
-$(window).resize(function() {
-  WebPage.attackChart.resize();
-});
-
 ;WebPage = {
   api : "/api/webpage.json",
   pageStatus : {
   	status: ''
   },
+  activeGeo : {},
   
   attackChart : echarts.init(document.getElementById('main')),
   alarmModal  : $('#alarmModal'),
@@ -158,7 +149,7 @@ $(window).resize(function() {
   
  
   attack : function() {
-    activeGeo = {
+    this.activeGeo = {
         zoom: 4,
         center: geoCoordMap[this.pageStatus.attackArea]
       };
@@ -182,20 +173,19 @@ $(window).resize(function() {
   
   defense : function() {
     this.displayDefenseText();
-    activeGeo = {};
+    this.activeGeo = {};
     this.redrawChart();
   },
   
   initial : function() {
-    activeGeo = {};
+    this.activeGeo = {};
     this.redrawChart();
     this.hideColumns();
   },
 }
-
-
-
-
+</script> 
+<script src="/echarts/webpage.js"></script> 
+<script type="text/javascript">
 function getJsonAndDraw() {
   $.getJSON(WebPage.api, function( result ) {
     if(WebPage.pageStatus.status == result.status) {
@@ -203,7 +193,6 @@ function getJsonAndDraw() {
     }
     
     WebPage.pageStatus = result;
-    pageStatus = result;
     
     switch(result.status) {
       case "attack":
@@ -230,121 +219,8 @@ function getJsonAndDraw() {
 getJsonAndDraw();
 setInterval(getJsonAndDraw, 1000);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var webpageApi = "/api/webpage.json";
-// function getJsonAndDraw() {
-//   $.getJSON(webpageApi, function( result ) {
-//     if(pageStatus.status == result.status) {
-// 		return;
-//     }
-    
-//     pageStatus = result;
-//     if(result.status == 'attack') {
-//       activeGeo = {
-//         zoom: 4,
-//       	center: geoCoordMap[pageStatus.attackArea]
-//       };
-//       redrawChart();
-//       displayAlarmText(result.alarm_text);
-      
-//     } else if(result.status == 'alarm') {
-//       $('#alarmModal').modal('show');
-//       displayAlarmText(result.alarm_text);
-//       var imgHtml = '<img src="/static/images/distort_webpage.jpg" width="100%" height="100%"/>';
-//       displayScreenshot(imgHtml);
-      
-//     } else if(result.status == 'analyze') {
-//       displayDefenseText(result.defense_text);
-      
-//     } else if(result.status == 'repair') {
-//       $("#defense_text").html(result.defense_text.join());
-//       $("#defense_text").show();
-//       $("#defense_text").Morphext({
-//         animation: "slideInRight",
-//         separator: ",",
-//         speed: 6000,
-//         complete: function () {
-//           if (this.phrases[this.index] === "更新应用服务器管理员口令") {
-//             $('#alarm_text').fadeOut(2000);
-//           }
-          
-//           if (this.phrases[this.index] === "恢复被篡改的页面代码") {
-//             $('#screenshot_pic').fadeOut(2000);
-//           }
-          
-//           if (this.index === this.phrases.length - 1) {
-//             this.stop();
-//           }
-//         }
-//       });
-      
-//     } else if(result.status == 'defense') {
-//       displayDefenseText(result.defense_text);
-//       activeGeo = {};
-//       redrawChart();
-      
-//     } else {
-//       activeGeo = {};
-//       redrawChart();
-//       hideColumns();
-//     }
-//   });
-// }
-
-// function redrawChart() {
-//   moveOption.series[0].data = buildAttackLines();
-//   moveOption.series[1].data = buildAttackLines();
-//   moveOption.series[2].data = buildAreaScatter();
-//   moveOption.geo = buildZoomCenter();
-//   attackChart.setOption(moveOption);
-// }
-
-// function hideColumns() {
-//   $('#alarm_text').fadeOut(1000);
-//   $('#defense_text').fadeOut(1000);
-//   $('#screenshot_pic').fadeOut(1000);
-// }
-
-// function displayAlarmText(alarm_text) {
-//   $('#alarm_text').fadeOut(1000);
-//   $('#alarm_text').html(alarm_text);
-//   $('#alarm_text').fadeIn(2000);
-// }
-
-// function displayDefenseText(defense_text) {
-//   $('#defense_text').html(defense_text);
-//   $('#defense_text').fadeIn(2000);
-// }
-
-// function displayScreenshot(imgHtml) {
-//   $('#screenshot_pic').fadeOut(1000);
-//   $('#screenshot_pic').html(imgHtml);
-//   $('#screenshot_pic').delay(9000).slideDown(5000);
-// }
-
-// getJsonAndDraw();
-// setInterval(getJsonAndDraw, 1000);
+$(window).resize(function() {
+  WebPage.attackChart.resize();
+});
 </script>
 </html>

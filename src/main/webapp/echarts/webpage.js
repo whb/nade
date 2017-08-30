@@ -1,5 +1,3 @@
-var activeGeo = {};
-
 var targetDefaultScatterStyle = {
   symbolSize: 6,
   itemStyle: {
@@ -41,11 +39,11 @@ var attackerActiveScatterStyle = {
 }
 
 function getTargetScatterStyle() {
-	return (['attack', 'alarm', 'repair'].includes(pageStatus.status)) ? targetViolentScatterStyle : targetDefaultScatterStyle;
+	return (['attack', 'alarm', 'repair'].includes(WebPage.pageStatus.status)) ? targetViolentScatterStyle : targetDefaultScatterStyle;
 }
 
 function getAttackerScatterStyle(attackArea) {
-	return (['attack', 'alarm', 'repair'].includes(pageStatus.status)) ? attackerActiveScatterStyle : attackerDefaultScatterStyle;
+	return (['attack', 'alarm', 'repair'].includes(WebPage.pageStatus.status)) ? attackerActiveScatterStyle : attackerDefaultScatterStyle;
 }
 
 var geoCoordMap = {
@@ -58,12 +56,12 @@ var geoCoordMap = {
 
 
 function buildAttackLines() {
-  if(!['attack', 'alarm', 'repair'].includes(pageStatus.status))
+  if(!['attack', 'alarm', 'repair'].includes(WebPage.pageStatus.status))
     return [];
   
   var planeLines = [];
   planeLines.push({ 
-    coords: [geoCoordMap[pageStatus.attackArea], geoCoordMap[pageStatus.targetArea]] 
+    coords: [geoCoordMap[WebPage.pageStatus.attackArea], geoCoordMap[WebPage.pageStatus.targetArea]] 
   });
   return planeLines;
 }
@@ -118,17 +116,17 @@ function buildAreaScatter() {
   var areaScatters = [];
 
   var scatter = {
-		name: pageStatus.targetArea,
-		value: geoCoordMap[pageStatus.targetArea],
+		name: WebPage.pageStatus.targetArea,
+		value: geoCoordMap[WebPage.pageStatus.targetArea],
   };
   $.extend(scatter, getTargetScatterStyle());
   areaScatters.push(scatter);
     
   var areaScatter = {
-      name: pageStatus.attackArea,
-      value: geoCoordMap[pageStatus.attackArea]
+      name: WebPage.pageStatus.attackArea,
+      value: geoCoordMap[WebPage.pageStatus.attackArea]
   };
-  $.extend(areaScatter, getAttackerScatterStyle(pageStatus.attackArea));
+  $.extend(areaScatter, getAttackerScatterStyle(WebPage.pageStatus.attackArea));
   areaScatters.push(areaScatter);
 
   return areaScatters;
@@ -189,7 +187,7 @@ var initialGeo = {
 };
 
 function buildZoomCenter() {
-  return $.extend(true, {}, initialGeo, activeGeo);
+  return $.extend(true, {}, initialGeo, WebPage.activeGeo);
 }
 
 var moveOption = {
