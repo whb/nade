@@ -195,8 +195,8 @@ function buildZoomCenter() {
 var moveOption = {
     backgroundColor: '#404a59',
     title : {
-        text: '网络攻防演练-网页篡改',
-        subtext: '津、冀两省',
+        text: '网络攻防演练-域名劫持',
+        subtext: '晋、鲁两省',
         left: 'center',
         top: 50,
         textStyle : {

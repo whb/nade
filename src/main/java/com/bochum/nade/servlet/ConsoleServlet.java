@@ -49,10 +49,8 @@ public class ConsoleServlet extends HttpServlet {
 			doDdos(request);
 		} else if (subject.equals("virus")) {
 			doVirus(request);
-		} else if (subject.equals("webpage")) {
-			doWebPage(request);
 		} else {
-
+			doCommonAction(request);
 		}
 	}
 
@@ -129,7 +127,7 @@ public class ConsoleServlet extends HttpServlet {
 		}
 	}
 
-	private void doWebPage(HttpServletRequest request) {
+	private void doCommonAction(HttpServletRequest request) {
 		String reset = request.getParameter("reset");
 		if ("true".equals(reset)) {
 			request.getServletContext().setAttribute("action", "reset");

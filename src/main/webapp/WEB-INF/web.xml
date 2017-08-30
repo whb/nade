@@ -28,6 +28,10 @@
     <servlet-name>WebPageAPI</servlet-name>
     <servlet-class>com.bochum.nade.api.WebPageServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>DnsAPI</servlet-name>
+    <servlet-class>com.bochum.nade.api.DnsServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>Console</servlet-name>
@@ -53,5 +57,9 @@
   <servlet-mapping>
     <servlet-name>WebPageAPI</servlet-name>
     <url-pattern>/api/webpage.json</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DnsAPI</servlet-name>
+    <url-pattern>/api/dns.json</url-pattern>
   </servlet-mapping>
 </web-app>

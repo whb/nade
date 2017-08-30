@@ -2,20 +2,238 @@
 <html lang="zh-cn">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>网络攻防演练控制台</title>
+  <title>网络攻防演练监控屏幕</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
   <link rel="shortcut icon" href="/static/images/favicon.ico">
   <!--[if lte IE 8]><meta http-equiv="refresh" content="0;url=/ie" /><![endif]-->
   
   <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+  
+  <link rel="stylesheet" href="/static/css/animate.min.css"/>
+  <link rel="stylesheet" href="/static/css/morphext.css">
+  <link rel="stylesheet" href="/static/css/main.css">
   <script src="/static/js/echarts.min.js"></script>
   <script src="/static/js/map/china.js"></script> 
   <script src="/static/js/jquery-3.2.1.min.js"></script> 
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/morphext.min.js"></script> 
 </head>
 
 <body class="container-fluid">
-  <h1>网络攻防演练-域名劫持</h1>
+    <div class="col-md-12">
+      <div class="row">
+        <div id="main" style="height:1080px;"></div>
+      </div>
+    </div>
+    
+    <div class="col-md-6 screenshot_column">
+      <div id="screenshot_pic"></div>
+    </div>
+
+    <div class="col-md-3 text_column" >
+      <div class="intro">
+      <h2><span class="label label-primary">4</span> 域名劫持攻击</h2>
+      <p>山西某基础电信企业官网域名解析服务器遭受口令破解攻击，域名解析记录被修改，当前的域名指向某博彩网站，攻击端IP来自山东某基础电信企业。</p>
+      </div>
+      
+      <div class="alarm">
+      <h2 id="alarm_text"></h2>
+      </div>
+      
+      <div class="defense">
+      <h2 id="defense_text"></h2>
+      </div>
+    </div>
+    
+<div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <h1 class="alarm"><i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;警报（Ⅱ级）</h1>
+        <h1>发现网页篡改！</h1>
+      </div>
+    </div>
+</div>
 </body>
 
+
+<script type="text/javascript">
+var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
+  clearTimeout(alarmModal.data('hideInteval'))
+  var id = setTimeout(function(){
+      alarmModal.modal('hide');
+  }, 8000);
+  alarmModal.data('hideInteval', id);
+})
+</script> 
+<script type="text/javascript">
+;WebPage = {
+  api : "/api/dns.json",
+  pageStatus : {
+  	status: ''
+  },
+  activeGeo : {},
+  
+  attackChart : echarts.init(document.getElementById('main')),
+  alarmModal  : $('#alarmModal'),
+  alarmText   : $('#alarm_text'),
+  defenseText : $('#defense_text'),
+  screenshotPic : $('#screenshot_pic'),
+  
+  screenshotUrl : function() {
+    return '<img src="/static/images/' + this.pageStatus.screenshot + '" width="100%" height="100%"/>';
+  },
+  
+  popupAlarmModal : function() {
+    this.alarmModal.modal('show');
+  },
+  
+  displayAlarmText : function() {
+    this.alarmText.fadeOut(1000);
+    this.alarmText.html(this.pageStatus.alarm_text);
+    this.alarmText.fadeIn(2000);
+  },
+  
+  hideAlarmText : function() {
+    this.alarmText.fadeOut(1000);
+  },
+  
+  displayDefenseText : function() {
+    this.defenseText.html(this.pageStatus.defense_text);
+    this.defenseText.fadeIn(2000);
+  },
+  
+  morphextDefenseText : function() {
+    this.defenseText.html(this.pageStatus.defense_text.join());
+    this.defenseText.show();
+    this.defenseText.Morphext({
+      animation: "slideInRight",
+      separator: ",",
+      speed: 6000,
+      complete: function () {
+        if (this.phrases[this.index] === "更新应用服务器管理员口令") {
+          WebPage.hideAlarmText();
+        } else if (this.phrases[this.index] === "恢复被篡改的页面代码") {
+          WebPage.hideScreenshot();
+        }
+		
+        if (this.index === this.phrases.length - 1) {
+          this.stop();
+        }
+      }
+    });
+  },
+  
+  displayScreenshot : function(delayTime) {
+    this.screenshotPic.hide();
+    this.screenshotPic.html(this.screenshotUrl());
+    this.screenshotPic.delay(delayTime).slideDown(4000);
+  },
+  
+  hideScreenshot : function() {
+    this.screenshotPic.fadeOut(1000);
+  },
+  
+  hideColumns : function() {
+    this.alarmText.fadeOut(1000);
+    this.defenseText.fadeOut(1000);
+    this.screenshotPic.fadeOut(1000);
+  },
+
+  redrawChart : function() {
+    moveOption.series[0].data = buildAttackLines();
+    moveOption.series[1].data = buildAttackLines();
+    moveOption.series[2].data = buildAreaScatter();
+    moveOption.geo = buildZoomCenter();
+    this.attackChart.setOption(moveOption);
+  },
+  
+ 
+  attack : function() {
+    this.activeGeo = {
+        zoom: 4,
+        center: geoCoordMap[this.pageStatus.attackArea]
+      };
+    this.redrawChart();
+    this.displayAlarmText();
+  },
+  
+  alarm : function() {
+    this.popupAlarmModal();
+    this.displayAlarmText();
+    this.displayScreenshot(9000);
+  },
+  
+  analyze : function() {
+    this.displayDefenseText();
+  },
+  
+  repair : function() {
+    this.morphextDefenseText();
+  },
+  
+  defense : function() {
+    this.displayDefenseText();
+    this.activeGeo = {};
+    this.redrawChart();
+  },
+  
+  confirm : function() {
+    this.displayDefenseText();
+    this.displayScreenshot(1000);
+  },
+  
+  initial : function() {
+    this.activeGeo = {};
+    this.redrawChart();
+    this.hideColumns();
+    this.pageStatus = {
+    	status: ''
+    };
+  },
+}
+</script> 
+<script src="/echarts/dns.js"></script> 
+<script type="text/javascript">
+function getJsonAndDraw() {
+  $.getJSON(WebPage.api, function( result ) {
+    if(WebPage.pageStatus.status == result.status) {
+		return;
+    }
+    
+    WebPage.pageStatus = result;
+    
+    switch(result.status) {
+      case "attack":
+        WebPage.attack();
+        break;
+      case "alarm":
+        WebPage.alarm();
+        break;
+      case "analyze":
+        WebPage.analyze();
+        break;
+      case "repair":
+        WebPage.repair();
+        break;
+      case "defense":
+        WebPage.defense();
+        break;
+      case "confirm":
+        WebPage.confirm();
+        break;
+      default:
+        WebPage.initial();
+	  }
+  });
+}
+
+getJsonAndDraw();
+setInterval(getJsonAndDraw, 1000);
+
+$(window).resize(function() {
+  WebPage.attackChart.resize();
+});
+</script>
 </html>
