@@ -50,8 +50,8 @@
 <div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <h1 class="alarm"><i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;Ⅱ级警报</h1>
-        <h1>发现网页篡改!!!</h1>
+        <h1 class="alarm"><i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;警报（Ⅱ级）</h1>
+        <h1>发现网页篡改！</h1>
       </div>
     </div>
 </div>
@@ -125,10 +125,10 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
     });
   },
   
-  displayScreenshot : function() {
-    this.screenshotPic.fadeOut(1000);
+  displayScreenshot : function(delayTime) {
+    this.screenshotPic.hide();
     this.screenshotPic.html(this.screenshotUrl());
-    this.screenshotPic.delay(9000).slideDown(4000);
+    this.screenshotPic.delay(delayTime).slideDown(4000);
   },
   
   hideScreenshot : function() {
@@ -162,7 +162,7 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   alarm : function() {
     this.popupAlarmModal();
     this.displayAlarmText();
-    this.displayScreenshot();
+    this.displayScreenshot(9000);
   },
   
   analyze : function() {
@@ -181,6 +181,7 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   
   confirm : function() {
     this.displayDefenseText();
+    this.displayScreenshot(1000);
   },
   
   initial : function() {

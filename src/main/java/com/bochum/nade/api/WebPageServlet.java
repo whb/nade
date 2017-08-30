@@ -44,6 +44,7 @@ public class WebPageServlet extends JsonResponseServlet {
 		} else if ("confirm".equals(request.getServletContext().getAttribute("action"))) {
 			map.put("status", "confirm");
 			map.put("defense_text", "验证官网主页恢复");
+			map.put("screenshot", "tianjin_dianxin.jpg");
 		} else {
 			map.put("status", "initial");
 		}
