@@ -19,6 +19,7 @@
   <script src="/static/js/jquery-3.2.1.min.js"></script> 
   <script src="/static/js/bootstrap.min.js"></script>
   <script src="/static/js/morphext.min.js"></script> 
+  <script src="/static/js/typewriter-bundle.min.js"></script> 
 </head>
 
 <body class="container-fluid">
@@ -29,6 +30,10 @@
     </div>
     
     <div class="col-md-6 screenshot_column">
+      <div id="terminal">
+        <span id="typewriter" class="typewriter"></span>
+        <span class="cursor">&nbsp;</span>
+      </div>
       <div id="screenshot_pic"></div>
     </div>
 
@@ -136,10 +141,40 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
     this.screenshotPic.fadeOut(1000);
   },
   
+  typewriter : function() {
+    $('#typewriter').empty();
+    $('#terminal').show();
+    var typewriter = require('typewriter');
+    var twSpan = document.getElementById('typewriter');
+    var tw = typewriter(twSpan).withAccuracy(95)
+                               .withMinimumSpeed(5)
+                               .withMaximumSpeed(17)
+                               .build();
+    tw.put('$ ')
+      .waitRange(500, 1000)
+      .type('dig www.baidu.com')
+      .put('<br/>')
+      .waitRange(1000, 1500)
+      .put(';; ANSWER SECTION:<br/>')
+      .put('www.baidu.com.          801     IN      CNAME   www.a.shifen.com.<br/>')
+      .put('www.a.shifen.com.       555     IN      A       119.75.216.20<br/>')
+      .put('www.a.shifen.com.       555     IN      A       119.75.213.61<br/>')
+      .put('www.a.shifen.com.       555     IN      A       119.75.216.20<br/>')
+      .put('<br/>')
+      .put('$ ')
+      .waitRange(1000, 1500)
+      .type('exit')
+      .put('<br/>')
+      .wait(500)
+      .put('logout<br/><br/>')
+      .put('[Process completed]<br/>');
+  },
+  
   hideColumns : function() {
     this.alarmText.fadeOut(1000);
     this.defenseText.fadeOut(1000);
     this.screenshotPic.fadeOut(1000);
+    $('#terminal').fadeOut(1000);
   },
 
   redrawChart : function() {
@@ -182,7 +217,8 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   
   confirm : function() {
     this.displayDefenseText();
-    this.displayScreenshot(1000);
+    this.typewriter();
+    this.displayScreenshot(9000);
   },
   
   initial : function() {
