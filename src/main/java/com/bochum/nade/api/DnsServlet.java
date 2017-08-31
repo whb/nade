@@ -44,8 +44,8 @@ public class DnsServlet extends JsonResponseServlet {
 			map.put("defense_text", "封堵攻击源IP地址：125.39.240.113");
 		} else if ("confirm".equals(request.getServletContext().getAttribute("action"))) {
 			map.put("status", "confirm");
-			map.put("defense_text", "验证官网主页恢复");
-			map.put("screenshot", "tianjin_dianxin.jpg");
+			map.put("defense_text", "验证官网主页DNS恢复正常");
+			map.put("terminal_command", "dig www.baidu.com");
 		} else {
 			map.put("status", "initial");
 		}

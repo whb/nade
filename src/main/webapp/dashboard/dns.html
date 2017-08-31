@@ -152,7 +152,7 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
                                .build();
     tw.put('$ ')
       .waitRange(500, 1000)
-      .type('dig www.baidu.com')
+      .type(this.pageStatus.terminal_command)
       .put('<br/>')
       .waitRange(1000, 1500)
       .put(';; ANSWER SECTION:<br/>')
@@ -162,7 +162,7 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
       .put('www.a.shifen.com.       555     IN      A       119.75.216.20<br/>')
       .put('<br/>')
       .put('$ ')
-      .waitRange(1000, 1500)
+      .waitRange(2000, 2500)
       .type('exit')
       .put('<br/>')
       .wait(500)
@@ -218,7 +218,6 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   confirm : function() {
     this.displayDefenseText();
     this.typewriter();
-    this.displayScreenshot(9000);
   },
   
   initial : function() {
