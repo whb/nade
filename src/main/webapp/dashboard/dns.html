@@ -190,6 +190,9 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
     moveOption.series[0].data = buildAttackLines();
     moveOption.series[1].data = buildAttackLines();
     moveOption.series[2].data = buildAreaScatter();
+    moveOption.series[2].markPoint.data = buildDefenseMarkPoint();
+    moveOption.series[3].data = buildDefensingLines();
+    moveOption.series[4].data = buildDefensingLines();
     moveOption.geo = buildZoomCenter();
     this.attackChart.setOption(moveOption);
   },
@@ -220,6 +223,16 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   
   defense : function() {
     this.displayDefenseText();
+    this.activeGeo = {
+        zoom: 4,
+        center: geoCoordMap[this.pageStatus.attackArea]
+      };
+    this.redrawChart();
+    setTimeout(function() { WebPage.defensed(); }, 6000);
+  },
+  
+  defensed : function() {
+    this.pageStatus.status= 'defensed';
     this.activeGeo = {};
     this.redrawChart();
   },
@@ -243,6 +256,9 @@ function getJsonAndDraw() {
   $.getJSON(WebPage.api, function( result ) {
     if(WebPage.pageStatus.status == result.status) {
 		return;
+    }
+    if(WebPage.pageStatus.status == 'defensed' && result.status == 'defense') {
+  		return;
     }
     
     WebPage.pageStatus = result;
