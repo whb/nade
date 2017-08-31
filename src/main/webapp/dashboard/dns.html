@@ -30,9 +30,10 @@
     </div>
     
     <div class="col-md-6 screenshot_column">
+      <div id="correct_mark"></div>
       <div id="terminal">
         <span id="typewriter" class="typewriter"></span>
-        <span class="cursor">&nbsp;</span>
+        <span id="cursor" class="cursor"></span>
       </div>
       <div id="screenshot_pic"></div>
     </div>
@@ -144,6 +145,7 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   typewriter : function() {
     $('#typewriter').empty();
     $('#terminal').show();
+    $('#cursor').html('&nbsp;');
     var typewriter = require('typewriter');
     var twSpan = document.getElementById('typewriter');
     var tw = typewriter(twSpan).withAccuracy(95)
@@ -170,10 +172,17 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
       .put('[Process completed]<br/>');
   },
   
+  markCorrect : function(delayTime) {
+    $('#correct_mark').hide();
+    $('#correct_mark').append('<i class="fa fa-check"></i>');
+    $('#correct_mark').delay(delayTime).fadeIn(3000);
+  },
+  
   hideColumns : function() {
     this.alarmText.fadeOut(1000);
     this.defenseText.fadeOut(1000);
     this.screenshotPic.fadeOut(1000);
+    $('#correct_mark').empty();
     $('#terminal').fadeOut(1000);
   },
 
@@ -218,6 +227,7 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   confirm : function() {
     this.displayDefenseText();
     this.typewriter();
+    this.markCorrect(8000);
   },
   
   initial : function() {

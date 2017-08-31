@@ -163,7 +163,7 @@ body.container-fluid .title {
 }
 
 .screenshot_column {
-  position: absolute; top: 200px;
+  position: absolute; top: 200px; left: 20%;
   float : left;
 }
 
@@ -260,5 +260,9 @@ h1.alarm {
 }
 .cursor {
   background: #777;
+}
+#correct_mark {
+	position: absolute; float : left; top : 5px; left: 250px;
+	font-size: 196px;
 }
  
