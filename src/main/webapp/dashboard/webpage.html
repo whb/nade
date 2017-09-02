@@ -47,6 +47,7 @@
       <div class="defense">
       <h2 id="defense_title"></h2>
       <h3 id="defense_text"></h3>
+      <ul id="defense_list"></ul>
       </div>
     </div>
     
@@ -135,6 +136,7 @@
   
   displayDefenseTitle : function() {
     $('#defense_text').hide();
+    $('#defense_list').hide();
     $('#defense_title').hide();
     $('#defense_title').html(this.getDefenseTitleIcon() + ' ' + this.pageStatus.defense_title);
     return $('#defense_title').fadeIn(2000);
@@ -167,6 +169,21 @@
     });
   },
   
+  listDefenseText : function() {
+    $('#defense_list').empty();
+    $('#defense_list').show();
+    this.pageStatus.defense_text.forEach(function(text, index) {
+      setTimeout(function() { 
+          $('<li>'+text+'</li>').appendTo("#defense_list").animateCss('flipInX'); 
+          if (text === "更新应用服务器管理员口令") {
+            WebPage.hideAlarm();
+          } else if (text === "恢复被篡改的页面代码") {
+            WebPage.hideScreenshot();
+          }
+      }, index*3000);
+    });
+  },
+  
   displayScreenshot : function(delayTime) {
     this.screenshotPic.hide();
     this.screenshotPic.html(this.screenshotUrl());
@@ -182,6 +199,7 @@
     $('#alarm_text').fadeOut(1000);
     $('#defense_title').fadeOut(1000);
     $('#defense_text').fadeOut(1000);
+    $('#defense_list').fadeOut(1000);
     $('#screenshot_pic').fadeOut(1000);
   },
 
@@ -235,7 +253,7 @@
     queue(function () {
       return WebPage.displayDefenseTitle().delay(1000);
     }, function () {
-      return WebPage.morphextDefenseText();
+      return WebPage.listDefenseText();
     });
   },
   
