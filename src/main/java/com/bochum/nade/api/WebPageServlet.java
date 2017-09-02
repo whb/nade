@@ -29,6 +29,7 @@ public class WebPageServlet extends JsonResponseServlet {
 			map.put("alarm_text", "攻击者发起口令破解攻击。");
 		} else if ("alarm".equals(request.getServletContext().getAttribute("action"))) {
 			map.put("status", "alarm");
+			map.put("alarm_title", "页面篡改警报");
 			map.put("alarm_text", "用户口令被破解（admin/p@ssw0rd）");
 			map.put("screenshot", "distort_webpage.jpg");
 		} else if ("analyze".equals(request.getServletContext().getAttribute("action"))) {
