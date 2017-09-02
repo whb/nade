@@ -45,8 +45,8 @@
       </div>
       
       <div class="defense">
-      <h2><i class="fa fa-wrench"></i> 应急处理</h2>
-      <h2 id="defense_text"></h2>
+      <h2 id="defense_title"></h2>
+      <h3 id="defense_text"></h3>
       </div>
     </div>
     
@@ -93,10 +93,19 @@
     this.alarmModal.modal('show');
   },
   
+  getAlarmTitleIcon : function() {
+    switch (this.pageStatus.status) {
+    case 'attack':
+      return '<i class="fa fa-rocket"></i>';
+    default:
+      return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1504312598649" class="svg replaced-svg" style="" viewBox="0 0 1024 1024" version="1.1" p-id="7807" width="48" height="48" id="alarm-light"><defs><style type="text/css"></style></defs><path d="M508.402 322.048c-124.401 0-225.258 100.835-225.258 225.236v276.754h453.721V547.284c0-124.402-100.834-225.236-225.236-225.236h-3.227z m-261.506 134.9c4-19.862-8.886-39.202-28.748-43.202l-106.22-21.316c-19.862-3.977-39.225 8.908-43.202 28.77a37.06 37.06 0 0 0-0.317 12.75c2.25 14.817 13.522 27.317 29.066 30.452l106.22 21.316c19.884 3.978 39.224-8.885 43.201-28.77z m-24.34-246.098l67.656 84.608c12.657 15.817 35.747 18.386 51.587 5.728 15.817-12.659 18.385-35.749 5.727-51.588l-67.677-84.587c-12.635-15.816-35.725-18.385-51.565-5.749-10.636 8.5-15.272 21.681-13.363 34.225a36.306 36.306 0 0 0 7.636 17.363z m292.05 31.999c20.271 0.477 37.066-15.568 37.542-35.816l-0.25-108.312c0.478-20.249-15.567-37.066-35.815-37.543-20.272-0.477-37.089 15.568-37.567 35.816l0.25 108.31c-0.045 2.183 0.091 4.342 0.41 6.433 2.636 17.27 17.363 30.702 35.43 31.112z m169.875 66.404c15.205 13.386 38.407 11.91 51.793-3.295l71.564-81.335c13.386-15.227 11.908-38.407-3.295-51.793-15.227-13.386-38.407-11.908-51.793 3.295l-71.585 81.337c-7.455 8.476-10.296 19.43-8.727 29.792 1.248 8.227 5.316 16.068 12.043 22z m267.12 132.72c-3.046-20.045-21.77-33.817-41.793-30.75l-107.106 16.295c-20.045 3.045-33.816 21.748-30.772 41.793 3.046 20.043 21.772 33.815 41.816 30.77l107.084-16.316c20.044-3.045 33.815-21.75 30.77-41.793zM816.994 908.008c0 28.884-23.407 52.27-52.293 52.27H243.806c-28.886 0-52.293-23.386-52.293-52.27 0-28.884 23.407-52.27 52.293-52.27h520.896c28.886 0 52.293 23.386 52.293 52.27z" fill="#d81e06" p-id="7808"></path></svg>';
+    }
+  },
+  
   displayAlarmTitle : function() {
-   // $('#alarm_title').hide();
-    let alarm_light_svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1504312598649" class="svg replaced-svg" style="" viewBox="0 0 1024 1024" version="1.1" p-id="7807" width="48" height="48" id="alarm-light"><defs><style type="text/css"></style></defs><path d="M508.402 322.048c-124.401 0-225.258 100.835-225.258 225.236v276.754h453.721V547.284c0-124.402-100.834-225.236-225.236-225.236h-3.227z m-261.506 134.9c4-19.862-8.886-39.202-28.748-43.202l-106.22-21.316c-19.862-3.977-39.225 8.908-43.202 28.77a37.06 37.06 0 0 0-0.317 12.75c2.25 14.817 13.522 27.317 29.066 30.452l106.22 21.316c19.884 3.978 39.224-8.885 43.201-28.77z m-24.34-246.098l67.656 84.608c12.657 15.817 35.747 18.386 51.587 5.728 15.817-12.659 18.385-35.749 5.727-51.588l-67.677-84.587c-12.635-15.816-35.725-18.385-51.565-5.749-10.636 8.5-15.272 21.681-13.363 34.225a36.306 36.306 0 0 0 7.636 17.363z m292.05 31.999c20.271 0.477 37.066-15.568 37.542-35.816l-0.25-108.312c0.478-20.249-15.567-37.066-35.815-37.543-20.272-0.477-37.089 15.568-37.567 35.816l0.25 108.31c-0.045 2.183 0.091 4.342 0.41 6.433 2.636 17.27 17.363 30.702 35.43 31.112z m169.875 66.404c15.205 13.386 38.407 11.91 51.793-3.295l71.564-81.335c13.386-15.227 11.908-38.407-3.295-51.793-15.227-13.386-38.407-11.908-51.793 3.295l-71.585 81.337c-7.455 8.476-10.296 19.43-8.727 29.792 1.248 8.227 5.316 16.068 12.043 22z m267.12 132.72c-3.046-20.045-21.77-33.817-41.793-30.75l-107.106 16.295c-20.045 3.045-33.816 21.748-30.772 41.793 3.046 20.043 21.772 33.815 41.816 30.77l107.084-16.316c20.044-3.045 33.815-21.75 30.77-41.793zM816.994 908.008c0 28.884-23.407 52.27-52.293 52.27H243.806c-28.886 0-52.293-23.386-52.293-52.27 0-28.884 23.407-52.27 52.293-52.27h520.896c28.886 0 52.293 23.386 52.293 52.27z" fill="#d81e06" p-id="7808"></path></svg>';
-    $('#alarm_title').html(alarm_light_svg + ' ' + this.pageStatus.alarm_title);
+    $('#alarm_text').hide();
+    $('#alarm_title').html(this.getAlarmTitleIcon() + ' ' + this.pageStatus.alarm_title);
+    $('#alarm_title').show();
     return $('#alarm_title').animateCss('tada');
   },
   
@@ -106,13 +115,35 @@
     return this.alarmText.delay(2000).fadeIn(2000);
   },
   
-  hideAlarmText : function() {
-    this.alarmText.fadeOut(1000);
+  hideAlarm : function() {
+    $('#alarm_title').fadeOut(1000);
+    $('#alarm_text').fadeOut(1000);
+  },
+  
+  getDefenseTitleIcon : function() {
+    switch (this.pageStatus.status) {
+    case 'analyze':
+      return '<i class="fa fa-search"></i>';
+    case 'repair':
+      return '<i class="fa fa-wrench"></i>';
+    case 'defense':
+      return '<i class="fa fa-shield"></i>';
+    default:
+      return '<i class="fa fa-check"></i>';
+    }
+  }, 
+  
+  displayDefenseTitle : function() {
+    $('#defense_text').hide();
+    $('#defense_title').hide();
+    $('#defense_title').html(this.getDefenseTitleIcon() + ' ' + this.pageStatus.defense_title);
+    return $('#defense_title').fadeIn(2000);
   },
   
   displayDefenseText : function() {
-    this.defenseText.html(this.pageStatus.defense_text);
-    this.defenseText.fadeIn(2000);
+    $('#defense_text').hide();
+    $('#defense_text').html(this.pageStatus.defense_text);
+    return $('#defense_text').fadeIn(2000);
   },
   
   morphextDefenseText : function() {
@@ -124,7 +155,7 @@
       speed: 6000,
       complete: function () {
         if (this.phrases[this.index] === "更新应用服务器管理员口令") {
-          WebPage.hideAlarmText();
+          WebPage.hideAlarm();
         } else if (this.phrases[this.index] === "恢复被篡改的页面代码") {
           WebPage.hideScreenshot();
         }
@@ -146,11 +177,12 @@
     this.screenshotPic.fadeOut(1000);
   },
   
-  hideColumns : function() {
+  hideAll : function() {
     $('#alarm_title').fadeOut(1000);
     $('#alarm_text').fadeOut(1000);
-    this.defenseText.fadeOut(1000);
-    this.screenshotPic.fadeOut(1000);
+    $('#defense_title').fadeOut(1000);
+    $('#defense_text').fadeOut(1000);
+    $('#screenshot_pic').fadeOut(1000);
   },
 
   redrawChart : function() {
@@ -171,7 +203,11 @@
       center: geoCoordMap[this.pageStatus.attackArea]
     };
     this.redrawChart();
-    this.displayAlarmText();
+    queue(function () {
+      return WebPage.displayAlarmTitle().delay(1000);
+    }, function () {
+      return WebPage.displayAlarmText();
+    });
   },
   
   alarm : function() {
@@ -188,15 +224,27 @@
   },
   
   analyze : function() {
-    this.displayDefenseText();
+    queue(function () {
+      return WebPage.displayDefenseTitle().delay(1000);
+    }, function () {
+      return WebPage.displayDefenseText();
+    });
   },
   
   repair : function() {
-    this.morphextDefenseText();
+    queue(function () {
+      return WebPage.displayDefenseTitle().delay(1000);
+    }, function () {
+      return WebPage.morphextDefenseText();
+    });
   },
   
   defense : function() {
-    this.displayDefenseText();
+    queue(function () {
+      return WebPage.displayDefenseTitle().delay(1000);
+    }, function () {
+      return WebPage.displayDefenseText();
+    });
     this.activeGeo = {
         zoom: 4,
         center: geoCoordMap[this.pageStatus.attackArea]
@@ -212,14 +260,19 @@
   },
   
   confirm : function() {
-    this.displayDefenseText();
-    this.displayScreenshot(1000);
+    queue(function () {
+      return WebPage.displayDefenseTitle().delay(1000);
+    }, function () {
+      return WebPage.displayDefenseText().delay(1000);
+    }, function () {
+      return WebPage.displayScreenshot(1000);
+    });
   },
   
   initial : function() {
     this.activeGeo = {};
     this.redrawChart();
-    this.hideColumns();
+    this.hideAll();
   },
 }
 </script> 
