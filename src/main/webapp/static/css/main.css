@@ -295,6 +295,14 @@ h1.alarm {
 
 #alarm_list, #defense_list {
   font-size: 24px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
+
+#alarm_list>li, #defense_list>li {
+  margin-bottom: 10px;
+}
+
 
 
