@@ -286,14 +286,14 @@ h1.alarm {
  
  
 /* animate css */
-#alarm_title, #defense_list {
+#alarm_title, #alarm_list, #defense_list {
   -webkit-animation-duration: 2s;
   /*-webkit-animation-delay: 2s;
   -webkit-animation-iteration-count: 2;*/
 }
 
 
-#defense_list {
+#alarm_list, #defense_list {
   font-size: 24px;
 }
 

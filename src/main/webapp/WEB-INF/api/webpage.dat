@@ -13,7 +13,7 @@ attack:: {
 alarm:: {
     "status": "alarm",
     "alarm_title": "页面篡改警报",
-    "alarm_text": "用户口令被破解（admin/p@ssw0rd）",
+    "alarm_text": ["用户口令被破解（admin/p@ssw0rd）", "门户网页被篡改"],
     "screenshot": "distort_webpage.jpg",
     "attackArea": "河北",
     "targetArea": "天津"
