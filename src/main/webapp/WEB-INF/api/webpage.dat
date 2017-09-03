@@ -2,14 +2,14 @@ initial:: {
     "status": "initial",
     "attackArea": "河北",
     "targetArea": "天津"
-};
+};;
 attack:: {
     "status": "attack",
     "alarm_title": "演练启动",
     "alarm_text": "攻击者发起口令破解攻击。",
     "attackArea": "河北",
     "targetArea": "天津"
-};
+};;
 alarm:: {
     "status": "alarm",
     "alarm_title": "页面篡改警报",
@@ -17,14 +17,14 @@ alarm:: {
     "screenshot": "distort_webpage.jpg",
     "attackArea": "河北",
     "targetArea": "天津"
-};
+};;
 analyze:: {
     "status": "analyze",
     "defense_title": "事件研判",
     "defense_text": "攻击源IP地址：125.39.240.113",
     "attackArea": "河北",
     "targetArea": "天津"
-};
+};;
 repair:: {
     "status": "repair",
     "defense_title": "应急处置",
@@ -36,14 +36,14 @@ repair:: {
     ],
     "attackArea": "河北",
     "targetArea": "天津"
-};
+};;
 defense:: {
     "status": "defense",
     "defense_title": "协同处理",
     "defense_text": "封堵攻击源IP地址：125.39.240.113",
     "attackArea": "河北",
     "targetArea": "天津"
-};
+};;
 confirm:: {
     "status": "confirm",
     "defense_title": "结果验证",

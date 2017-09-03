@@ -45,10 +45,10 @@ public class JsonResponseServlet extends HttpServlet {
 	}
 
 	protected void buildStatusDefine(String filename) {
-		String[] templates = readJsonTemplates(filename).split(";");
+		String[] templates = readJsonTemplates(filename).split(";;");
 		for (String t : templates) {
 			String[] keyValue = t.split("::");
-			this.statusDefineMap.put(keyValue[0], keyValue[1].replaceAll("\\s+",""));
+			this.statusDefineMap.put(keyValue[0], keyValue[1].replaceAll("\\s+"," "));
 		}
 	}
 

@@ -44,13 +44,9 @@
       <p>山西某基础电信企业官网域名解析服务器遭受口令破解攻击，域名解析记录被修改，当前的域名指向某博彩网站，攻击端IP来自山东某基础电信企业。</p>
       </div>
       
-      <div class="alarm">
-      <h2 id="alarm_text"></h2>
-      </div>
+      <div id="alarm" class="alarm"></div>
       
-      <div class="defense" id="defense_div">
-      <h2 id="defense_text"></h2>
-      </div>
+      <div id="defense" class="defense"> </div>
     </div>
     
 <div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
@@ -63,16 +59,7 @@
 </div>
 </body>
 
-
-<script type="text/javascript">
-var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
-  clearTimeout(alarmModal.data('hideInteval'))
-  var id = setTimeout(function(){
-      alarmModal.modal('hide');
-  }, 8000);
-  alarmModal.data('hideInteval', id);
-})
-</script> 
+<script src="/static/js/main.js"></script>
 <script type="text/javascript">
 ;WebPage = {
   api : "/api/dns.json",
@@ -83,53 +70,12 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   
   attackChart : echarts.init(document.getElementById('main')),
   alarmModal  : $('#alarmModal'),
-  alarmText   : $('#alarm_text'),
-  defenseText : $('#defense_text'),
+  alarmWidget   : TextWidget.createNew($('#alarm')),
+  defenseWidget : TextWidget.createNew($('#defense')),
   screenshotPic : $('#screenshot_pic'),
   
   screenshotUrl : function() {
     return '<img src="/static/images/' + this.pageStatus.screenshot + '" width="100%" height="100%"/>';
-  },
-  
-  popupAlarmModal : function() {
-    this.alarmModal.modal('show');
-  },
-  
-  displayAlarmText : function() {
-    this.alarmText.fadeOut(1000);
-    this.alarmText.html(this.pageStatus.alarm_text);
-    this.alarmText.fadeIn(2000);
-  },
-  
-  hideAlarmText : function() {
-    this.alarmText.fadeOut(1000);
-  },
-  
-  displayDefenseText : function() {
-    this.defenseText.html(this.pageStatus.defense_text);
-    this.defenseText.fadeIn(2000);
-  },
-  
-  morphextDefenseText : function() {
-    $('#defense_div').empty();
-    $('#defense_div').append('<h2 id="defense_text">' + this.pageStatus.defense_text.join() + '</h2>');
-    this.defenseText = $('#defense_text');
-    this.defenseText.Morphext({
-      animation: "slideInRight",
-      separator: ",",
-      speed: 6000,
-      complete: function () {
-        if (this.phrases[this.index] === "更新域名解析服务器管理员口令") {
-          WebPage.hideAlarmText();
-        } else if (this.phrases[this.index] === "将官网的域名解析指向正确网站") {
-          WebPage.hideScreenshot();
-        }
-		
-        if (this.index === this.phrases.length - 1) {
-          this.stop();
-        }
-      }
-    });
   },
   
   displayScreenshot : function(delayTime) {
@@ -170,6 +116,7 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
       .wait(500)
       .put('logout<br/><br/>')
       .put('[Process completed]<br/>');
+    return tw;
   },
   
   markCorrect : function(delayTime) {
@@ -178,9 +125,9 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
     $('#correct_mark').delay(delayTime).fadeIn(3000);
   },
   
-  hideColumns : function() {
-    this.alarmText.fadeOut(1000);
-    this.defenseText.fadeOut(1000);
+  hideAll : function() {
+    this.alarmWidget.hide()
+    this.defenseWidget.hide()
     this.screenshotPic.fadeOut(1000);
     $('#correct_mark').empty();
     $('#terminal').fadeOut(1000);
@@ -199,35 +146,48 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   
  
   attack : function() {
+    this.alarmWidget.display(this.pageStatus);
     this.activeGeo = {
-        zoom: 4,
-        center: geoCoordMap[this.pageStatus.attackArea]
-      };
-    this.redrawChart();
-    this.displayAlarmText();
+      zoom: 4,
+      center: geoCoordMap[this.pageStatus.attackArea]
+    };
+    setTimeout(function() { WebPage.redrawChart(); }, 2000);
   },
   
   alarm : function() {
-    this.popupAlarmModal();
-    this.displayAlarmText();
-    this.displayScreenshot(9000);
+    queue(function () {
+      WebPage.alarmModal.modal('show');
+      return WebPage.alarmModal.delay(3000);
+    }, function () {
+      WebPage.alarmModal.modal('hide');
+      return WebPage.alarmWidget.display(WebPage.pageStatus); 
+    }, function () {
+      return WebPage.displayScreenshot(4000);       
+    });
   },
-  
+
   analyze : function() {
-    this.morphextDefenseText();
+    WebPage.defenseWidget.display(WebPage.pageStatus); 
   },
   
   repair : function() {
-    this.morphextDefenseText();
+    WebPage.defenseWidget.display(WebPage.pageStatus, function(text, index) {
+      if (text === "更新域名解析服务器管理员口令") {
+        WebPage.alarmWidget.hide();
+      } else if (text === "将官网的域名解析指向正确网站") {
+        WebPage.hideScreenshot();
+      }
+    });
   },
   
+  
   defense : function() {
-    this.displayDefenseText();
+    WebPage.defenseWidget.display(WebPage.pageStatus); 
     this.activeGeo = {
-        zoom: 4,
-        center: geoCoordMap[this.pageStatus.attackArea]
-      };
-    this.redrawChart();
+      zoom: 4,
+      center: geoCoordMap[this.pageStatus.attackArea]
+    };
+    setTimeout(function() { WebPage.redrawChart(); }, 2000);
     setTimeout(function() { WebPage.defensed(); }, 6000);
   },
   
@@ -238,15 +198,19 @@ var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
   },
   
   confirm : function() {
-    this.displayDefenseText();
-    this.typewriter();
-    this.markCorrect(8000);
+    queue(function () {
+      WebPage.defenseWidget.display(WebPage.pageStatus); 
+    }, function () {
+      return WebPage.typewriter();
+    },function () {
+      return WebPage.markCorrect(8000);
+    });
   },
   
   initial : function() {
     this.activeGeo = {};
     this.redrawChart();
-    this.hideColumns();
+    this.hideAll();
   },
 }
 </script> 
