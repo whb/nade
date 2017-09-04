@@ -32,6 +32,10 @@
     <servlet-name>DnsAPI</servlet-name>
     <servlet-class>com.bochum.nade.api.DnsServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>LeakAPI</servlet-name>
+    <servlet-class>com.bochum.nade.api.LeakServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>Console</servlet-name>
@@ -61,5 +65,9 @@
   <servlet-mapping>
     <servlet-name>DnsAPI</servlet-name>
     <url-pattern>/api/dns.json</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LeakAPI</servlet-name>
+    <url-pattern>/api/leak.json</url-pattern>
   </servlet-mapping>
 </web-app>

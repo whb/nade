@@ -212,10 +212,49 @@
         </div>
         
         
+        <div role="tabpanel" class="tab-pane" id="leak">
+            <div class="row">
+                <div class="col-md-8">
+                  <div class="row">
+                      <button name="attack" type="button" class="attack btn btn-outline">
+                        <i class="fa fa-rocket fa-lg"></i> 演练启动
+                      </button>
+                      <button name="alarm" type="button" class="alarm btn btn-outline">
+                        <i class="fa fa-exclamation-triangle fa-lg"></i> 发出警报
+                      </button>
+                      <button name="analyze" type="button" class="repair btn btn-outline">
+                        <i class="fa fa-search fa-lg"></i> 事件研判
+                      </button>
+                      <button name="repair" type="button" class="repair btn btn-outline">
+                        <i class="fa fa-wrench fa-lg"></i> 应急处置
+                      </button>
+                      <button name="defense" type="button" class="defense btn btn-outline">
+                        <i class="fa fa-shield fa-lg"></i> 协同处理
+                      </button>
+                      <button name="confirm" type="button" class="confirm btn btn-outline">
+                        <i class="fa fa-check fa-lg"></i> 结果验证
+                      </button>
+                  </div>
+
+                </div>
+                
+                <div class="col-md-4">
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <th>当前演练</th>
+                        <td>大规模用户信息泄露</td>
+                      </tr>
+                      <tr>
+                        <th>参演区域</th>
+                        <td>北京</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+        </div>
         
-        
-        
-        <div role="tabpanel" class="tab-pane" id="leak">大规模用户信息泄露</div>
 </div>
 </div>
       
@@ -271,6 +310,12 @@ $("#webpage .btn").click(function() {
 });
 
 $("#dns .btn").click(function() {
+  $.post("console", {
+    action : $(this).attr("name")
+  });
+});
+
+$("#leak .btn").click(function() {
   $.post("console", {
     action : $(this).attr("name")
   });

@@ -2,20 +2,261 @@
 <html lang="zh-cn">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>网络攻防演练控制台</title>
+  <title>网络攻防演练监控屏幕</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
   <link rel="shortcut icon" href="/static/images/favicon-32x32.png">
   <!--[if lte IE 8]><meta http-equiv="refresh" content="0;url=/ie" /><![endif]-->
   
   <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+  
+  <link rel="stylesheet" href="/static/css/animate.min.css"/>
+  <link rel="stylesheet" href="/static/css/morphext.css">
+  <link rel="stylesheet" href="/static/css/main.css">
   <script src="/static/js/echarts.min.js"></script>
   <script src="/static/js/map/china.js"></script> 
   <script src="/static/js/jquery-3.2.1.min.js"></script> 
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/morphext.min.js"></script> 
+  <script src="/static/js/typewriter-bundle.min.js"></script> 
 </head>
 
 <body class="container-fluid">
-  <h1>网络攻防演练-大规模用户信息泄露</h1>
+    <div class="col-md-12">
+      <div class="row">
+        <div id="main" style="height:1080px;"></div>
+      </div>
+    </div>
+    
+    <div class="col-md-6 screenshot_column">
+      <div id="correct_mark"></div>
+      <div id="terminal">
+        <span id="typewriter" class="typewriter"></span>
+        <span id="cursor" class="cursor"></span>
+      </div>
+      <div id="screenshot_pic"></div>
+    </div>
+
+    <div class="col-md-3 text_column" >
+      <div class="intro">
+      <h2><span class="label label-primary">5</span> 用户信息泄露</h2>
+      <p>攻击者利用企业B的主机，远程控制北京某基础电信企业A的主机，在上面搭建了钓鱼网站，诱使用户登录，进而盗取用户敏感信息。</p>
+      </div>
+      
+      <div id="alarm" class="alarm"></div>
+      
+      <div id="defense" class="defense"> </div>
+    </div>
+    
+<div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <h1 class="alarm"><i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;警报（Ⅱ级）</h1>
+        <h1>发现钓鱼网站盗取大量用户信息！</h1>
+      </div>
+    </div>
+</div>
 </body>
 
+<script src="/static/js/main.js"></script>
+<script type="text/javascript">
+;WebPage = {
+  api : "/api/leak.json",
+  pageStatus : {
+  	status: ''
+  },
+  activeGeo : {},
+  
+  attackChart : echarts.init(document.getElementById('main')),
+  alarmModal  : $('#alarmModal'),
+  alarmWidget   : TextWidget.createNew($('#alarm')),
+  defenseWidget : TextWidget.createNew($('#defense')),
+  screenshotPic : $('#screenshot_pic'),
+  
+  screenshotUrl : function() {
+    return '<img src="/static/images/' + this.pageStatus.screenshot + '" width="100%" height="100%"/>';
+  },
+  
+  displayScreenshot : function(delayTime) {
+    this.screenshotPic.hide();
+    this.screenshotPic.html(this.screenshotUrl());
+    this.screenshotPic.delay(delayTime).slideDown(4000);
+  },
+  
+  hideScreenshot : function() {
+    this.screenshotPic.fadeOut(1000);
+  },
+  
+  typewriter : function() {
+    $('#typewriter').empty();
+    $('#terminal').show();
+    $('#cursor').html('&nbsp;');
+    var typewriter = require('typewriter');
+    var twSpan = document.getElementById('typewriter');
+    var tw = typewriter(twSpan).withAccuracy(95)
+                               .withMinimumSpeed(5)
+                               .withMaximumSpeed(17)
+                               .build();
+    tw.put('$ ')
+      .waitRange(500, 1000)
+      .type(this.pageStatus.terminal_command)
+      .put('<br/>')
+      .waitRange(1000, 1500)
+      .put(';; ANSWER SECTION:<br/>')
+      .put('www.baidu.com.          801     IN      CNAME   www.a.shifen.com.<br/>')
+      .put('www.a.shifen.com.       555     IN      A       119.75.216.20<br/>')
+      .put('www.a.shifen.com.       555     IN      A       119.75.213.61<br/>')
+      .put('www.a.shifen.com.       555     IN      A       119.75.216.20<br/>')
+      .put('<br/>')
+      .put('$ ')
+      .waitRange(2000, 2500)
+      .type('exit')
+      .put('<br/>')
+      .wait(500)
+      .put('logout<br/><br/>')
+      .put('[Process completed]<br/>');
+    return tw;
+  },
+  
+  markCorrect : function(delayTime) {
+    $('#correct_mark').hide();
+    $('#correct_mark').append('<i class="fa fa-check"></i>');
+    $('#correct_mark').delay(delayTime).fadeIn(3000);
+  },
+  
+  hideAll : function() {
+    this.alarmWidget.hide()
+    this.defenseWidget.hide()
+    this.screenshotPic.fadeOut(1000);
+    $('#correct_mark').empty();
+    $('#terminal').fadeOut(1000);
+  },
+
+  redrawChart : function() {
+    moveOption.series[0].data = buildAttackLines();
+    moveOption.series[1].data = buildAttackLines();
+    moveOption.series[2].data = buildAreaScatter();
+    moveOption.series[2].markPoint.data = buildDefenseMarkPoint();
+    moveOption.series[3].data = buildDefensingLines();
+    moveOption.series[4].data = buildDefensingLines();
+    moveOption.geo = buildZoomCenter();
+    this.attackChart.setOption(moveOption);
+  },
+  
+ 
+  attack : function() {
+    this.alarmWidget.display(this.pageStatus);
+    this.activeGeo = {
+      zoom: 4,
+      center: geoCoordMap[this.pageStatus.attackArea]
+    };
+    setTimeout(function() { WebPage.redrawChart(); }, 2000);
+  },
+  
+  alarm : function() {
+    queue(function () {
+      WebPage.alarmModal.modal('show');
+      return WebPage.alarmModal.delay(3000);
+    }, function () {
+      WebPage.alarmModal.modal('hide');
+      return WebPage.alarmWidget.display(WebPage.pageStatus); 
+    }, function () {
+      return WebPage.displayScreenshot(4000);       
+    });
+  },
+
+  analyze : function() {
+    WebPage.defenseWidget.display(WebPage.pageStatus); 
+  },
+  
+  repair : function() {
+    WebPage.defenseWidget.display(WebPage.pageStatus, function(text, index) {
+      if (text === "更新域名解析服务器管理员口令") {
+        WebPage.alarmWidget.hide();
+      } else if (text === "将官网的域名解析指向正确网站") {
+        WebPage.hideScreenshot();
+      }
+    });
+  },
+  
+  
+  defense : function() {
+    WebPage.defenseWidget.display(WebPage.pageStatus); 
+    this.activeGeo = {
+      zoom: 4,
+      center: geoCoordMap[this.pageStatus.attackArea]
+    };
+    setTimeout(function() { WebPage.redrawChart(); }, 2000);
+    setTimeout(function() { WebPage.defensed(); }, 6000);
+  },
+  
+  defensed : function() {
+    this.pageStatus.status= 'defensed';
+    this.activeGeo = {};
+    this.redrawChart();
+  },
+  
+  confirm : function() {
+    queue(function () {
+      WebPage.defenseWidget.display(WebPage.pageStatus); 
+    }, function () {
+      return WebPage.typewriter();
+    },function () {
+      return WebPage.markCorrect(8000);
+    });
+  },
+  
+  initial : function() {
+    this.activeGeo = {};
+    this.redrawChart();
+    this.hideAll();
+  },
+}
+</script> 
+<script src="/echarts/leak.js"></script> 
+<script type="text/javascript">
+function getJsonAndDraw() {
+  $.getJSON(WebPage.api, function( result ) {
+    if(WebPage.pageStatus.status == result.status) {
+		return;
+    }
+    if(WebPage.pageStatus.status == 'defensed' && result.status == 'defense') {
+  		return;
+    }
+    
+    WebPage.pageStatus = result;
+    
+    switch(result.status) {
+      case "attack":
+        WebPage.attack();
+        break;
+      case "alarm":
+        WebPage.alarm();
+        break;
+      case "analyze":
+        WebPage.analyze();
+        break;
+      case "repair":
+        WebPage.repair();
+        break;
+      case "defense":
+        WebPage.defense();
+        break;
+      case "confirm":
+        WebPage.confirm();
+        break;
+      default:
+        WebPage.initial();
+	  }
+  });
+}
+
+getJsonAndDraw();
+setInterval(getJsonAndDraw, 1000);
+
+$(window).resize(function() {
+  WebPage.attackChart.resize();
+});
+</script>
 </html>
