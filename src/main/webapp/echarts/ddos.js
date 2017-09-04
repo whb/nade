@@ -114,7 +114,7 @@ var planeSerie = {
         show: true,
         period: 0.5,
         trailLength: 0,
-        color: 'maroon',
+        color: 'yellow',
         symbol: planePath,
         symbolSize: 16
     },
