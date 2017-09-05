@@ -29,12 +29,9 @@
       </div>
     </div>
     
-    <div class="col-md-6 screenshot_column">
+    <div class="col-md-8 screenshot_column">
       <div id="correct_mark"></div>
-      <div id="terminal">
-        <span id="typewriter" class="typewriter"></span>
-        <span id="cursor" class="cursor"></span>
-      </div>
+      <div id="terminal"></div>
       <div id="screenshot_pic"></div>
     </div>
 
@@ -72,10 +69,11 @@
   alarmModal  : $('#alarmModal'),
   alarmWidget   : TextWidget.createNew($('#alarm')),
   defenseWidget : TextWidget.createNew($('#defense')),
+  terminalSimulator: TerminalSimulator.createNew($('#terminal')),
   screenshotPic : $('#screenshot_pic'),
   
   screenshotUrl : function() {
-    return '<img src="/static/images/' + this.pageStatus.screenshot + '" width="100%" height="100%"/>';
+    return '<img src="/static/images/' + this.pageStatus.screenshot + '" />';
   },
   
   displayScreenshot : function(delayTime) {
@@ -168,14 +166,16 @@
 
   analyze : function() {
     WebPage.defenseWidget.display(WebPage.pageStatus); 
+    WebPage.hideScreenshot();
+    WebPage.terminalSimulator.display(WebPage.pageStatus);
   },
   
   repair : function() {
+    WebPage.terminalSimulator.hide();
     WebPage.defenseWidget.display(WebPage.pageStatus, function(text, index) {
       if (text === "停止对钓鱼网站的接入服务") {
         WebPage.alarmWidget.hide();
       } else if (text === "清除钓鱼网站代码") {
-        WebPage.hideScreenshot();
       }
     });
   },

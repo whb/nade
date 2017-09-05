@@ -22,7 +22,19 @@ analyze:: {
     "status": "analyze",
     "defense_title": "事件研判",
     "defense_text": ["钓鱼网站为基础电信企业A自有主机 IP：125.39.240.113","钓鱼网站的日常管理来自于基础电信企业B的IP: 205.139.40.16","窃取的用户信息通过ftp上传至企业B的主机"],
-    "terminal_command": "less /var/log/sshd.log",
+    "terminal_simulator": [
+    	{"command": "less /var/log/sshd.log", 
+    	 "result": [
+    	 	"Sep  3 07:08:09 wordpress sshd[8540]: Invalid user 010101 from 91.197.232.103",
+    	 	"Sep  3 07:08:09 wordpress sshd[8540]: input_userauth_request: invalid user 010101 [preauth]",
+    	 	"Sep  3 07:08:09 wordpress sshd[8540]: pam_unix(sshd:auth): check pass; user unknown",
+    	 	"Sep  3 07:08:09 wordpress sshd[8540]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=91.197.232.103",
+    	 	"Sep  3 07:08:10 wordpress sshd[8540]: Failed password for invalid user 010101 from 91.197.232.103 port 55320 ssh2",
+    	 	"Sep  3 07:08:11 wordpress sshd[8540]: Connection closed by 91.197.232.103 port 55320 [preauth]",
+    	 	"Sep  3 07:08:14 wordpress sshd[8542]: Connection closed by 91.197.232.103 port 45517 [preauth]"
+    	 ]}, 
+    	{"command": "exit", "result": ["logout", "", "[Process completed]"]}
+    ],
     "attackArea": "企业B",
     "targetArea": "企业A"
 };;

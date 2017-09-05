@@ -108,7 +108,9 @@ var TextWidget = {
         widget.pageStatus.text.forEach(function(text, index) {
             setTimeout(function() { 
                 $('<li>'+text+'</li>').appendTo(widget.list).animateCss('flipInX'); 
-                listCallback(text, index);
+                
+                if(listCallback)
+                  listCallback(text, index);
             }, index*3000);
           });
       };
@@ -153,3 +155,44 @@ var TextWidget = {
       return widget;
     }
 };
+
+var TerminalSimulator = {
+    createNew: function(parentDiv){
+        var widget = {};
+        widget.parent = parentDiv;
+
+        (function(){ 
+          widget.typewriter = $('<span id="typewriter" class="typewriter"></span>').appendTo(widget.parent);
+          widget.cursor = $('<span id="cursor" class="cursor"></span>').appendTo(widget.parent);
+        })();
+        
+        
+        widget.display = function(pageStatus){ 
+          widget.cursor.html('&nbsp;');
+          var typewriter = require('typewriter');
+          var twSpan = document.getElementById('typewriter');
+          var tw = typewriter(twSpan).withAccuracy(98)
+                                     .withMinimumSpeed(5)
+                                     .withMaximumSpeed(17)
+                                     .build();
+          pageStatus.terminal_simulator.forEach(function(cmdResult) {
+            tw.put('$ ').waitRange(500, 1000);
+            tw.type(cmdResult.command).put('<br/>');
+            tw.waitRange(1000, 1500);
+            cmdResult.result.forEach(function(r) {
+              tw.put(r + '<br/>');
+            });
+            tw.waitRange(2000, 2500);
+          });
+
+          return tw;
+        };
+        
+        widget.hide = function() { 
+          widget.typewriter.empty();
+          widget.cursor.empty();
+        }
+        
+        return widget;
+      }
+  };
