@@ -180,7 +180,11 @@ var scatterSerie = {
         normal: {
             show: true,
             position: 'right',
-            formatter: '{b}'
+            formatter: '{b}',
+            textStyle: {
+              fontSize: 16,
+              fontWeight: 'bold'
+            }
         }
     },
     markPoint: {
