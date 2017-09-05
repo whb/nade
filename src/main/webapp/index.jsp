@@ -22,14 +22,13 @@
     <form class="form-horizontal">
       <a href="/dashboard" class="btn btn-outline-inverse btn-lg">显示监控屏幕</a>
       <a href="/console" class="btn btn-outline-inverse btn-lg">进入控制台</a> 
-      
-      <div class="form-group has-success has-feedback">
+      <div class="form-group  has-feedback">
       <div class="col-sm-4 col-sm-offset-4">
           <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-lock "></span></span>
             <input type="password" class="form-control input-lg" id="password" name="password" placeholder="Password">
           </div>
-          <span class="glyphicon glyphicon-ok form-control-feedback icon-lg"></span>
+          <span id="ok" class=""></span>
       </div>
       </div>
     </form>
@@ -37,4 +36,13 @@
   </div>
 </main>
 </body>
+
+<script type="text/javascript">
+$("#password").keyup(function() {
+  if("aaaa" == $(this).val()) {
+    $(this).parents('.form-group').addClass('has-success');
+    $('#ok').addClass('glyphicon glyphicon-ok form-control-feedback lg-ok-icon-lg');
+  }
+});
+</script>
 </html>
