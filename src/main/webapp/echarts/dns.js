@@ -235,7 +235,7 @@ var initialGeo = {
         }
     },
     regions: [{
-        name: '天津',
+        name: '山西',
         itemStyle: {
             normal: {
                 areaColor: '#2a333d',
