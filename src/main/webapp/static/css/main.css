@@ -8,6 +8,9 @@ body.container-fluid {
  *
  * Tweaks to the custom homepage and the masthead (main jumbotron).
  */
+ .icon-lg {
+     line-height: 46px;
+ }
 .bs-docs-masthead  {
   position: relative;
   padding: 30px 0;
@@ -37,7 +40,7 @@ body.container-fluid {
 .bs-docs-masthead .btn {
   width: 100%;
   padding: 15px 30px;
-  margin: 10px;
+  margin: 0px 10px 20px 0px;
   font-size: 20px;
 }
 
