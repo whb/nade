@@ -172,9 +172,9 @@
   
   repair : function() {
     WebPage.defenseWidget.display(WebPage.pageStatus, function(text, index) {
-      if (text === "更新域名解析服务器管理员口令") {
+      if (text === "停止对钓鱼网站的接入服务") {
         WebPage.alarmWidget.hide();
-      } else if (text === "将官网的域名解析指向正确网站") {
+      } else if (text === "清除钓鱼网站代码") {
         WebPage.hideScreenshot();
       }
     });
