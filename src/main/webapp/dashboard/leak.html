@@ -101,13 +101,7 @@
   },
 
   redrawChart : function() {
-    moveOption.series[0].data = buildAttackLines();
-    moveOption.series[1].data = buildAttackLines();
-    moveOption.series[2].data = buildAreaScatter();
-    moveOption.series[2].markPoint.data = buildDefenseMarkPoint();
-    moveOption.series[3].data = buildDefensingLines();
-    moveOption.series[4].data = buildDefensingLines();
-    moveOption.geo = buildZoomCenter();
+    refreshChartOption();
     this.attackChart.setOption(moveOption);
   },
   
@@ -118,6 +112,12 @@
       zoom: 3,
       center: geoCoordMap[this.pageStatus.targetArea]
     };
+    setTimeout(function() { WebPage.redrawChart(); }, 2000);
+    setTimeout(function() { WebPage.attacked(); }, 4000);
+  },
+  
+  attacked : function() {
+    this.pageStatus.status= 'attacked';
     setTimeout(function() { WebPage.redrawChart(); }, 2000);
   },
   
@@ -147,6 +147,14 @@
       } else if (text === "清除钓鱼网站代码") {
       }
     });
+    setTimeout(function() { WebPage.redrawChart(); }, 2000);
+    setTimeout(function() { WebPage.repaired(); }, 6000);
+  },
+  
+  repaired : function() {
+    this.pageStatus.status= 'repaired';
+    this.activeGeo = {};
+    this.redrawChart();
   },
   
   
@@ -157,7 +165,7 @@
       center: geoCoordMap[this.pageStatus.targetArea]
     };
     setTimeout(function() { WebPage.redrawChart(); }, 2000);
-    setTimeout(function() { WebPage.defensed(); }, 6000);
+    setTimeout(function() { WebPage.defensed(); }, 8000);
   },
   
   defensed : function() {
@@ -189,6 +197,12 @@ function getJsonAndDraw() {
   $.getJSON(WebPage.api, function( result ) {
     if(WebPage.pageStatus.status == result.status) {
 		return;
+    }
+    if(WebPage.pageStatus.status == 'attacked' && result.status == 'attack') {
+  		return;
+    }
+    if(WebPage.pageStatus.status == 'repaired' && result.status == 'repair') {
+  		return;
     }
     if(WebPage.pageStatus.status == 'defensed' && result.status == 'defense') {
   		return;
