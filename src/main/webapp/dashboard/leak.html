@@ -33,6 +33,7 @@
       <div id="correct_mark"></div>
       <div id="terminal"></div>
       <div id="screenshot_pic"></div>
+      <div id="matrix"></div>
     </div>
 
     <div class="col-md-3 text_column" >
@@ -71,6 +72,7 @@
   defenseWidget : TextWidget.createNew($('#defense')),
   terminalSimulator: TerminalSimulator.createNew($('#terminal')),
   screenshotPic : $('#screenshot_pic'),
+  matrix: Matrix.createNew($('#matrix')),
   
   screenshotUrl : function() {
     return '<img src="/static/images/' + this.pageStatus.screenshot + '" />';
@@ -136,7 +138,14 @@
   analyze : function() {
     WebPage.defenseWidget.display(WebPage.pageStatus); 
     WebPage.hideScreenshot();
-    WebPage.terminalSimulator.display(WebPage.pageStatus);
+    setTimeout(function() { 
+      WebPage.matrix.display();
+    }, 2000);
+    
+    setTimeout(function() { 
+      WebPage.matrix.hide(); 
+      WebPage.terminalSimulator.display(WebPage.pageStatus);
+    }, 15000);
   },
   
   repair : function() {

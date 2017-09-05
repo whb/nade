@@ -157,42 +157,123 @@ var TextWidget = {
 };
 
 var TerminalSimulator = {
+  createNew: function(parentDiv){
+      var widget = {};
+      widget.parent = parentDiv;
+
+      (function(){ 
+        widget.typewriter = $('<span id="typewriter" class="typewriter"></span>').appendTo(widget.parent);
+        widget.cursor = $('<span id="cursor" class="cursor"></span>').appendTo(widget.parent);
+      })();
+      
+      
+      widget.display = function(pageStatus){ 
+        widget.cursor.html('&nbsp;');
+        var typewriter = require('typewriter');
+        var twSpan = document.getElementById('typewriter');
+        var tw = typewriter(twSpan).withAccuracy(98)
+                                   .withMinimumSpeed(5)
+                                   .withMaximumSpeed(17)
+                                   .build();
+        pageStatus.terminal_simulator.forEach(function(cmdResult) {
+          tw.put('$ ').waitRange(500, 1000);
+          tw.type(cmdResult.command).put('<br/>');
+          tw.waitRange(1000, 1500);
+          cmdResult.result.forEach(function(r) {
+            tw.put(r + '<br/>');
+          });
+          tw.waitRange(2000, 2500);
+        });
+
+        return tw;
+      };
+      
+      widget.hide = function() { 
+        widget.typewriter.empty();
+        widget.cursor.empty();
+      }
+      
+      return widget;
+    }
+};
+
+
+var TextGenerator = {
+  createNew: function(){
+      var generator = {};
+      generator.userInfos = ['用户名', '身份证号码', '手机号码', '工作单位', '密码', '13651180933', 'dirzytp', 
+                               'abc123456', 'username', '10010198903050638', 'zhangsan@gmail.com', 'lisi@163.com', '601233198903050638',
+                               '123456', 'admin', '45010198903050638', 'zhangsan@qq.com', 'lisi@263.com', '100233198903050638',
+                               '13651190833', 'root', '朝阳区光辉小区24号', 'QQ号吗', '收入10万', '支付宝账号',
+                               '工商银行账号','建设银行信用卡号','淘宝账号','京东账号','通信地址'];
+      
+      generator.infoArray = [];
+      generator.startArray = [];
+      
+      (function(){ 
+        for(var i=0; i<300; i++) {
+          generator.infos = generator.userInfos.join(",");
+          generator.infoArray[i]=generator.infos;
+          generator.startArray[i]=0;
+        }
+      })();
+      
+      
+      generator.ch = function(i){
+        generator.startArray[i] += 1;
+        if(generator.startArray[i] >= generator.infos.length) 
+          generator.startArray[i] = parseInt(Math.random()*200);
+        return generator.infoArray[i].charAt(generator.startArray[i]);
+      };
+      
+      return generator;
+    }
+}
+
+var Matrix = {
     createNew: function(parentDiv){
         var widget = {};
         widget.parent = parentDiv;
+        widget.width = parentDiv.width() * 0.9;
+        widget.height = 800;
+        widget.textGenerator = TextGenerator.createNew();
 
         (function(){ 
-          widget.typewriter = $('<span id="typewriter" class="typewriter"></span>').appendTo(widget.parent);
-          widget.cursor = $('<span id="cursor" class="cursor"></span>').appendTo(widget.parent);
+          widget.canvas = $('<canvas id="q" width="'+widget.width+'" height="'+widget.height+'">Sorry Browser do not Support</canvas>').appendTo(widget.parent);
         })();
         
+        widget.ctx=q.getContext('2d');
         
-        widget.display = function(pageStatus){ 
-          widget.cursor.html('&nbsp;');
-          var typewriter = require('typewriter');
-          var twSpan = document.getElementById('typewriter');
-          var tw = typewriter(twSpan).withAccuracy(98)
-                                     .withMinimumSpeed(5)
-                                     .withMaximumSpeed(17)
-                                     .build();
-          pageStatus.terminal_simulator.forEach(function(cmdResult) {
-            tw.put('$ ').waitRange(500, 1000);
-            tw.type(cmdResult.command).put('<br/>');
-            tw.waitRange(1000, 1500);
-            cmdResult.result.forEach(function(r) {
-              tw.put(r + '<br/>');
-            });
-            tw.waitRange(2000, 2500);
+        widget.yPositions = Array(300).join(0).split('');
+        widget.draw = function(){ 
+          widget.ctx.fillStyle = 'rgba(0,0,0,0.05)'; //#2a333d rgba(42,51,61,.05) #404a59 rgba(64,74,89,.05)
+          widget.ctx.fillRect(0, 0, widget.width, widget.height);
+          widget.ctx.fillStyle = '#0F0';
+          widget.ctx.font = '10pt 宋体';
+          
+          
+          widget.yPositions.map(function(y, index){
+            //text = String.fromCharCode(1e2+Math.random()*33);
+            x = (index * 20)+20;
+            q.getContext('2d').fillText(widget.textGenerator.ch(index), x, y);
+            
+            if(y > 100 + Math.random()*1e4) {
+              widget.yPositions[index] = 0;
+            } else {
+              widget.yPositions[index] = y + 20;
+            }
           });
-
-          return tw;
         };
         
         widget.hide = function() { 
-          widget.typewriter.empty();
-          widget.cursor.empty();
-        }
+          if(typeof Game_Interval != "undefined") clearInterval(Game_Interval);
+          widget.parent.empty();
+        };
         
+        widget.display = function() { 
+          if(typeof Game_Interval != "undefined") clearInterval(Game_Interval);
+            Game_Interval = setInterval(widget.draw, 33);
+        };
         return widget;
       }
   };
