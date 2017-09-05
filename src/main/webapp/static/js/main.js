@@ -211,10 +211,10 @@ var TextGenerator = {
       generator.startArray = [];
       
       (function(){ 
-        for(var i=0; i<300; i++) {
+        for(var i=0; i<100; i++) {
           generator.infos = generator.userInfos.join(",");
           generator.infoArray[i]=generator.infos;
-          generator.startArray[i]=0;
+          generator.startArray[i]=parseInt(Math.random()*10);
         }
       })();
       
@@ -244,23 +244,23 @@ var Matrix = {
         
         widget.ctx=q.getContext('2d');
         
-        widget.yPositions = Array(300).join(0).split('');
+        widget.yPositions = Array(100).join(0).split('');
         widget.draw = function(){ 
           widget.ctx.fillStyle = 'rgba(0,0,0,0.05)'; //#2a333d rgba(42,51,61,.05) #404a59 rgba(64,74,89,.05)
           widget.ctx.fillRect(0, 0, widget.width, widget.height);
           widget.ctx.fillStyle = '#0F0';
-          widget.ctx.font = '10pt 宋体';
+          widget.ctx.font = '10.5pt 宋体';
           
           
           widget.yPositions.map(function(y, index){
             //text = String.fromCharCode(1e2+Math.random()*33);
-            x = (index * 20)+20;
+            x = (index * 15)+15;
             q.getContext('2d').fillText(widget.textGenerator.ch(index), x, y);
             
             if(y > 100 + Math.random()*1e4) {
               widget.yPositions[index] = 0;
             } else {
-              widget.yPositions[index] = y + 20;
+              widget.yPositions[index] = y + 15;
             }
           });
         };

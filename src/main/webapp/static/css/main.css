@@ -161,7 +161,7 @@ body.container-fluid .title {
 }
 
 .screenshot_column {
-  position: absolute; top: 200px; left: 10%;
+  position: absolute; top: 200px; left: 5%;
   float : left;
 }
 
@@ -267,14 +267,11 @@ h1.alarm {
 	color: red;
 }
 
-#screenshot_pic img {
-	max-width: 100%;
-	height: auto;
-}
+
 
 #terminal {
 	font-family: courier, fixed;
-	font-size: 16px;
+	font-size: 14px;
 }
 .typewriter {
 	white-space: pre-wrap;
