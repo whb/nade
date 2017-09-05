@@ -182,6 +182,7 @@ var TerminalSimulator = {
           cmdResult.result.forEach(function(r) {
             tw.put(r + '<br/>');
           });
+          tw.put('<br/>');
           tw.waitRange(2000, 2500);
         });
 
@@ -239,10 +240,8 @@ var Matrix = {
         widget.textGenerator = TextGenerator.createNew();
 
         (function(){ 
-          widget.canvas = $('<canvas id="q" width="'+widget.width+'" height="'+widget.height+'">Sorry Browser do not Support</canvas>').appendTo(widget.parent);
+          
         })();
-        
-        widget.ctx=q.getContext('2d');
         
         widget.yPositions = Array(100).join(0).split('');
         widget.draw = function(){ 
@@ -271,6 +270,8 @@ var Matrix = {
         };
         
         widget.display = function() { 
+          widget.canvas = $('<canvas id="q" width="'+widget.width+'" height="'+widget.height+'">Sorry Browser do not Support</canvas>').appendTo(widget.parent);
+          widget.ctx=q.getContext('2d');
           if(typeof Game_Interval != "undefined") clearInterval(Game_Interval);
             Game_Interval = setInterval(widget.draw, 33);
         };
