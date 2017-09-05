@@ -37,7 +37,11 @@ public class ConsoleServlet extends HttpServlet {
 
 		String subject = request.getParameter("subject");
 		if (subject != null && subject.length() > 0) {
-			request.getServletContext().setAttribute("subject", subject);
+			String oldSubject = (String) request.getServletContext().getAttribute("subject");
+			if(!subject.equals(oldSubject)) {
+				request.getServletContext().setAttribute("subject", subject);
+				request.getServletContext().setAttribute("action", null);
+			}
 			return;
 		}
 
@@ -47,9 +51,7 @@ public class ConsoleServlet extends HttpServlet {
 
 		if (subject.equals("ddos")) {
 			doDdos(request);
-		} else if (subject.equals("virus")) {
-			doVirus(request);
-		} else {
+		}  else {
 			doCommonAction(request);
 		}
 	}
@@ -111,20 +113,6 @@ public class ConsoleServlet extends HttpServlet {
 			attackAreas = new LinkedHashSet<String>();
 		attackAreas.add(activeAttackArea);
 		request.getServletContext().setAttribute("attackAreas", attackAreas);
-	}
-
-	private void doVirus(HttpServletRequest request) {
-		String reset = request.getParameter("reset");
-		if ("true".equals(reset)) {
-			request.getServletContext().setAttribute("action", "reset");
-			return;
-		}
-
-		String action = request.getParameter("action");
-		if (action != null && action.length() > 0) {
-			request.getServletContext().setAttribute("action", action);
-			return;
-		}
 	}
 
 	private void doCommonAction(HttpServletRequest request) {
