@@ -49,11 +49,9 @@ function getAttackerScatterStyle(attackArea) {
 }
 
 var geoCoordMap = {
-    '天津': [117.4219, 39.4189],
-    '河北': [114.4995,38.1006],
-    '山西': [112.3352,37.9413],
-    '山东': [117.1582, 36.8701],
-    '北京': [116.4551, 40.2539]
+    '企业B': [116.5071, 39.7888], //数码庄园
+    '企业A': [116.3267, 40.0389] //清华
+    // http://www.gpsspg.com/maps.htm 经纬度查询
 };
 
 
@@ -204,13 +202,25 @@ var scatterSerie = {
     },
     
     data: buildAreaScatter()
-}
+};
 
+var mapSerie = {
+    name: '',
+    type: 'map',
+    map: 'beijing',
+    zoom: 1.25,
+    roam: true,
+    silent: true,
+    itemStyle:{
+        normal:{label:{show:true}},
+        emphasis:{label:{show:true}}
+    },
+};
 
 var series = [ trailSerie, planeSerie, scatterSerie, defensingTrailSerie, defensingPlaneSerie];
 
 var initialGeo = {
-    map: 'china',
+    map: 'beijing',
     zoom: 1.25,
     center: null,
     label: {
@@ -230,7 +240,7 @@ var initialGeo = {
         }
     },
     regions: [{
-        name: '天津',
+        name: '海淀区',
         itemStyle: {
             normal: {
                 areaColor: '#2a333d',

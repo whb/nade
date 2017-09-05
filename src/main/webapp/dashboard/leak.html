@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/static/css/morphext.css">
   <link rel="stylesheet" href="/static/css/main.css">
   <script src="/static/js/echarts.min.js"></script>
-  <script src="/static/js/map/china.js"></script> 
+  <script src="/static/js/map/beijing.js"></script> 
   <script src="/static/js/jquery-3.2.1.min.js"></script> 
   <script src="/static/js/bootstrap.min.js"></script>
   <script src="/static/js/morphext.min.js"></script> 
@@ -148,8 +148,8 @@
   attack : function() {
     this.alarmWidget.display(this.pageStatus);
     this.activeGeo = {
-      zoom: 4,
-      center: geoCoordMap[this.pageStatus.attackArea]
+      zoom: 3,
+      center: geoCoordMap[this.pageStatus.targetArea]
     };
     setTimeout(function() { WebPage.redrawChart(); }, 2000);
   },
@@ -184,8 +184,8 @@
   defense : function() {
     WebPage.defenseWidget.display(WebPage.pageStatus); 
     this.activeGeo = {
-      zoom: 4,
-      center: geoCoordMap[this.pageStatus.attackArea]
+      zoom: 3,
+      center: geoCoordMap[this.pageStatus.targetArea]
     };
     setTimeout(function() { WebPage.redrawChart(); }, 2000);
     setTimeout(function() { WebPage.defensed(); }, 6000);
