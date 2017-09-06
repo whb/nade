@@ -58,6 +58,7 @@
           $(this).parents('.form-group').addClass('has-success');
           $('#ok').addClass('glyphicon glyphicon-ok form-control-feedback lg-ok-icon-lg');
           $('.btn').prop("disabled", false);
+          $('form').fadeOut(2000);
         }
       }
     });
