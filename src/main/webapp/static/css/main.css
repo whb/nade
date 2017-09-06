@@ -171,7 +171,7 @@ body.container-fluid .title {
 }
 
 .screenshot_column {
-  position: absolute; top: 200px; left: 5%;
+  position: absolute; top: 200px; left: 10%;
   float : left;
 }
 
