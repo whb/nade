@@ -30,6 +30,41 @@ public class VirusServlet extends JsonResponseServlet {
 	public void init() throws ServletException {
 		String jsonString = readFromFile("province_areas.json");
 		provinceAreas = new Gson().fromJson(jsonString, ProvinceArea[].class);
+		buildStatusDefine("virus.dat");
+	}
+
+	public void doGetNew(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setHeader("Content-Type", "application/json; charset=UTF-8");
+		String action = (String) request.getServletContext().getAttribute("action");
+		String status = "initial";
+		if (action == null || action.length() == 0 || action.equals("reset")) {
+			status = "initial";
+		} else {
+			status = action;
+		}
+		String jsonTemplate = getDefine(status);
+		System.out.println(jsonTemplate);
+
+		List<NameValue> areaHostsNum;
+		if ("initial".equals(status)) {
+			areaHostsNum = readZeroDataFromFile(request);
+		} else if ("attack".equals(status)) {
+			areaHostsNum = buildAreaHostsNum(request);
+		} else {
+			areaHostsNum = keepOrBuildZeroAreaHostsNum(request);
+		}
+		List<NameValue> categoryHostsNum = buildCategoryHostsNum(areaHostsNum);
+		
+		
+		String areaHostsNumJson = new Gson().toJson(areaHostsNum);
+		String categoryHostsNumJson = new Gson().toJson(categoryHostsNum);
+		
+		
+		jsonTemplate = jsonTemplate.replace("#\\{areaHostsNum\\}", areaHostsNumJson);
+		jsonTemplate = jsonTemplate.replace("#\\{infectionHostsNum\\}", categoryHostsNumJson);
+
+		response.getWriter().write(jsonTemplate);
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,11 +85,11 @@ public class VirusServlet extends JsonResponseServlet {
 		request.getServletContext().setAttribute("infectionHostsNum", categoryHostsNum);
 
 		Boolean alarm = (Boolean) request.getServletContext().getAttribute("alarm");
-		if(alarm != null && alarm) {
+		if (alarm != null && alarm) {
 			map.put("alarm", alarm);
 			request.getServletContext().setAttribute("alarm", null);
 		}
-		
+
 		map.put("areaHostsNum", areaHostsNum);
 		map.put("infectionHostsNum", categoryHostsNum);
 

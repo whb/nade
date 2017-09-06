@@ -1,0 +1,62 @@
+initial:: {
+    "status": "initial",
+    "areaHostsNum": #{areaHostsNum},
+    "infectionHostsNum": #{infectionHostsNum}
+};;
+attack:: {
+    "status": "attack",
+    "alarm_title": "演练启动",
+    "alarm_text": "下达演练开始指令。",
+    "areaHostsNum": #{areaHostsNum},
+    "infectionHostsNum": #{infectionHostsNum}
+};;
+alarm:: {
+    "status": "alarm",
+    "alarm_title": "网络病毒爆发警报",
+    "alarm_text": ["展示“僵木蠕系统”界面", "显示木马文件名称、类型、端口、攻击源等信息。"],
+    "screenshot": "wanna-cry.jpg",
+    "areaHostsNum": #{areaHostsNum},
+    "infectionHostsNum": #{infectionHostsNum}
+};;
+analyze:: {
+    "status": "analyze",
+    "defense_title": "事件研判",
+    "defense_text": ["分析病毒名称、类型、攻击源、传播途径（端口）、影响范围等","应急演练领导小组上报研判结果。"],
+    "areaHostsNum": #{areaHostsNum},
+    "infectionHostsNum": #{infectionHostsNum}
+};;
+repair:: {
+    "status": "repair",
+    "defense_title": "应急处置",
+    "defense_text": "组织本省相关基础电信企业进行攻击源封堵",
+    "areaHostsNum": #{areaHostsNum},
+    "infectionHostsNum": #{infectionHostsNum}
+};;
+defense:: {
+    "status": "defense",
+    "defense_title": "协同处理",
+    "defense_text": ["封堵攻击源IP/URL","对病毒传播所需的端口进行临时关闭处理","对相关木马病毒及攻击源进行持续监测"],
+    "areaHostsNum": #{areaHostsNum},
+    "infectionHostsNum": #{infectionHostsNum}
+};;
+confirm:: {
+    "status": "confirm",
+    "defense_title": "结果验证",
+    "defense_text": ["木马病毒攻击源无法访问","被感染的主机数量停止上升"],
+    "terminal_simulator": [
+    	{"command": "ping 172.217.6.127", 
+    	 "result": [
+    	 	"正在 Ping 172.217.6.127 具有 32 字节的数据:",
+    	 	"请求超时。",
+    	 	"请求超时。",
+    	 	"请求超时。",
+    	 	"请求超时。",
+    	 	"",
+    	 	"172.217.6.127 的 Ping 统计信息:",
+    	 	"    数据包: 已发送 = 4，已接收 = 0，丢失 = 4 (100% 丢失)，"
+    	 ]}, 
+    	{"command": "exit", "result": ["logout", "", "[Process completed]"]}
+    ],
+    "areaHostsNum": #{areaHostsNum},
+    "infectionHostsNum": #{infectionHostsNum}
+}
