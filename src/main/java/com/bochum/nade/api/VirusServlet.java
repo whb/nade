@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class VirusServlet extends JsonResponseServlet {
+	private static final String JSON_PATH = "/WEB-INF/api-json/";
 	private static final long serialVersionUID = 6119709263019798714L;
 	private static final int BEGIN_NUM_OF_municipality_AREA = 3000;
 	private static final int BEGIN_NUM_OF_KEY_AREA = 200;
@@ -207,7 +208,7 @@ public class VirusServlet extends JsonResponseServlet {
 	}
 
 	private String readFromFile(String filename) {
-		InputStream is = getServletContext().getResourceAsStream("/WEB-INF/test/" + filename);
+		InputStream is = getServletContext().getResourceAsStream(JSON_PATH + filename);
 		StringBuffer sb = new StringBuffer();
 		if (is != null) {
 			try {
