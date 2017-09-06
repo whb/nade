@@ -141,12 +141,19 @@ body.container-fluid .title {
     width: 99%;
 }
 
+.console hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .console .btn {
   padding: 15px 15px;
   margin: 5px;
   font-size: 20px;
   width: 140px;
 }
+
+
 
 
 .statistic-wrapper h4 {

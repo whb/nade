@@ -54,9 +54,12 @@
                   </div>
                   <hr>
                   <div class="row">
-                    <button type="button" class="alarm-button btn btn-outline">
-                      <i class="fa fa-exclamation-triangle fa-lg"></i> 发出警报
+                    <button name="alarm" type="button" class="alarm btn btn-outline action">
+                        <i class="fa fa-exclamation-triangle fa-lg"></i> 发出警报
                     </button>
+                    <button name="analyze" type="button" class="repair btn btn-outline action">
+                        <i class="fa fa-search fa-lg"></i> 事件研判
+                     </button>
                   </div>
                   <hr>
                   <div class="row">
@@ -71,6 +74,15 @@
                     </button>
                     <button name="山东" type="button" class="defense btn btn-outline">
                       <i class="fa fa-shield fa-lg"></i> 山东协同
+                    </button>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <button name="repair" type="button" class="repair btn btn-outline action">
+                        <i class="fa fa-wrench fa-lg"></i> 应急处置
+                    </button>
+                    <button name="confirm" type="button" class="confirm btn btn-outline action">
+                        <i class="fa fa-check fa-lg"></i> 结果验证
                     </button>
                   </div>
                 </div>
@@ -92,37 +104,6 @@
               </div>
         </div>
         
-        
-        <div role="tabpanel" class="tab-pane" id="virusold">
-            <div class="row">
-                <div class="col-md-8">
-                  <button name="spread" type="button" class="attack btn btn-outline">
-                    <i class="fa fa-rocket fa-lg"></i> 启动传播
-                  </button>
-                  <button type="button" class="alarm-button btn btn-outline">
-                    <i class="fa fa-exclamation-triangle fa-lg"></i> 发出警报
-                  </button>
-                  <button name="block" type="button" class="defense btn btn-outline">
-                    <i class="fa fa-shield fa-lg"></i> 发起封堵
-                  </button>
-                </div>
-                
-                <div class="col-md-4">
-                  <table class="table table-bordered">
-                    <tbody>
-                      <tr>
-                        <th>当前演练</th>
-                        <td>网络病毒爆发</td>
-                      </tr>
-                      <tr>
-                        <th>参演区域</th>
-                        <td>山东、山西、河北、天津、北京</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-        </div>
         
         <div role="tabpanel" class="tab-pane" id="virus">
             <div class="row">
@@ -311,11 +292,11 @@ $("#reset-button").click(function() {
   });
 });
 
-$(".alarm-button").click(function() {
-  $.post("console", {
-    alarm : "true"
-  });
-});
+// $(".alarm-button").click(function() {
+//   $.post("console", {
+//     alarm : "true"
+//   });
+// });
 
 $('#consoleTabs a').click(function (e) {
   //e.preventDefault();
@@ -328,13 +309,21 @@ $('#consoleTabs a').click(function (e) {
 
 $("#ddos .attack").click(function() {
   $.post("console", {
-    activeAttackArea : $(this).attr("name")
+    activeAttackArea : $(this).attr("name"),
+    action : 'attack'
   });
 });
 
 $("#ddos .defense").click(function() {
   $.post("console", {
-    defensingArea : $(this).attr("name")
+    defensingArea : $(this).attr("name"),
+    action : 'defense'
+  });
+});
+
+$("#ddos .action").click(function() {
+  $.post("console", {
+    action : $(this).attr("name")
   });
 });
 

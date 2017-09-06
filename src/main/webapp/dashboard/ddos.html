@@ -2,131 +2,204 @@
 <html lang="zh-cn">
 
 <body class="container-fluid">
-    <div class="col-md-12">
-      <div class="row">
-        <div id="main" style="height:1080px;"></div>
-      </div>
+  <div class="col-md-12">
+    <div class="row">
+      <div id="main" style="height: 1080px;"></div>
     </div>
-    
-    <div class="col-md-3 chart_column">
-      <div class="attackFlow" id="tianjinFlow" style="height:200px;"></div>
-      <div class="attackFlow" id="hebeiFlow" style="height:200px;"></div>
-      <div class="attackFlow" id="shanxiFlow" style="height:200px;"></div>
-      <div class="attackFlow" id="shandongFlow" style="height:200px;"></div>
+  </div>
+
+  <div class="col-md-3 chart_column">
+    <div class="attackFlow" id="tianjinFlow" style="height: 200px;"></div>
+    <div class="attackFlow" id="hebeiFlow" style="height: 200px;"></div>
+    <div class="attackFlow" id="shanxiFlow" style="height: 200px;"></div>
+    <div class="attackFlow" id="shandongFlow" style="height: 200px;"></div>
+  </div>
+
+  <div class="col-md-6 screenshot_column">
+    <div id="screenshot_pic"></div>
+  </div>
+
+  <div class="col-md-3 text_column">
+    <div class="intro">
+      <h2>
+        <span class="label label-primary">1</span> DDOS攻击
+      </h2>
+      <p>黑客利用天津、河北、山西和山东四省的IP向北京某互联网企业发起DDoS攻击。</p>
     </div>
 
-    <div class="col-md-3 text_column" >
-      <div class="intro">
-      <h2><span class="label label-primary">1</span> DDOS攻击</h2>
-      <p>黑客利用天津、河北、山西和山东四省的IP向北京某互联网企业发起DDoS攻击。  </p>
-      </div>
-      
-      
-      <div class="alarm">
-      </div>
-      
-      <div class="defense">
-      </div>
-    </div>
-    
-    <div class="col-md-9 long_chart" id="beijingFlow" style="height:200px;"></div>
+    <div id="alarm" class="alarm"></div>
 
+    <div id="defense" class="defense"></div>
+  </div>
 
-  
-<div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+  <div class="col-md-9 long_chart" id="beijingFlow" style="height: 200px;"></div>
+
+  <div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <h1 class="alarm"><i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;警报</h1>
-        <h1>发现DDOS攻击!!!</h1>
+        <h1 class="alarm">
+          <i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;警报（Ⅱ级）
+        </h1>
+        <h1>发现DDoS攻击!</h1>
       </div>
     </div>
-</div>
+  </div>
 </body>
 
 <script type="text/javascript">
-var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
-  clearTimeout(alarmModal.data('hideInteval'))
-  var id = setTimeout(function(){
-      alarmModal.modal('hide');
-  }, 8000);
-  alarmModal.data('hideInteval', id);
-})
-</script> 
-
+  var attackAreaBases = [ '天津', '河北', '山西', '山东' ];
+  var sourceArea = '北京';
+  var pageStatus = {
+    activeAttackArea : '',
+    lastDefensingArea : '',
+    attackAreas : [],
+    defensingAreas : [],
+    attackViolent : false,
+    focusArea : '河北'
+  };
+</script>
+<script src="static/js/main.js"></script>
 <script type="text/javascript">
-var attackAreaBases = ['天津', '河北', '山西', '山东'];
-var sourceArea = '北京';
-var pageStatus = {
-  activeAttackArea: '',
-  lastDefensingArea: '',
-  attackAreas: [],
-  defensingAreas: [],
-  attackViolent: false,
-  focusArea: '河北'
-};
-</script> 
-<script src="echarts/ddos.js"></script> 
-<script src="echarts/ddos_flow.js"></script> 
-<script type="text/javascript">
-var ddosChart = echarts.init(document.getElementById('main'));
-ddosChart.setOption(moveOption);
+  WebPage = {
+    api : "api/ddos.json",
+    pageStatus : {
+      status : ''
+    },
 
-var beijingFlowChart = echarts.init(document.getElementById('beijingFlow'));
-beijingFlowChart.setOption(beijingFlowOption);
+    alarmModal : $('#alarmModal'),
+    alarmWidget : TextWidget.createNew($('#alarm')),
+    defenseWidget : TextWidget.createNew($('#defense')),
+    screenshotPic : $('#screenshot_pic'),
 
-var attackFlowCharts = [];
-$(".attackFlow").each(function(index, chartDiv) {
-  let flowChart = echarts.init(chartDiv);
-  flowChart.setOption(attackAreaFlowOptions[index]);
-  attackFlowCharts.push(flowChart);
-});
+    screenshotUrl : function() {
+      return '<img src="static/images/' + this.pageStatus.screenshot + '" width="100%" height="100%" />';
+    },
 
-$(window).resize(function() {
-  ddosChart.resize();
-  beijingFlowChart.resize();
-  
-  attackFlowCharts.forEach(function(flowChart) {
-    flowChart.resize();
-  });
-});
+    displayScreenshot : function(delayTime) {
+      this.screenshotPic.hide();
+      this.screenshotPic.html(this.screenshotUrl());
+      this.screenshotPic.delay(delayTime).slideDown(4000);
+    },
 
+    hideScreenshot : function() {
+      this.screenshotPic.fadeOut(1000);
+    },
 
-var animationOption = {
-  geo: {
-  }
-};
+    hideAll : function() {
+      this.alarmWidget.hide()
+      this.defenseWidget.hide()
+      this.screenshotPic.fadeOut(1000);
+    },
 
-var ddosApi = "api/ddos.json";
-function getDdosJsonAndRedraw() {
-  $.getJSON(ddosApi, function( result ) {
-    if(result.alarm) {
-      $('#alarmModal').modal('show');
-    }
+    attack : function() {
+      this.alarmWidget.display(this.pageStatus);
+    },
+
+    alarm : function() {
+      queue(function() {
+        WebPage.alarmModal.modal('show');
+        return WebPage.alarmModal.delay(3000);
+      }, function() {
+        WebPage.alarmModal.modal('hide');
+        return WebPage.alarmWidget.display(WebPage.pageStatus);
+      }, function() {
+        //return WebPage.displayScreenshot(4000);
+      });
+    },
+
+    analyze : function() {
+      WebPage.defenseWidget.display(WebPage.pageStatus);
+      //WebPage.hideScreenshot();
+    },
     
-    if(result.defensingAreas.length + result.attackAreas.length == 0 
-        && pageStatus.defensingAreas.length + pageStatus.attackAreas.length > 0 ) {
+    defense : function() {
+      WebPage.defenseWidget.display(WebPage.pageStatus);
+    },
+
+    repair : function() {
+      WebPage.defenseWidget.display(WebPage.pageStatus, function(text, index) {
+        if (index === 3) {
+          WebPage.alarmWidget.hide();
+        }
+      });
+    },
+
+    confirm : function() {
+      WebPage.defenseWidget.display(WebPage.pageStatus);
+    },
+
+    initial : function() {
+      this.hideAll();
+    },
+  }
+</script>
+<script src="echarts/ddos.js"></script>
+<script src="echarts/ddos_flow.js"></script>
+<script type="text/javascript">
+  var ddosChart = echarts.init(document.getElementById('main'));
+  ddosChart.setOption(moveOption);
+
+  var beijingFlowChart = echarts.init(document.getElementById('beijingFlow'));
+  beijingFlowChart.setOption(beijingFlowOption);
+
+  var attackFlowCharts = [];
+  $(".attackFlow").each(function(index, chartDiv) {
+    let
+    flowChart = echarts.init(chartDiv);
+    flowChart.setOption(attackAreaFlowOptions[index]);
+    attackFlowCharts.push(flowChart);
+  });
+
+  $(window).resize(function() {
+    ddosChart.resize();
+    beijingFlowChart.resize();
+
+    attackFlowCharts.forEach(function(flowChart) {
+      flowChart.resize();
+    });
+  });
+
+  var animationOption = {
+    geo : {}
+  };
+  
+  function redrawChart(otherOption) {
+    moveOption.series[0].data = buildAttackLines();
+    moveOption.series[1].data = buildAttackLines();
+    moveOption.series[2].data = buildAreaScatter();
+    moveOption.series[2].markPoint.data = buildDefenseMarkPoint();
+    moveOption.series[3].data = buildDefensingLines();
+    moveOption.series[4].data = buildDefensingLines();
+    $.extend(true, moveOption, otherOption);
+    ddosChart.setOption(moveOption);
+  }
+  
+  
+  function refreshChart(result) {
+    if (result.defensingAreas.length + result.attackAreas.length == 0
+        && pageStatus.defensingAreas.length + pageStatus.attackAreas.length > 0) {
       pageStatus = result;
       redrawChart(initialOption);
       return;
     }
-    
-    if(result.attackViolent && animationOption.geo.zoom != 7) {
+
+    if (result.attackViolent && animationOption.geo.zoom != 7) {
       pageStatus = result;
       animationOption.geo.zoom = 7;
       animationOption.geo.center = geoCoordMap['河北'];
       redrawChart(animationOption);
       return;
     }
-    
-    if(pageStatus.defensingAreas.length > 0 || result.defensingAreas.length > 0) {
+
+    if (pageStatus.defensingAreas.length > 0 || result.defensingAreas.length > 0) {
       pageStatus = result;
       animationOption.geo.zoom = 5;
       animationOption.geo.center = geoCoordMap[pageStatus.focusArea];
       redrawChart(animationOption);
       return;
     }
-    
-    if(pageStatus.attackAreas.length == result.attackAreas.length) {
+
+    if (pageStatus.attackAreas.length == result.attackAreas.length) {
       return;
     } else {
       pageStatus = result;
@@ -134,21 +207,44 @@ function getDdosJsonAndRedraw() {
       animationOption.geo.center = geoCoordMap[pageStatus.focusArea];
       redrawChart(animationOption);
     }
-  });
+  }	
+  
+  function getJsonAndDraw() {
+    $.getJSON(WebPage.api, function(result) {
+      refreshChart(result.chartData);
 
-}
+      if (WebPage.pageStatus.status == result.status) {
+        return;
+      }
+      WebPage.pageStatus = result;
 
-function redrawChart(otherOption) {
-  moveOption.series[0].data = buildAttackLines();
-  moveOption.series[1].data = buildAttackLines();
-  moveOption.series[2].data = buildAreaScatter();
-  moveOption.series[2].markPoint.data = buildDefenseMarkPoint();
-  moveOption.series[3].data = buildDefensingLines();
-  moveOption.series[4].data = buildDefensingLines();
-  $.extend(true, moveOption, otherOption);
-  ddosChart.setOption(moveOption);
-}
-
-setInterval(getDdosJsonAndRedraw, 1000);
+      switch (result.status) {
+      case "attack":
+        WebPage.attack();
+        break;
+      case "alarm":
+        WebPage.alarm();
+        break;
+      case "analyze":
+        WebPage.analyze();
+        break;
+      case "repair":
+        WebPage.repair();
+        break;
+      case "defense":
+        WebPage.defense();
+        break;
+      case "confirm":
+        WebPage.confirm();
+        break;
+      default:
+        WebPage.initial();
+      	break;
+      }
+    });
+  }
+  
+  getJsonAndDraw();
+  setInterval(getJsonAndDraw, 1000);
 </script>
 </html>

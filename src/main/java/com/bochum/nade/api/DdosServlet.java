@@ -2,9 +2,9 @@ package com.bochum.nade.api;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -19,9 +19,27 @@ import com.google.gson.Gson;
 public class DdosServlet extends JsonResponseServlet {
 	private static final long serialVersionUID = -3549133063919188376L;
 
-	@SuppressWarnings("unchecked")
+	public void init() throws ServletException {
+		buildStatusDefine("ddos.dat");
+	}
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-Type", "application/json; charset=UTF-8");
+		String action = (String) request.getServletContext().getAttribute("action");
+		String status = "initial";
+		if (action == null || action.length() == 0 || action.equals("reset")) {
+			status = "initial";
+		} else {
+			status = action;
+		}
+		String jsonTemplate = getDefine(status);
+		String chartDataJson = buildDataJson(request, response);
+		jsonTemplate = jsonTemplate.replace("#{chartData}", chartDataJson);
+		response.getWriter().write(jsonTemplate);
+	}
+
+	@SuppressWarnings("unchecked")
+	public String buildDataJson(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 
 		String activeAttackArea = (String) request.getServletContext().getAttribute("activeAttackArea");
@@ -61,12 +79,6 @@ public class DdosServlet extends JsonResponseServlet {
 			session.setAttribute("ajaxCallCount", null);
 		}
 
-		Boolean alarm = (Boolean) request.getServletContext().getAttribute("alarm");
-		if (alarm != null && alarm) {
-			map.put("alarm", alarm);
-			request.getServletContext().setAttribute("alarm", null);
-		}
-
 		String focusArea = "河北";
 		for (String attackArea : attackAreas) {
 			focusArea = attackArea;
@@ -81,8 +93,9 @@ public class DdosServlet extends JsonResponseServlet {
 		map.put("attackAreas", attackAreas);
 		map.put("defensingAreas", defensingAreaMap.keySet());
 		map.put("attackViolent", attackViolent);
-		String json = new Gson().toJson(map);
-		response.getWriter().write(json);
+
+		String chartDataJson = new Gson().toJson(map);
+		return chartDataJson;
 	}
 
 }

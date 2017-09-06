@@ -32,12 +32,6 @@ public class ConsoleServlet extends HttpServlet {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String ddosAlarm = request.getParameter("alarm");
-		if ("true".equals(ddosAlarm)) {
-			request.getServletContext().setAttribute("alarm", true);
-			return;
-		}
-
 		String subject = request.getParameter("subject");
 		if (subject != null && subject.length() > 0) {
 			String oldSubject = (String) request.getServletContext().getAttribute("subject");
@@ -53,6 +47,7 @@ public class ConsoleServlet extends HttpServlet {
 			subject = "ddos";
 
 		if (subject.equals("ddos")) {
+			doCommonAction(request);
 			doDdos(request);
 		} else {
 			doCommonAction(request);
@@ -63,7 +58,6 @@ public class ConsoleServlet extends HttpServlet {
 	private void doDdos(HttpServletRequest request) {
 		String reset = request.getParameter("reset");
 		if ("true".equals(reset)) {
-			request.getServletContext().setAttribute("alarm", null);
 			request.getServletContext().setAttribute("activeAttackArea", null);
 			request.getServletContext().setAttribute("lastDefensingArea", null);
 
