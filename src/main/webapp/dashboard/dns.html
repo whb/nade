@@ -146,6 +146,7 @@
     }, function () {
       return WebPage.displayScreenshot(4000);       
     });
+    setActiveArea('山东');
   },
 
   analyze : function() {
@@ -160,6 +161,7 @@
         WebPage.hideScreenshot();
       }
     });
+    setActiveArea('山西');
   },
   
   
@@ -190,6 +192,7 @@
   },
   
   initial : function() {
+    setActiveArea('山西');
     this.activeGeo = {};
     this.redrawChart();
     this.hideAll();
@@ -205,20 +208,35 @@ shanxiFlowChart.setOption(shanxiOption);
 var shandongFlowChart = echarts.init(document.getElementById('shandongFlow'));
 shandongFlowChart.setOption(shandongOption);
 
+var shanxiIntensity = 'high';
+var shandongIntensity = 'low';
+
+function setActiveArea(activeArea) {
+  if('山西' == activeArea) {
+    shanxiIntensity = 'high';
+    shandongIntensity = 'low';
+  } else {
+    shanxiIntensity = 'low';
+    shandongIntensity = 'high';
+  }
+}
+
+function redrawFlowChar() {
+  shanxiFlowChart.setOption({
+    series : [ {
+      data : shanxiDataGenerator.requestData(shanxiIntensity)
+    } ]
+  }); 
+  shandongFlowChart.setOption({
+    series : [ {
+      data : shandongDataGenerator.requestData(shandongIntensity)
+    } ]
+  });
+}
 
 function getJsonAndDraw() {
   $.getJSON(WebPage.api, function( result ) {
-    shanxiFlowChart.setOption({
-      series : [ {
-        data : shanxiDataGenerator.requestData(true)
-      } ]
-    }); 
-    shandongFlowChart.setOption({
-      series : [ {
-        data : shandongDataGenerator.requestData(true)
-      } ]
-    });
-    
+    redrawFlowChar();
     
     if(WebPage.pageStatus.status == result.status) {
 		return;

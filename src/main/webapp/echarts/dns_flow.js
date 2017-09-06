@@ -5,7 +5,7 @@ function paddingTime(value) {
 function FlowDataGenerator() {
   this.interval = 200;
   this.tick = +new Date();
-  this.value = 20 + Math.random() * 5;
+  this.value = 10 + Math.random() * 5;
   this.data = [];
   this.lastValues = [];
 
@@ -16,12 +16,24 @@ function FlowDataGenerator() {
     };
   };
 
-  this.randomData = function() {
+  this.randomHighData = function() {
     this.tick = new Date(+this.tick + this.interval);
     if (this.value > 40) {
       this.value = Math.abs(this.value - Math.random() * 2);
-    } else if (this.value < 15) {
-      this.value = Math.abs(this.value + Math.random() * 2.01 - 0.8);
+    } else if (this.value < 30) {
+      this.value = Math.abs(this.value + Math.random() * 2.01 - 0.5);
+    } else {
+      this.value = Math.abs(this.value + Math.random() * 2.01 - 1);
+    }
+    return {
+      value : [ this.tick, Math.round(this.value) ]
+    };
+  };
+  
+  this.randomLowData = function() {
+    this.tick = new Date(+this.tick + this.interval);
+    if (this.value > 5) {
+      this.value = Math.abs(this.value - Math.random() * 2);
     } else {
       this.value = Math.abs(this.value + Math.random() * 2.01 - 1);
     }
@@ -37,17 +49,25 @@ function FlowDataGenerator() {
     return this.data;
   };
 
-  this.requestData = function(isActive) {
+  this.requestData = function(intensity) {
     for (var i = 0; i < 5; i++) {
-      if (isActive) {
-        let
-        rd = this.randomData();
+      switch (intensity) {
+      case 'high':
+        var rd = this.randomHighData();
         this.lastValues[i] = rd['value'][1];
         this.data.shift();
         this.data.push(rd);
-      } else {
+        break;
+      case 'low':
+        var rd = this.randomLowData();
+        this.lastValues[i] = rd['value'][1];
+        this.data.shift();
+        this.data.push(rd);
+        break;
+      default:
         this.lastValues[i] = 0;
         this.data.push(this.zeroData());
+        break;
       }
     }
     return this.data;
@@ -83,8 +103,7 @@ var flowOption = {
     type : 'time',
     axisLabel : {
       formatter : (function(value) {
-        let
-        t = new Date(value);
+        var t = new Date(value);
         return paddingTime(t.getMinutes()) + ":" + paddingTime(t.getSeconds());
       })
     },
@@ -131,4 +150,5 @@ shanxiOption.series[0].data = shanxiDataGenerator.initialData();
 var shandongDataGenerator = new FlowDataGenerator();
 var shandongOption = $.extend(true, {}, flowOption);
 shandongOption.title.text = '山东';
+shandongOption.series[0].areaStyle.normal.color = 'orange';
 shandongOption.series[0].data = shandongDataGenerator.initialData();
