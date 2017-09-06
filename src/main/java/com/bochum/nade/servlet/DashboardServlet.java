@@ -18,7 +18,7 @@ public class DashboardServlet extends HttpServlet {
 		if (!LoginServlet.checkAuthorization(request, response))
 			return;
 
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/dashboard.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/main/dashboard.jsp");
 		requestDispatcher.forward(request, response);
 	}
 
