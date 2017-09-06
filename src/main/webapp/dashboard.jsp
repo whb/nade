@@ -6,11 +6,22 @@
   <title>网络攻防演监控屏幕</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
-  <link rel="shortcut icon" href="/static/images/favicon-32x32.png">
+  <link rel="shortcut icon" href="static/images/favicon-32x32.png">
   <!--[if lte IE 8]><meta http-equiv="refresh" content="0;url=/ie" /><![endif]-->
-  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/css/main.css">
-  <script src="/static/js/jquery-3.2.1.min.js"></script>
+  <link rel="stylesheet" href="static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/font-awesome.min.css">
+  <link rel="stylesheet" href="static/css/animate.min.css"/>
+  <link rel="stylesheet" href="static/css/odometer-theme-default.css">
+  <link rel="stylesheet" href="static/css/morphext.css">
+  <link rel="stylesheet" href="static/css/main.css">
+  <script src="static/js/echarts.min.js"></script>
+  <script src="static/js/map/china.js"></script> 
+  <script src="static/js/map/beijing.js"></script> 
+  <script src="static/js/jquery-3.2.1.min.js"></script> 
+  <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/odometer.min.js"></script> 
+  <script src="static/js/morphext.min.js"></script> 
+  <script src="static/js/typewriter-bundle.min.js"></script> 
 </head>
 
 <body id="dashboard" class="container-fluid">
@@ -26,19 +37,19 @@ $(function() {
   	var url;
   	switch(subject)	{
     	case 'ddos':
-    	  url = "/dashboard/ddos.html";
+    	  url = "dashboard/ddos.html";
     	  break;
     	case 'dns':
-    	  url = "/dashboard/dns.html";
+    	  url = "dashboard/dns.html";
     	  break;
     	case 'webpage':
-    	  url = "/dashboard/webpage.html";
+    	  url = "dashboard/webpage.html";
     	  break;
     	case 'virus':
-    	  url = "/dashboard/virus.html";
+    	  url = "dashboard/virus.html";
     	  break;
     	case 'leak':
-    	  url = "/dashboard/leak.html";
+    	  url = "dashboard/leak.html";
     	  break;
     	default:
     	  url = "";
@@ -48,7 +59,7 @@ $(function() {
   }
 
   var currentSubject;
-  var subjectApi = "/api/subject.json";
+  var subjectApi = "api/subject.json";
   function refreshPage() {
   	$.getJSON(subjectApi, function( subject ) {
   		if(currentSubject == subject) return;

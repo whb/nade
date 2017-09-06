@@ -6,12 +6,11 @@
 <title>网络攻防演练</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
-<link rel="shortcut icon" href="/static/images/favicon-32x32.png">
+<link rel="shortcut icon" href="static/images/favicon-32x32.png">
 <!--[if lte IE 8]><meta http-equiv="refresh" content="0;url=/ie" /><![endif]-->
-<link rel="stylesheet" href="/static/css/bootstrap.min.css">
-<link rel="stylesheet" href="/static/css/main.css">
-
-<script src="/static/js/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" href="static/css/bootstrap.min.css">
+<link rel="stylesheet" href="static/css/main.css">
+<script src="static/js/jquery-3.2.1.min.js"></script>
 </head>
 
 <body>
@@ -44,13 +43,13 @@
 
 <script type="text/javascript">
   $('.btn').click(function() {
-    window.location = "/" + $(this).attr('id');
+    window.location = "" + $(this).attr('id');
   });
 
   $("#password").keyup(function() {
     $.ajax({
       type : "POST",
-      url : "/login",
+      url : "login",
       data : "password=" + $("#password").val(),
       success : function(msg) {
         if (msg == "success") {

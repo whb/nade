@@ -40,7 +40,7 @@
         <configuration>
           <scanIntervalSeconds>2</scanIntervalSeconds>
           <webApp>
-            <contextPath>/</contextPath>
+            <contextPath>/nade</contextPath>
             <defaultsDescriptor>${project.basedir}/jetty/webdefault.xml</defaultsDescriptor>
           </webApp>
           <connectors>
