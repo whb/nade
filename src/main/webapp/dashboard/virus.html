@@ -3,141 +3,255 @@
 
 <body class="container-fluid">
   <div class="col-md-12">
-      <div class="row">
-        <div id="main" style="height:1080px;"></div>
-      </div>
-  </div>
-  
-  <div class="col-md-3 statistic-wrapper chart_column">
-      <h4>被感染主机数量</h4>
-      <dl>
-          <dd id="beijingHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
-          <dt>北京</dt>
-      </dl>
-      <dl>
-          <dd id="tianjinHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
-          <dt>天津</dt>
-      </dl>
-      <dl>
-          <dd id="hebeiHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
-          <dt>河北</dt>
-      </dl>
-      <dl>
-          <dd id="shanxiHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
-          <dt>山西</dt>
-      </dl>
-      <dl>
-          <dd id="shandongHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
-          <dt>山东</dt>
-      </dl>
-      <dl>
-          <dd id="totalHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
-          <dt>全国</dt>
-      </dl>
-  </div>
-  
-  <div class="col-md-3 text_column" >
-      <div class="intro">
-      <h2><span class="label label-primary">2</span> 网络病毒爆发</h2>
-      <p>京津冀晋鲁五省的“木马和僵尸网络监测处置系统”陆续监测到，一款名为“XXX”的木马病毒在五省爆发并感染大量主机。  </p>
-      </div>
-      
-      
-      <div class="alarm">
-      </div>
-      
-      <div class="defense">
-      </div>
+    <div class="row">
+      <div id="main" style="height: 1080px;"></div>
     </div>
-  
-  <div class="col-md-9 long_chart" id="totalNumFlow" style="height:200px;"></div>
-  
-  
-<div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+  </div>
+
+  <div class="col-md-3 statistic-wrapper chart_column">
+    <h4>被感染主机数量</h4>
+    <dl>
+      <dd id="beijingHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
+      <dt>北京</dt>
+    </dl>
+    <dl>
+      <dd id="tianjinHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
+      <dt>天津</dt>
+    </dl>
+    <dl>
+      <dd id="hebeiHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
+      <dt>河北</dt>
+    </dl>
+    <dl>
+      <dd id="shanxiHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
+      <dt>山西</dt>
+    </dl>
+    <dl>
+      <dd id="shandongHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
+      <dt>山东</dt>
+    </dl>
+    <dl>
+      <dd id="totalHostsNum" class="odometer odometer-auto-theme" data-num=""></dd>
+      <dt>全国</dt>
+    </dl>
+  </div>
+
+  <div class="col-md-6 screenshot_column">
+    <div id="correct_mark"></div>
+    <div id="terminal"></div>
+    <div id="screenshot_pic"></div>
+  </div>
+
+  <div class="col-md-3 text_column">
+    <div class="intro">
+      <h2>
+        <span class="label label-primary">2</span> 网络病毒爆发
+      </h2>
+      <p>京津冀晋鲁五省的“木马和僵尸网络监测处置系统”陆续监测到，一款名为“XXX”的木马病毒在五省爆发并感染大量主机。</p>
+    </div>
+
+    <div id="alarm" class="alarm"></div>
+
+    <div id="defense" class="defense"></div>
+  </div>
+
+  <div class="col-md-9 long_chart" id="totalNumFlow" style="height: 200px;"></div>
+
+
+  <div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <h1 class="alarm"><i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;警报</h1>
-        <h1>发现网络病毒爆发!!!</h1>
+        <h1 class="alarm">
+          <i class="fa fa-exclamation-triangle fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;警报（Ⅱ级）
+        </h1>
+        <h1>发现网络病毒爆发!</h1>
       </div>
     </div>
-</div>
+  </div>
 </body>
 
+<script src="static/js/main.js"></script>
 <script type="text/javascript">
-var alarmModal = $('#alarmModal').on('shown.bs.modal', function () {
-  clearTimeout(alarmModal.data('hideInteval'))
-  var id = setTimeout(function(){
-      alarmModal.modal('hide');
-  }, 8000);
-  alarmModal.data('hideInteval', id);
-})
-</script>
+  WebPage = {
+    api : "api/virus.json",
+    pageStatus : {
+      status : ''
+    },
 
+    alarmModal : $('#alarmModal'),
+    alarmWidget : TextWidget.createNew($('#alarm')),
+    defenseWidget : TextWidget.createNew($('#defense')),
+    terminalSimulator : TerminalSimulator.createNew($('#terminal')),
+    screenshotPic : $('#screenshot_pic'),
+
+    screenshotUrl : function() {
+      return '<img src="static/images/' + this.pageStatus.screenshot + '" width="100%" height="100%" />';
+    },
+
+    displayScreenshot : function(delayTime) {
+      this.screenshotPic.hide();
+      this.screenshotPic.html(this.screenshotUrl());
+      this.screenshotPic.delay(delayTime).slideDown(4000);
+    },
+
+    hideScreenshot : function() {
+      this.screenshotPic.fadeOut(1000);
+    },
+
+    markCorrect : function(delayTime) {
+      $('#correct_mark').hide();
+      $('#correct_mark').append('<i class="fa fa-check"></i>');
+      $('#correct_mark').delay(delayTime).fadeIn(3000);
+    },
+
+    hideAll : function() {
+      this.alarmWidget.hide()
+      this.defenseWidget.hide()
+      this.screenshotPic.fadeOut(1000);
+      $('#correct_mark').empty();
+      this.terminalSimulator.hide();
+    },
+
+    attack : function() {
+      this.alarmWidget.display(this.pageStatus);
+    },
+
+    alarm : function() {
+      queue(function() {
+        WebPage.alarmModal.modal('show');
+        return WebPage.alarmModal.delay(3000);
+      }, function() {
+        WebPage.alarmModal.modal('hide');
+        return WebPage.alarmWidget.display(WebPage.pageStatus);
+      }, function() {
+        return WebPage.displayScreenshot(4000);
+      });
+    },
+
+    analyze : function() {
+      WebPage.defenseWidget.display(WebPage.pageStatus);
+      WebPage.hideScreenshot();
+    },
+
+    repair : function() {
+      WebPage.defenseWidget.display(WebPage.pageStatus);
+    },
+
+    defense : function() {
+      WebPage.defenseWidget.display(WebPage.pageStatus, function(text, index) {
+        if (index === 0) {
+          WebPage.alarmWidget.hide();
+        }
+      });
+    },
+
+    confirm : function() {
+      queue(function() {
+        WebPage.defenseWidget.display(WebPage.pageStatus);
+      }, function() {
+        return WebPage.terminalSimulator.display(WebPage.pageStatus);
+      }, function() {
+        return WebPage.markCorrect(8000);
+      });
+    },
+
+    initial : function() {
+      this.hideAll();
+    },
+  }
+</script>
 <script src="echarts/virus.js"></script>
-<script src="echarts/virus_flow.js"></script> 
+<script src="echarts/virus_flow.js"></script>
 <script type="text/javascript">
-$(function() {
   var virusChart = echarts.init(document.getElementById('main'));
   virusChart.setOption(spreadOption);
-  
+
   var totalNumFlowChart = echarts.init(document.getElementById('totalNumFlow'));
   totalNumFlowChart.setOption(totalNumFlowOption);
-
 
   $(window).resize(function() {
     virusChart.resize();
     totalNumFlowChart.resize();
   });
 
-
-  var animationOption = {
-    geo: {
-    }
+  var areaPinyin = {
+    '北京' : 'beijing',
+    '天津' : 'tianjin',
+    '河北' : 'hebei',
+    '山西' : 'shanxi',
+    '山东' : 'shandong',
+    '全国' : 'total'
   };
-  
-  var areaPinyin = {'北京': 'beijing', '天津': 'tianjin', '河北': 'hebei', '山西': 'shanxi', '山东': 'shandong', '全国': 'total'};
 
-  // 兼容console中jquery。load，DOMContentLoaded没有触发。
+  //兼容console中jquery。load，DOMContentLoaded没有触发。
   Odometer.init();
 
-  var virusApi = "api/virus.json";
-  function getAndDisplayVirus() {
-    $.getJSON(virusApi, function( result ) {
-      if(result.alarm) {
-        $('#alarmModal').modal('show');
+  function refreshCharts(result) {
+    virusChart.setOption({
+      series : [ {
+        data : convertData(result.areaHostsNum)
+      }, {
+        data : convertData(result.areaHostsNum.sort(function(a, b) {
+          return b.value - a.value;
+        }).slice(0, 6))
+      }, ]
+    });
+
+    result.infectionHostsNum.forEach(function(areaNum) {
+      if (areaPinyin[areaNum.name] == 'total') {
+        totalNumData.shift();
+        now = new Date(+now + 5000);
+        totalNumData.push([ now, areaNum.value ]);
       }
+    });
+    totalNumFlowChart.setOption({
+      series : [ {
+        data : totalNumData
+      } ]
+    });
+
+    result.infectionHostsNum.forEach(function(areaNum) {
+      $("#" + areaPinyin[areaNum.name] + "HostsNum").text(areaNum.value);
+    });
+  }
+  
+  function getJsonAndDraw() {
+    $.getJSON(WebPage.api, function(result) {
       
-      virusChart.setOption({
-        series : [
-          {data: convertData(result.areaHostsNum)},
-          {data: convertData(result.areaHostsNum.sort(function (a, b) {
-              return b.value - a.value;
-          }).slice(0, 6))},
-        ]
-      });     
-      
-      
-      result.infectionHostsNum.forEach(function(areaNum) {
-        if(areaPinyin[areaNum.name] == 'total') {
-          totalNumData.shift();
-          now = new Date(+now + 5000);
-          totalNumData.push([now, areaNum.value]);
-        }
-      });
-      totalNumFlowChart.setOption({
-        series : [
-          {data: totalNumData}
-        ]
-      });     
-      
-      result.infectionHostsNum.forEach(function(areaNum) {
-          $("#" + areaPinyin[areaNum.name] + "HostsNum").text(areaNum.value);
-        });
-      });
+      refreshCharts(result);
+
+      if (WebPage.pageStatus.status == result.status) {
+        return;
+      }
+
+      WebPage.pageStatus = result;
+
+      switch (result.status) {
+      case "attack":
+        WebPage.attack();
+        break;
+      case "alarm":
+        WebPage.alarm();
+        break;
+      case "analyze":
+        WebPage.analyze();
+        break;
+      case "repair":
+        WebPage.repair();
+        break;
+      case "defense":
+        WebPage.defense();
+        break;
+      case "confirm":
+        WebPage.confirm();
+        break;
+      default:
+        WebPage.initial();
+      }
+    });
   }
 
-  getAndDisplayVirus();
-  setInterval(getAndDisplayVirus, 6000);
-});
+  getJsonAndDraw();
+  setInterval(getJsonAndDraw, 4000);
 </script>
 </html>

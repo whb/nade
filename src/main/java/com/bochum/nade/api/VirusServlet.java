@@ -33,7 +33,7 @@ public class VirusServlet extends JsonResponseServlet {
 		buildStatusDefine("virus.dat");
 	}
 
-	public void doGetNew(HttpServletRequest request, HttpServletResponse response)
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setHeader("Content-Type", "application/json; charset=UTF-8");
 		String action = (String) request.getServletContext().getAttribute("action");
@@ -44,30 +44,30 @@ public class VirusServlet extends JsonResponseServlet {
 			status = action;
 		}
 		String jsonTemplate = getDefine(status);
-		System.out.println(jsonTemplate);
 
 		List<NameValue> areaHostsNum;
 		if ("initial".equals(status)) {
 			areaHostsNum = readZeroDataFromFile(request);
-		} else if ("attack".equals(status)) {
+		} else if ("attack".equals(status) || "alarm".equals(status) || "analyze".equals(status) || "repair".equals(status)) {
 			areaHostsNum = buildAreaHostsNum(request);
 		} else {
 			areaHostsNum = keepOrBuildZeroAreaHostsNum(request);
 		}
 		List<NameValue> categoryHostsNum = buildCategoryHostsNum(areaHostsNum);
-		
+		request.getServletContext().setAttribute("areaHostsNum", areaHostsNum);
+		request.getServletContext().setAttribute("infectionHostsNum", categoryHostsNum);		
 		
 		String areaHostsNumJson = new Gson().toJson(areaHostsNum);
 		String categoryHostsNumJson = new Gson().toJson(categoryHostsNum);
 		
 		
-		jsonTemplate = jsonTemplate.replace("#\\{areaHostsNum\\}", areaHostsNumJson);
-		jsonTemplate = jsonTemplate.replace("#\\{infectionHostsNum\\}", categoryHostsNumJson);
+		jsonTemplate = jsonTemplate.replace("#{areaHostsNum}", areaHostsNumJson);
+		jsonTemplate = jsonTemplate.replace("#{infectionHostsNum}", categoryHostsNumJson);
 
 		response.getWriter().write(jsonTemplate);
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doGetOld(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-Type", "application/json; charset=UTF-8");
 		Map<String, Object> map = new HashMap<String, Object>();
 

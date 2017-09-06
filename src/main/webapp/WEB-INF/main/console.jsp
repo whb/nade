@@ -93,7 +93,7 @@
         </div>
         
         
-        <div role="tabpanel" class="tab-pane" id="virus">
+        <div role="tabpanel" class="tab-pane" id="virusold">
             <div class="row">
                 <div class="col-md-8">
                   <button name="spread" type="button" class="attack btn btn-outline">
@@ -124,7 +124,7 @@
               </div>
         </div>
         
-        <div role="tabpanel" class="tab-pane" id="virus1">
+        <div role="tabpanel" class="tab-pane" id="virus">
             <div class="row">
                 <div class="col-md-8">
                   <div class="row">
