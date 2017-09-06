@@ -43,10 +43,13 @@
       <h2><span class="label label-primary">4</span> 域名劫持攻击</h2>
       <p>山西某基础电信企业官网域名解析服务器遭受口令破解攻击，域名解析记录被修改，当前的域名指向某博彩网站，攻击端IP来自山东某基础电信企业。</p>
       </div>
-      
       <div id="alarm" class="alarm"></div>
-      
       <div id="defense" class="defense"> </div>
+    </div>
+    
+    <div class="col-md-9 long_chart">
+      <div id="shanxiFlow" class="col-md-6"  style="height:200px;"></div>
+      <div id="shandongFlow" class="col-md-6"  style="height:200px;"></div>
     </div>
     
 <div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
@@ -215,9 +218,29 @@
 }
 </script> 
 <script src="/echarts/dns.js"></script> 
+<script src="/echarts/dns_flow.js"></script> 
 <script type="text/javascript">
+var shanxiFlowChart = echarts.init(document.getElementById('shanxiFlow'));
+shanxiFlowChart.setOption(shanxiOption);
+
+var shandongFlowChart = echarts.init(document.getElementById('shandongFlow'));
+shandongFlowChart.setOption(shandongOption);
+
+
 function getJsonAndDraw() {
   $.getJSON(WebPage.api, function( result ) {
+    shanxiFlowChart.setOption({
+      series : [ {
+        data : shanxiDataGenerator.requestData(true)
+      } ]
+    }); 
+    shandongFlowChart.setOption({
+      series : [ {
+        data : shandongDataGenerator.requestData(true)
+      } ]
+    });
+    
+    
     if(WebPage.pageStatus.status == result.status) {
 		return;
     }
@@ -257,6 +280,8 @@ setInterval(getJsonAndDraw, 1000);
 
 $(window).resize(function() {
   WebPage.attackChart.resize();
+  shanxiFlowChart.resize();
+  shandongFlowChart.resize();
 });
 </script>
 </html>
