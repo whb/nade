@@ -20,6 +20,13 @@ public class ConsoleServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Boolean isLogin = (Boolean) request.getSession().getAttribute("USER_LOGIN");
+		if (isLogin == null || isLogin == false) {
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
+			requestDispatcher.forward(request, response);
+			return;
+		}
+
 		String subject = (String) request.getServletContext().getAttribute("subject");
 		if (subject == null || subject.length() == 0)
 			request.getServletContext().setAttribute("subject", "ddos");
@@ -38,7 +45,7 @@ public class ConsoleServlet extends HttpServlet {
 		String subject = request.getParameter("subject");
 		if (subject != null && subject.length() > 0) {
 			String oldSubject = (String) request.getServletContext().getAttribute("subject");
-			if(!subject.equals(oldSubject)) {
+			if (!subject.equals(oldSubject)) {
 				request.getServletContext().setAttribute("subject", subject);
 				request.getServletContext().setAttribute("action", null);
 			}
@@ -51,7 +58,7 @@ public class ConsoleServlet extends HttpServlet {
 
 		if (subject.equals("ddos")) {
 			doDdos(request);
-		}  else {
+		} else {
 			doCommonAction(request);
 		}
 	}
@@ -121,7 +128,7 @@ public class ConsoleServlet extends HttpServlet {
 			request.getServletContext().setAttribute("action", "reset");
 			return;
 		}
-		
+
 		String action = request.getParameter("action");
 		if (action != null && action.length() > 0) {
 			request.getServletContext().setAttribute("action", action);

@@ -15,6 +15,13 @@ public class DashboardServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Boolean isLogin = (Boolean) request.getSession().getAttribute("USER_LOGIN");
+		if (isLogin == null || isLogin == false) {
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
+			requestDispatcher.forward(request, response);
+			return;
+		}
+
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/dashboard.jsp");
 		requestDispatcher.forward(request, response);
 	}

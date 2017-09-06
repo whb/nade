@@ -4,6 +4,10 @@
 
   <display-name>Network Attack and Defense Exercise</display-name>
   <servlet>
+    <servlet-name>Login</servlet-name>
+    <servlet-class>com.bochum.nade.servlet.LoginServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>Console</servlet-name>
     <servlet-class>com.bochum.nade.servlet.ConsoleServlet</servlet-class>
   </servlet>
@@ -37,6 +41,10 @@
     <servlet-class>com.bochum.nade.api.LeakServlet</servlet-class>
   </servlet>
 
+  <servlet-mapping>
+    <servlet-name>Login</servlet-name>
+    <url-pattern>/login</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Console</servlet-name>
     <url-pattern>/console</url-pattern>

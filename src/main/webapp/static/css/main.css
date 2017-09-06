@@ -29,12 +29,13 @@ body.container-fluid {
 }
 /* Masthead (headings and download button) */
 .bs-docs-masthead h1 {
+  margin-bottom: 40px;
   font-weight: 300;
   line-height: 1;
   color: #fff;
 }
 .bs-docs-masthead .lead {
-  margin: 0 auto 30px;
+  margin: 0 auto 5px;
   font-size: 20px;
   color: #fff;
 }
