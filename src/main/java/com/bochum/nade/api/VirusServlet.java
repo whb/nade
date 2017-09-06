@@ -6,9 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.ServletException;
@@ -65,36 +63,6 @@ public class VirusServlet extends JsonResponseServlet {
 		jsonTemplate = jsonTemplate.replace("#{infectionHostsNum}", categoryHostsNumJson);
 
 		response.getWriter().write(jsonTemplate);
-	}
-
-	public void doGetOld(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setHeader("Content-Type", "application/json; charset=UTF-8");
-		Map<String, Object> map = new HashMap<String, Object>();
-
-		List<NameValue> areaHostsNum;
-		if ("spread".equals(request.getServletContext().getAttribute("action"))) {
-			areaHostsNum = buildAreaHostsNum(request);
-		} else if ("reset".equals(request.getServletContext().getAttribute("action"))) {
-			areaHostsNum = readZeroDataFromFile(request);
-		} else {
-			areaHostsNum = keepOrBuildZeroAreaHostsNum(request);
-		}
-
-		List<NameValue> categoryHostsNum = buildCategoryHostsNum(areaHostsNum);
-		request.getServletContext().setAttribute("areaHostsNum", areaHostsNum);
-		request.getServletContext().setAttribute("infectionHostsNum", categoryHostsNum);
-
-		Boolean alarm = (Boolean) request.getServletContext().getAttribute("alarm");
-		if (alarm != null && alarm) {
-			map.put("alarm", alarm);
-			request.getServletContext().setAttribute("alarm", null);
-		}
-
-		map.put("areaHostsNum", areaHostsNum);
-		map.put("infectionHostsNum", categoryHostsNum);
-
-		String json = new Gson().toJson(map);
-		response.getWriter().write(json);
 	}
 
 	@SuppressWarnings("unchecked")
