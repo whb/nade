@@ -13,6 +13,10 @@ body.container-fluid {
     color: #3c763d;
     z-index: 10;
  }
+ 
+ form.hidden {
+ 	display: none;
+ }
 .bs-docs-masthead  {
   position: relative;
   padding: 30px 0;

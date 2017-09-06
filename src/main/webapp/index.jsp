@@ -25,8 +25,8 @@
         <button id="dashboard" class="btn btn-outline-inverse btn-lg" ${USER_LOGIN? '': 'disabled'}>显示监控屏幕</button>
         <button id="console" class="btn btn-outline-inverse btn-lg" ${USER_LOGIN? '': 'disabled'}>进入控制台</button>
       </div>
-
-      <form class="form-horizontal">
+    
+      <form class="form-horizontal ${USER_LOGIN? 'hidden': ''}">
         <div class="form-group  has-feedback">
           <div class="col-sm-4 col-sm-offset-4">
             <div class="input-group">
