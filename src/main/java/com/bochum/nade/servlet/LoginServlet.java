@@ -14,6 +14,17 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = -1779650997215496961L;
 	private String[] passwords;
+	
+	public static boolean checkAuthorization(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Boolean isLogin = (Boolean) request.getSession().getAttribute("USER_LOGIN");
+		if (isLogin == null || isLogin == false) {
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
+			requestDispatcher.forward(request, response);
+			return false;
+		}
+		return true;
+	}
 
 	public void init() throws ServletException {
 		InputStream is = getServletContext().getResourceAsStream("/WEB-INF/login/password");

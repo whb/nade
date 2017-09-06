@@ -20,12 +20,8 @@ public class ConsoleServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Boolean isLogin = (Boolean) request.getSession().getAttribute("USER_LOGIN");
-		if (isLogin == null || isLogin == false) {
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
-			requestDispatcher.forward(request, response);
+		if (!LoginServlet.checkAuthorization(request, response))
 			return;
-		}
 
 		String subject = (String) request.getServletContext().getAttribute("subject");
 		if (subject == null || subject.length() == 0)
