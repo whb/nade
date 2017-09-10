@@ -32,7 +32,10 @@
     <div id="defense" class="defense"></div>
   </div>
 
-  <div class="col-md-9 long_chart" id="beijingFlow" style="height: 200px;"></div>
+  <div class="col-md-9 long_chart" style="height: 200px;">
+    <div class="col-md-3" id="pie" style="height: 200px;"></div>
+    <div class="col-md-9" id="beijingFlow" style="height: 200px;"></div>
+  </div>
 
   <div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
@@ -135,9 +138,13 @@
 </script>
 <script src="echarts/ddos.js"></script>
 <script src="echarts/ddos_flow.js"></script>
+<script src="echarts/ddos_pie.js"></script>
 <script type="text/javascript">
   var ddosChart = echarts.init(document.getElementById('main'));
   ddosChart.setOption(moveOption);
+  
+  var pieChart = echarts.init(document.getElementById('pie'));
+  pieChart.setOption(pieOption);
 
   var beijingFlowChart = echarts.init(document.getElementById('beijingFlow'));
   beijingFlowChart.setOption(beijingFlowOption);
@@ -152,6 +159,7 @@
 
   $(window).resize(function() {
     ddosChart.resize();
+    pieChart.resize();
     beijingFlowChart.resize();
 
     attackFlowCharts.forEach(function(flowChart) {

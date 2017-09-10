@@ -105,7 +105,8 @@ var beijingFlowOption = {
   },
   grid : {
     left : 40,
-    right : 20
+    right : 20,
+    bottom: 40
   },
   tooltip : {
     trigger : 'axis',
