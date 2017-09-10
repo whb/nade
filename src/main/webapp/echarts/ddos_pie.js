@@ -11,18 +11,10 @@ function buildPieData() {
         return a + b;
       }, 0);
 
-      data.push({
-        value : sum / 5,
-        name : area,
-        itemStyle : {
-          normal : {
-            color : pieColors[index]
-          }
-        }
-      });
+      data.push({ value : sum / 5, name : area });
     }
   });
-  return data;
+  return data.sort(function (a, b) { return a.value - b.value; });
 }
 
 pieOption = {
@@ -30,6 +22,17 @@ pieOption = {
     trigger : 'item',
     formatter : "{a} <br/>{b} : {c} ({d}%)"
   },
+  visualMap: {
+    show: false,
+    min: 20,
+    max: 35,
+    inRange: {
+      //colorLightness: [0.5, 1],
+      color: ['lightgreen', 'lightskyblue', 'gold','#ee4444']
+    }
+  },
+  stillShowZeroSum: true,
+  roseType: 'radius',
   series : [ {
     name : '攻击来源',
     type : 'pie',
@@ -62,4 +65,4 @@ setInterval(function() {
       data : buildPieData(),
     } ]
   });
-}, 1000);
+}, 2000);
