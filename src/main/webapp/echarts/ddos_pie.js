@@ -1,5 +1,3 @@
-var pieColors = [ 'lightgreen', 'lightskyblue', 'orange', '#ee4444' ];
-
 function buildPieData() {
   var data = [];
 
@@ -27,7 +25,6 @@ pieOption = {
     min: 20,
     max: 35,
     inRange: {
-      //colorLightness: [0.5, 1],
       color: ['lightgreen', 'lightskyblue', 'gold','#ee4444']
     }
   },
