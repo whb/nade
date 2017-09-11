@@ -21,7 +21,7 @@ alarm:: {
 analyze:: {
     "status": "analyze",
     "defense_title": "事件研判",
-    "defense_text": "攻击源IP地址：125.39.240.113",
+    "defense_text": "攻击源IP地址：211.143.53.186",
     "attackArea": "河北",
     "targetArea": "天津"
 };;
@@ -40,7 +40,7 @@ repair:: {
 defense:: {
     "status": "defense",
     "defense_title": "协同处理",
-    "defense_text": "封堵攻击源IP地址：125.39.240.113",
+    "defense_text": "封堵攻击源IP地址：211.143.53.186",
     "attackArea": "河北",
     "targetArea": "天津"
 };;
