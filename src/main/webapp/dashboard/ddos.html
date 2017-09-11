@@ -32,9 +32,15 @@
     <div id="defense" class="defense"></div>
   </div>
 
-  <div class="col-md-9 long_chart" style="height: 200px;">
+  <div class="col-md-12 long_chart" style="height: 200px;">
     <div class="col-md-3" id="pie" style="height: 200px;"></div>
-    <div class="col-md-9" id="beijingFlow" style="height: 200px;"></div>
+    <div class="col-md-6" id="beijingFlow" style="height: 200px;"></div>
+    <div class="col-md-3" style="height: 200px;">
+      <dl class="statistic-number">
+      <dt>北京流量</dt>
+      <dd id="flowNumber" class="odometer odometer-auto-theme" data-num=""></dd> MB
+      </dl>
+    </div>
   </div>
 
   <div id="alarmModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
@@ -143,20 +149,23 @@
   var ddosChart = echarts.init(document.getElementById('main'));
   ddosChart.setOption(moveOption);
   
+  Odometer.init();
+  
   var pieChart = echarts.init(document.getElementById('pie'));
   pieChart.setOption(pieOption);
 
   var beijingFlowChart = echarts.init(document.getElementById('beijingFlow'));
   beijingFlowChart.setOption(beijingFlowOption);
-
+  
   var attackFlowCharts = [];
   $(".attackFlow").each(function(index, chartDiv) {
-    let
-    flowChart = echarts.init(chartDiv);
+    let flowChart = echarts.init(chartDiv);
     flowChart.setOption(attackAreaFlowOptions[index]);
     attackFlowCharts.push(flowChart);
   });
 
+  
+  
   $(window).resize(function() {
     ddosChart.resize();
     pieChart.resize();

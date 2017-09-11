@@ -52,6 +52,7 @@ function FlowDataGenerator() {
 function TargetFlowDataGenerator() {}
 TargetFlowDataGenerator.prototype = new FlowDataGenerator();
 TargetFlowDataGenerator.prototype.value = 5 + Math.random();
+TargetFlowDataGenerator.prototype.lastValue = 0;
 TargetFlowDataGenerator.prototype.initialData = function() {
   for (var i = 0; i < 1000; i++) {
     this.data.push(this.randomData());
@@ -74,12 +75,15 @@ TargetFlowDataGenerator.prototype.attackLastDataSum = function() {
   return lastDataSum;
 };
 TargetFlowDataGenerator.prototype.requestData = function() {
+  var sum = 0
   for (var i = 0; i < 5; i++) {
     this.data.shift();
     let rd = this.randomData();
     rd['value'][1] += this.attackLastDataSum()[i];
+    sum += rd['value'][1];
     this.data.push(rd);
   }
+  this.lastValue = sum / 5;
   return this.data;
 };
 

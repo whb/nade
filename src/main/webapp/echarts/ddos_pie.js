@@ -57,6 +57,7 @@ pieOption = {
 };
 
 setInterval(function() {
+  $('#flowNumber').text(targetFlowDataGenerator.lastValue);
   pieChart.setOption({
     series : [ {
       data : buildPieData(),

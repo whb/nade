@@ -167,6 +167,16 @@ body.container-fluid .title {
   margin-bottom: 5px;
 } 
 
+.statistic-number dt {
+  margin-top: 36px;
+  font-size: 18px;
+}
+#flowNumber {
+  font-size: 56px;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
 .text_column {
   position: absolute; top: 100px; right: 0px;
   float : right;
