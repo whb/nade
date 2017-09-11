@@ -17,7 +17,7 @@ alarm:: {
 analyze:: {
     "status": "analyze",
     "defense_title": "事件研判",
-    "defense_text": ["异常流量来源有四个","分别为天津、河北、山西和山东"],
+    "defense_text": ["异常流量来源有四个","天津：192.168.0.1", "河北：192.168.0.2", "山西：192.168.0.3", "山东：192.168.0.4"],
     "chartData" : #{chartData}
 };;
 defense:: {
