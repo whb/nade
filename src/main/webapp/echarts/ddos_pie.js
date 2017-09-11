@@ -22,8 +22,8 @@ pieOption = {
   },
   visualMap: {
     show: false,
-    min: 20,
-    max: 35,
+    min: 850,
+    max: 1000,
     inRange: {
       color: ['lightgreen', 'lightskyblue', 'gold','#ee4444']
     }

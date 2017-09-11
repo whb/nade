@@ -5,7 +5,7 @@ function paddingTime(value) {
 function FlowDataGenerator() {
   this.interval = 200;
   this.tick = +new Date();
-  this.value = 20 + Math.random() * 5;
+  this.value = 800 + Math.random() * 200;
   this.data = [];
   this.lastValues = [];
   
@@ -16,12 +16,12 @@ function FlowDataGenerator() {
   
   this.randomData = function() {
     this.tick = new Date(+this.tick + this.interval);
-    if(this.value > 40) {
-      this.value = Math.abs(this.value - Math.random() * 2);
-    } else if (this.value < 15) {
-      this.value = Math.abs(this.value + Math.random() * 2.01 - 0.8);
+    if(this.value > 1050) {
+      this.value = Math.abs(this.value - Math.random() * 20);
+    } else if (this.value < 650) {
+      this.value = Math.abs(this.value + Math.random() * 20.1 - 8);
     } else {
-      this.value = Math.abs(this.value + Math.random() * 2.01 - 1);
+      this.value = Math.abs(this.value + Math.random() * 20.1 - 10);
     }
     return { value : [ this.tick, Math.round(this.value) ] };
   };
@@ -143,7 +143,7 @@ var beijingFlowOption = {
       show : true
     },
     min: 0,
-    max: 50
+    max: 1200
   },
   series : [ {
     name : '模拟数据',
@@ -189,7 +189,7 @@ setInterval(function() {
   
   beijingFlowChart.setOption({
     yAxis : {
-      max: 150
+      max: 6000
     },
     series : [ {
       areaStyle : {
