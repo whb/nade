@@ -19,9 +19,10 @@ import com.google.gson.reflect.TypeToken;
 public class VirusServlet extends JsonResponseServlet {
 	private static final String JSON_PATH = "/WEB-INF/api-json/";
 	private static final long serialVersionUID = 6119709263019798714L;
-	private static final int BEGIN_NUM_OF_municipality_AREA = 3000;
-	private static final int BEGIN_NUM_OF_KEY_AREA = 200;
-	private static final int INCREACE_NUM = 200;
+	private static final int BEGIN_NUM_OF_municipality_AREA = 0;
+	private static final int BEGIN_NUM_OF_KEY_AREA = 0;
+	private static final int INCREACE_NUM = 80;
+	private static final int MIN_INCREACE_NUM = 5;
 
 	private static ProvinceArea[] provinceAreas;
 
@@ -31,8 +32,7 @@ public class VirusServlet extends JsonResponseServlet {
 		buildStatusDefine("virus.dat");
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setHeader("Content-Type", "application/json; charset=UTF-8");
 		String action = (String) request.getServletContext().getAttribute("action");
 		String status = "initial";
@@ -51,14 +51,13 @@ public class VirusServlet extends JsonResponseServlet {
 		} else {
 			areaHostsNum = keepOrBuildZeroAreaHostsNum(request);
 		}
-		List<NameValue> categoryHostsNum = buildCategoryHostsNum(areaHostsNum);
+		List<NameValue> categoryHostsNum = buildCategoryHostsNum(areaHostsNum, request);
 		request.getServletContext().setAttribute("areaHostsNum", areaHostsNum);
-		request.getServletContext().setAttribute("infectionHostsNum", categoryHostsNum);		
-		
+		request.getServletContext().setAttribute("infectionHostsNum", categoryHostsNum);
+
 		String areaHostsNumJson = new Gson().toJson(areaHostsNum);
 		String categoryHostsNumJson = new Gson().toJson(categoryHostsNum);
-		
-		
+
 		jsonTemplate = jsonTemplate.replace("#{areaHostsNum}", areaHostsNumJson);
 		jsonTemplate = jsonTemplate.replace("#{infectionHostsNum}", categoryHostsNumJson);
 
@@ -76,34 +75,88 @@ public class VirusServlet extends JsonResponseServlet {
 
 	@SuppressWarnings("unchecked")
 	private List<NameValue> buildAreaHostsNum(HttpServletRequest request) {
+		Integer loopCount = (Integer) request.getSession().getAttribute("VIRUS_LOOP_COUNT");
+		if (loopCount == null) {
+			loopCount = 0;
+		}
+
 		List<NameValue> areaHostsNum = (List<NameValue>) request.getServletContext().getAttribute("areaHostsNum");
 		if (areaHostsNum == null) {
 			areaHostsNum = readIntialDataFromFile(request);
 		} else {
 			for (NameValue hostNum : areaHostsNum) {
 				Integer value = (Integer) (hostNum.getValue());
-				if (isPriority(hostNum)) {
-					value = value + rangeRandom(INCREACE_NUM);
+
+				Boolean controlFlag = (Boolean) request.getSession().getAttribute("VIRUS_CONTROL");
+				if (isPriority(hostNum, loopCount, controlFlag)) {
+					if (controlFlag != null && controlFlag) {
+						value = value + rangeRandom(MIN_INCREACE_NUM);
+					} else {
+						value = value + rangeRandom(INCREACE_NUM);
+					}
+
 				}
 				hostNum.setValue(value);
 			}
 		}
+
+		request.getSession().setAttribute("VIRUS_LOOP_COUNT", loopCount + 1);
 		return areaHostsNum;
 	}
 
-	private boolean isPriority(NameValue hostNum) {
-		if (isShandongArea(hostNum.getName())) {
-			return (new Random()).nextDouble() > 0.65;
-		} else if (isKeyArea(hostNum.getName())) {
-			return true;
+	private boolean isPriority(NameValue hostNum, Integer loopCount, Boolean controlFlag) {
+		if (controlFlag != null && controlFlag) {
+			return (new Random()).nextDouble() > 0.95;
+		}
+
+		if ("北京".equals(hostNum.getName())) {
+			if (hostNum.getValue() < 300) {
+				return true;
+			} else {
+				return (new Random()).nextDouble() > 0.85;
+			}
+		} else if ("天津".equals(hostNum.getName())) {
+			if (loopCount < 3)
+				return false;
+			if (hostNum.getValue() < 300) {
+				return true;
+			} else {
+				return (new Random()).nextDouble() > 0.85;
+			}
+		} else if (isProvinceArea(hostNum.getName(), "河北")) {
+			if (loopCount < 5)
+				return false;
+			if (hostNum.getValue() < 300) {
+				return true;
+			} else {
+				return (new Random()).nextDouble() > 0.85;
+			}
+		} else if (isProvinceArea(hostNum.getName(), "山西")) {
+			if (loopCount < 7)
+				return false;
+			if (hostNum.getValue() < 300) {
+				return true;
+			} else {
+				return (new Random()).nextDouble() > 0.85;
+			}
+		} else if (isProvinceArea(hostNum.getName(), "山东")) {
+			if (loopCount < 9)
+				return false;
+			if (hostNum.getValue() < 300) {
+				return true;
+			} else {
+				return (new Random()).nextDouble() > 0.85;
+			}
 		} else {
-			return (new Random()).nextDouble() > 0.9;
+			if (loopCount < 9)
+				return false;
+			return (new Random()).nextDouble() > 0.95;
 		}
 	}
 
-	private boolean isShandongArea(String name) {
+	private boolean isProvinceArea(String name, String province) {
 		for (ProvinceArea p : provinceAreas) {
-			if (p.getProvince().equals("山东")) {
+			if (p.getProvince().equals(province)) {
 				for (String area : p.getAreas()) {
 					if (area.equals(name)) {
 						return true;
@@ -114,16 +167,16 @@ public class VirusServlet extends JsonResponseServlet {
 		return false;
 	}
 
-	private boolean isKeyArea(String name) {
-		for (ProvinceArea p : provinceAreas) {
-			for (String area : p.getAreas()) {
-				if (area.equals(name)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+	// private boolean isKeyArea(String name) {
+	// for (ProvinceArea p : provinceAreas) {
+	// for (String area : p.getAreas()) {
+	// if (area.equals(name)) {
+	// return true;
+	// }
+	// }
+	// }
+	// return false;
+	// }
 
 	private List<NameValue> readIntialDataFromFile(HttpServletRequest request) {
 		String jsonString = readFromFile("virus_area_num.json");
@@ -168,13 +221,25 @@ public class VirusServlet extends JsonResponseServlet {
 		return 0;
 	}
 
-	private List<NameValue> buildCategoryHostsNum(List<NameValue> areaHostsNum) {
+	private List<NameValue> buildCategoryHostsNum(List<NameValue> areaHostsNum, HttpServletRequest request) {
 		List<NameValue> categoryHostsNum = new ArrayList<NameValue>();
+		Integer fiveProvinces = 0;
 		for (ProvinceArea p : provinceAreas) {
 			NameValue nv = new NameValue();
 			nv.setName(p.getProvince());
 			nv.setValue(sumCategory(areaHostsNum, p));
 			categoryHostsNum.add(nv);
+
+			fiveProvinces += nv.getValue();
+		}
+
+		NameValue fiveProvincesTotal = new NameValue();
+		fiveProvincesTotal.setName("合计");
+		fiveProvincesTotal.setValue(fiveProvinces);
+		categoryHostsNum.add(fiveProvincesTotal);
+
+		if (fiveProvinces > 18000) {
+			request.getSession().setAttribute("VIRUS_CONTROL", true);
 		}
 
 		NameValue total = new NameValue();
