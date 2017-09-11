@@ -25,7 +25,7 @@
           <li role="presentation"><a href="#virus">网络病毒爆发</a></li>
           <li role="presentation"><a href="#webpage">网页篡改</a></li>
           <li role="presentation"><a href="#dns">域名劫持</a></li>
-          <li role="presentation"><a href="#leak">大规模用户信息泄露</a></li>
+          <li role="presentation" class="disabled"><a href="#leak">大规模用户信息泄露</a></li>
         </ul>
         
         <div style="text-align:center;">
@@ -350,6 +350,8 @@ $("#leak .btn").click(function() {
     action : $(this).attr("name")
   });
 });
+
+$(".disabled a").off('click');
 
 $(function() {
   $("#consoleTabs a[href$='${applicationScope['subject']}']").tab('show');
