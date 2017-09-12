@@ -13,7 +13,7 @@
 <script src="static/js/jquery-3.2.1.min.js"></script>
 </head>
 
-<body>
+<body id='loginBody'>
   <div class="bs-docs-masthead" id="content" tabindex="-1">
     <div class="container">
       <div class="lead">
