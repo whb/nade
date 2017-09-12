@@ -112,7 +112,7 @@ public class VirusServlet extends JsonResponseServlet {
 		}
 
 		if ("北京".equals(hostNum.getName())) {
-			if (hostNum.getValue() < 300) {
+			if (hostNum.getValue() < 500) {
 				return true;
 			} else {
 				return (new Random()).nextDouble() > 0.85;
@@ -120,7 +120,7 @@ public class VirusServlet extends JsonResponseServlet {
 		} else if ("天津".equals(hostNum.getName())) {
 			if (loopCount < 3)
 				return false;
-			if (hostNum.getValue() < 300) {
+			if (hostNum.getValue() < 500) {
 				return true;
 			} else {
 				return (new Random()).nextDouble() > 0.85;
