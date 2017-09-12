@@ -202,8 +202,12 @@ body.container-fluid .title {
 }
 
 .long_chart {
-  position: absolute; top: 888px;
+  position: absolute; top: 880px;
   float : left;
+}
+
+.col-md-12.long_chart {
+  width: 99%;
 }
 
 
