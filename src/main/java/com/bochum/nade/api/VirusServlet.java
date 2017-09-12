@@ -38,6 +38,8 @@ public class VirusServlet extends JsonResponseServlet {
 		String status = "initial";
 		if (action == null || action.length() == 0 || action.equals("reset")) {
 			status = "initial";
+			request.getSession().setAttribute("VIRUS_LOOP_COUNT", 0);
+			request.getSession().setAttribute("VIRUS_CONTROL", false);
 		} else {
 			status = action;
 		}
