@@ -24,7 +24,7 @@ public class VirusServlet extends JsonResponseServlet {
 	private static final int INCREACE_NUM = 70;
 	private static final int municipality_INCREACE_NUM = 100;
 	private static final int MIN_INCREACE_NUM = 5;
-	private static final int OTHER_INCREACE_NUM = 30;
+	private static final int OTHER_INCREACE_NUM = 50;
 
 	private static ProvinceArea[] provinceAreas;
 
@@ -136,15 +136,15 @@ public class VirusServlet extends JsonResponseServlet {
 			int[] controlNum = {3, municipality_INCREACE_NUM, INCREACE_NUM, MIN_INCREACE_NUM};
 			return calAreaValue(hostNum, loopCount, switchNum, controlNum);
 		} else if (isProvinceArea(hostNum.getName(), "河北")) {
-			int[] switchNum = {200, 250};
+			int[] switchNum = {250, 300};
 			int[] controlNum = {5, INCREACE_NUM, INCREACE_NUM, MIN_INCREACE_NUM};
 			return calAreaValue(hostNum, loopCount, switchNum, controlNum);
 		} else if (isProvinceArea(hostNum.getName(), "山西")) {
-			int[] switchNum = {450, 490};
+			int[] switchNum = {500, 590};
 			int[] controlNum = {7, INCREACE_NUM, INCREACE_NUM, MIN_INCREACE_NUM};
 			return calAreaValue(hostNum, loopCount, switchNum, controlNum);
 		} else if (isProvinceArea(hostNum.getName(), "山东")) {
-			int[] switchNum = {120, 150};
+			int[] switchNum = {150, 200};
 			int[] controlNum = {9, INCREACE_NUM, INCREACE_NUM, MIN_INCREACE_NUM};
 			return calAreaValue(hostNum, loopCount, switchNum, controlNum);
 		} else {
