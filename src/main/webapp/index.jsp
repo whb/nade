@@ -21,8 +21,8 @@
       </div>
 
       <div class="lead">
-        <button id="dashboard" class="btn btn-outline-inverse btn-lg" ${USER_LOGIN? '': 'disabled'}>显示监控屏幕</button>
-        <button id="console" class="btn btn-outline-inverse btn-lg" ${USER_LOGIN? '': 'disabled'}>进入控制台</button>
+        <button id="dashboard" class="btn btn-outline-inverse btn-lg" ${LOGIN_OPREATE == 'dashboard' ? '': 'disabled'}>显示监控屏幕</button>
+        <button id="console" class="btn btn-outline-inverse btn-lg" ${LOGIN_OPREATE == 'console' ? '': 'disabled'}>进入控制台</button>
       </div>
     
       <form class="form-horizontal ${USER_LOGIN? 'hidden': ''}">
