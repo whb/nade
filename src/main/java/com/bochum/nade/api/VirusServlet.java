@@ -21,8 +21,10 @@ public class VirusServlet extends JsonResponseServlet {
 	private static final long serialVersionUID = 6119709263019798714L;
 	private static final int BEGIN_NUM_OF_municipality_AREA = 0;
 	private static final int BEGIN_NUM_OF_KEY_AREA = 0;
-	private static final int INCREACE_NUM = 80;
+	private static final int INCREACE_NUM = 70;
+	private static final int municipality_INCREACE_NUM = 100;
 	private static final int MIN_INCREACE_NUM = 5;
+	private static final int OTHER_INCREACE_NUM = 30;
 
 	private static ProvinceArea[] provinceAreas;
 
@@ -48,7 +50,8 @@ public class VirusServlet extends JsonResponseServlet {
 		List<NameValue> areaHostsNum;
 		if ("initial".equals(status)) {
 			areaHostsNum = readZeroDataFromFile(request);
-		} else if ("attack".equals(status) || "alarm".equals(status) || "analyze".equals(status) || "repair".equals(status)) {
+		} else if ("attack".equals(status) || "alarm".equals(status) || "analyze".equals(status)
+				|| "repair".equals(status)) {
 			areaHostsNum = buildAreaHostsNum(request);
 		} else {
 			areaHostsNum = keepOrBuildZeroAreaHostsNum(request);
@@ -90,14 +93,7 @@ public class VirusServlet extends JsonResponseServlet {
 				Integer value = (Integer) (hostNum.getValue());
 
 				Boolean controlFlag = (Boolean) request.getSession().getAttribute("VIRUS_CONTROL");
-				if (isPriority(hostNum, loopCount, controlFlag)) {
-					if (controlFlag != null && controlFlag) {
-						value = value + rangeRandom(MIN_INCREACE_NUM);
-					} else {
-						value = value + rangeRandom(INCREACE_NUM);
-					}
-
-				}
+				value += calValue(hostNum, loopCount, controlFlag);
 				hostNum.setValue(value);
 			}
 		}
@@ -106,53 +102,55 @@ public class VirusServlet extends JsonResponseServlet {
 		return areaHostsNum;
 	}
 
-	private boolean isPriority(NameValue hostNum, Integer loopCount, Boolean controlFlag) {
-		if (controlFlag != null && controlFlag) {
-			return (new Random()).nextDouble() > 0.95;
+	private Integer randomValue(double probability, Integer increasNum) {
+		if ((new Random()).nextDouble() > probability) {
+			return rangeRandom(increasNum);
+		} else {
+			return 0;
 		}
+	}
 
+	private Integer calAreaValue(NameValue hostNum, Integer loopCount,int[] switchNum, int[] controlNum) {
+		if (loopCount < controlNum[0])
+			return 0;
+		if (hostNum.getValue() < switchNum[0]) {
+			return rangeRandom(controlNum[1]);
+		} else if (hostNum.getValue() < switchNum[1]) {
+			return randomValue(0.9, controlNum[2]);
+		} else {
+			return randomValue(0.58, controlNum[3]);
+		}
+	}
+
+	private Integer calValue(NameValue hostNum, Integer loopCount, Boolean controlFlag) {
+		if (controlFlag != null && controlFlag) {
+			return randomValue(0.95, MIN_INCREACE_NUM);
+		}
+		
 		if ("北京".equals(hostNum.getName())) {
-			if (hostNum.getValue() < 500) {
-				return true;
-			} else {
-				return (new Random()).nextDouble() > 0.85;
-			}
+			int[] switchNum = {900, 980};
+			int[] controlNum = {0, municipality_INCREACE_NUM, INCREACE_NUM, MIN_INCREACE_NUM};
+			return calAreaValue(hostNum, loopCount, switchNum, controlNum);
 		} else if ("天津".equals(hostNum.getName())) {
-			if (loopCount < 3)
-				return false;
-			if (hostNum.getValue() < 500) {
-				return true;
-			} else {
-				return (new Random()).nextDouble() > 0.85;
-			}
+			int[] switchNum = {1400, 1480};
+			int[] controlNum = {3, municipality_INCREACE_NUM, INCREACE_NUM, MIN_INCREACE_NUM};
+			return calAreaValue(hostNum, loopCount, switchNum, controlNum);
 		} else if (isProvinceArea(hostNum.getName(), "河北")) {
-			if (loopCount < 5)
-				return false;
-			if (hostNum.getValue() < 300) {
-				return true;
-			} else {
-				return (new Random()).nextDouble() > 0.85;
-			}
+			int[] switchNum = {200, 250};
+			int[] controlNum = {5, INCREACE_NUM, INCREACE_NUM, MIN_INCREACE_NUM};
+			return calAreaValue(hostNum, loopCount, switchNum, controlNum);
 		} else if (isProvinceArea(hostNum.getName(), "山西")) {
-			if (loopCount < 7)
-				return false;
-			if (hostNum.getValue() < 300) {
-				return true;
-			} else {
-				return (new Random()).nextDouble() > 0.85;
-			}
+			int[] switchNum = {450, 490};
+			int[] controlNum = {7, INCREACE_NUM, INCREACE_NUM, MIN_INCREACE_NUM};
+			return calAreaValue(hostNum, loopCount, switchNum, controlNum);
 		} else if (isProvinceArea(hostNum.getName(), "山东")) {
-			if (loopCount < 9)
-				return false;
-			if (hostNum.getValue() < 300) {
-				return true;
-			} else {
-				return (new Random()).nextDouble() > 0.85;
-			}
+			int[] switchNum = {120, 150};
+			int[] controlNum = {9, INCREACE_NUM, INCREACE_NUM, MIN_INCREACE_NUM};
+			return calAreaValue(hostNum, loopCount, switchNum, controlNum);
 		} else {
 			if (loopCount < 9)
-				return false;
-			return (new Random()).nextDouble() > 0.95;
+				return 0;
+			return randomValue(0.95, OTHER_INCREACE_NUM);
 		}
 	}
 
@@ -240,7 +238,7 @@ public class VirusServlet extends JsonResponseServlet {
 		fiveProvincesTotal.setValue(fiveProvinces);
 		categoryHostsNum.add(fiveProvincesTotal);
 
-		if (fiveProvinces > 18000) {
+		if (fiveProvinces > 10000) {
 			request.getSession().setAttribute("VIRUS_CONTROL", true);
 		}
 

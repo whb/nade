@@ -14,16 +14,16 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = -1779650997215496961L;
 	private String[] passwords;
-	
-	public static boolean checkAuthorization(HttpServletRequest request, HttpServletResponse response)
+
+	public static boolean checkAuthorization(HttpServletRequest request, HttpServletResponse response, String opreate)
 			throws ServletException, IOException {
-		Boolean isLogin = (Boolean) request.getSession().getAttribute("USER_LOGIN");
-		if (isLogin == null || isLogin == false) {
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
-			requestDispatcher.forward(request, response);
-			return false;
+		String loginOpreate = (String) request.getSession().getAttribute("LOGIN_OPREATE");
+		if (opreate.equals(loginOpreate)) {
+			return true;
 		}
-		return true;
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
+		requestDispatcher.forward(request, response);
+		return false;
 	}
 
 	public void init() throws ServletException {
@@ -54,20 +54,15 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String password = request.getParameter("password");
-		if (isContain(password)) {
-			request.getSession().setAttribute("USER_LOGIN", true);
-			response.getWriter().write("success");
+		if (passwords[0].equals(password)) {
+			request.getSession().setAttribute("LOGIN_OPREATE", "dashboard");
+			response.getWriter().write("dashboard");
+		} else if (passwords[1].equals(password)) {
+			request.getSession().setAttribute("LOGIN_OPREATE", "console");
+			response.getWriter().write("console");
 		} else {
 			response.getWriter().write("error");
 		}
-	}
-
-	private boolean isContain(String password) {
-		for (String p : passwords) {
-			if (p.equals(password))
-				return true;
-		}
-		return false;
 	}
 
 	public void destroy() {

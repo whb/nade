@@ -438,7 +438,7 @@ spreadOption = {
             bottom: '5%',
             dimension: 2,
             min: 0,
-            max: 550,
+            max: 650,
             show: false,
             itemHeight: 120,
             calculable: true,

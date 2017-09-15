@@ -15,7 +15,7 @@ public class DashboardServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (!LoginServlet.checkAuthorization(request, response))
+		if (!LoginServlet.checkAuthorization(request, response, "dashboard"))
 			return;
 
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/main/dashboard.jsp");

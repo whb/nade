@@ -20,7 +20,7 @@ public class ConsoleServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (!LoginServlet.checkAuthorization(request, response))
+		if (!LoginServlet.checkAuthorization(request, response, "console"))
 			return;
 
 		String subject = (String) request.getServletContext().getAttribute("subject");

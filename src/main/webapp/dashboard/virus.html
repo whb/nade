@@ -212,9 +212,6 @@
 
     result.infectionHostsNum.forEach(function(areaNum) {
       var hostNum = areaNum.value;
-      if('北京' == areaNum.name || '天津' == areaNum.name) {
-        hostNum = parseInt(hostNum / 1.5);
-      }
       $("#" + areaPinyin[areaNum.name] + "HostsNum").text(hostNum);
     });
   }

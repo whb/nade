@@ -52,11 +52,17 @@
       url : "login",
       data : "password=" + $("#password").val(),
       success : function(msg) {
-        if (msg == "success") {
-          $("#msg").text("密码正确");
+        if (msg == "dashboard") {
+          $("#msg").text("监控屏幕密码正确");
           $(this).parents('.form-group').addClass('has-success');
           $('#ok').addClass('glyphicon glyphicon-ok form-control-feedback lg-ok-icon-lg');
-          $('.btn').prop("disabled", false);
+          $('#dashboard').prop("disabled", false);
+          $('form').fadeOut(2000);
+        } else if (msg == "console") {
+          $("#msg").text("控制台密码正确");
+          $(this).parents('.form-group').addClass('has-success');
+          $('#ok').addClass('glyphicon glyphicon-ok form-control-feedback lg-ok-icon-lg');
+          $('#console').prop("disabled", false);
           $('form').fadeOut(2000);
         }
       }
