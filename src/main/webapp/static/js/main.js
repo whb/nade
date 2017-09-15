@@ -60,6 +60,7 @@ var TextWidget = {
       var widget = {};
       widget.parent = parentDiv;
       widget.type = parentDiv.attr('id');
+      widget.listTimeoutId = [];
 
       (function(){ 
         widget.title = $('<h2 id="'+widget.type+'_title"></h2>').appendTo(widget.parent);
@@ -105,18 +106,26 @@ var TextWidget = {
       widget.displayList = function(listCallback){ 
         widget.list.empty();
         widget.list.show();
+        widget.listTimeoutId.forEach(function(item) { 
+          clearTimeout(item);
+        });
+        widget.listTimeoutId = [];
+        
+        
         widget.pageStatus.text.forEach(function(text, index) {
-            setTimeout(function() { 
+            var timeoutId = setTimeout(function() { 
                 $('<li>'+text+'</li>').appendTo(widget.list).animateCss('flipInX'); 
                 
                 if(listCallback)
                   listCallback(text, index);
             }, index*3000);
+            
+            widget.listTimeoutId.push(timeoutId);
           });
       };
       
       widget.setPageStatus = function(pageStatus){ 
-        widget.pageStatus = pageStatus;
+        widget.pageStatus = $.extend(true, {}, pageStatus);
         switch (widget.type) {
             case 'alarm':
               widget.pageStatus.title = pageStatus.alarm_title;
@@ -134,6 +143,8 @@ var TextWidget = {
       };
       
       widget.display = function(pageStatus, listCallback){ 
+        if(widget.type == 'alarm' && pageStatus.status != 'attack') return;
+          
         widget.setPageStatus(pageStatus);
         queue(function () {
             return widget.displayTitle().delay(1000);
