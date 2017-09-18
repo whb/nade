@@ -143,7 +143,7 @@ var TextWidget = {
       };
       
       widget.display = function(pageStatus, listCallback){ 
-        if(widget.type == 'attack' && pageStatus.status != 'alarm') return;
+        if(widget.type == 'alarm' && pageStatus.status != 'attack' && pageStatus.status != 'alarm') return;
           
         widget.setPageStatus(pageStatus);
         queue(function () {
