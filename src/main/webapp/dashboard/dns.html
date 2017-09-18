@@ -10,10 +10,7 @@
     
     <div class="col-md-6 screenshot_column">
       <div id="correct_mark"></div>
-      <div id="terminal">
-        <span id="typewriter" class="typewriter"></span>
-        <span id="cursor" class="cursor"></span>
-      </div>
+      <div id="terminal"></div>
       <div id="screenshot_pic"></div>
     </div>
 
@@ -54,6 +51,7 @@
   alarmModal  : $('#alarmModal'),
   alarmWidget   : TextWidget.createNew($('#alarm')),
   defenseWidget : TextWidget.createNew($('#defense')),
+  terminalSimulator: TerminalSimulator.createNew($('#terminal')),
   screenshotPic : $('#screenshot_pic'),
   
   screenshotUrl : function() {
@@ -70,37 +68,6 @@
     this.screenshotPic.fadeOut(1000);
   },
   
-  typewriter : function() {
-    $('#typewriter').empty();
-    $('#terminal').show();
-    $('#cursor').html('&nbsp;');
-    var typewriter = require('typewriter');
-    var twSpan = document.getElementById('typewriter');
-    var tw = typewriter(twSpan).withAccuracy(95)
-                               .withMinimumSpeed(5)
-                               .withMaximumSpeed(17)
-                               .build();
-    tw.put('$ ')
-      .waitRange(500, 1000)
-      .type(this.pageStatus.terminal_command)
-      .put('<br/>')
-      .waitRange(1000, 1500)
-      .put(';; ANSWER SECTION:<br/>')
-      .put('www.baidu.com.          801     IN      CNAME   www.a.shifen.com.<br/>')
-      .put('www.a.shifen.com.       555     IN      A       119.75.216.20<br/>')
-      .put('www.a.shifen.com.       555     IN      A       119.75.213.61<br/>')
-      .put('www.a.shifen.com.       555     IN      A       119.75.216.20<br/>')
-      .put('<br/>')
-      .put('$ ')
-      .waitRange(2000, 2500)
-      .type('exit')
-      .put('<br/>')
-      .wait(500)
-      .put('logout<br/><br/>')
-      .put('[Process completed]<br/>');
-    return tw;
-  },
-  
   markCorrect : function(delayTime) {
     $('#correct_mark').hide();
     $('#correct_mark').append('<i class="fa fa-check"></i>');
@@ -112,7 +79,7 @@
     this.defenseWidget.hide()
     this.screenshotPic.fadeOut(1000);
     $('#correct_mark').empty();
-    $('#terminal').fadeOut(1000);
+    this.terminalSimulator.hide();
   },
 
   redrawChart : function() {
@@ -185,7 +152,7 @@
     queue(function () {
       WebPage.defenseWidget.display(WebPage.pageStatus); 
     }, function () {
-      return WebPage.typewriter();
+      return WebPage.terminalSimulator.display(WebPage.pageStatus);
     },function () {
       return WebPage.markCorrect(8000);
     });

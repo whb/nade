@@ -43,7 +43,22 @@ confirm:: {
     "status": "confirm",
     "defense_title": "结果验证",
     "defense_text": "验证官网主页DNS恢复正常",
-    "terminal_command":"dig http://www.10086.cn/sx/index.html",
+    "terminal_simulator": [
+    	{"command": "dig www.10086.cn", 
+    	 "result": [
+    	 	"ANSWER SECTION:",
+    	 	"www.10086.cn.           600     IN      A       117.136.139.2",
+    	 	"",
+    	 	"AUTHORITY SECTION:",
+    	 	"www.10086.cn.           3524    IN      NS      ns1.sdns.10086.cn.",
+    	 	"www.10086.cn.           3524    IN      NS      ns2.sdns.10086.cn.",
+    	 	"",
+    	 	"ADDITIONAL SECTION:",
+    	 	"ns1.sdns.10086.cn.      851     IN      A       117.136.139.23",
+    	 	"ns2.sdns.10086.cn.      851     IN      A       221.176.64.194"
+    	 ]}, 
+    	{"command": "exit", "result": ["logout", "", "[Process completed]"]}
+    ],
     "attackArea": "山东",
     "targetArea": "山西"
 }

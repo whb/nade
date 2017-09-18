@@ -179,6 +179,7 @@ var TerminalSimulator = {
       
       
       widget.display = function(pageStatus){ 
+        widget.hide();
         widget.cursor.html('&nbsp;');
         var typewriter = require('typewriter');
         var twSpan = document.getElementById('typewriter');
